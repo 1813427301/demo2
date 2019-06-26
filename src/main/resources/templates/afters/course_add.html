@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加课程</title>
+    <link th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
+          href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"
+            charset="utf-8"></script>
+</head>
+<style>
+    h4:hover {
+        color: #0c74e3;
+        cursor: pointer;
+    }
+</style>
+<body>
+<table class="table">
+    <tr>
+        <th>学院</th>
+        <th>系列</th>
+        <th>专业</th>
+        <th>班级</th>
+        <th>课程</th>
+        <th>操作</th>
+    </tr>
+
+    <tr class="add_tr">
+        <th colspan="6">
+            <h4 class="add_radio">点击添加课程</h4>
+        </th>
+    </tr>
+</table>
+</body>
+<script>
+    $(function () {
+
+        $('.add_radio').click(function () {
+            $('.add_tr').after("<tr class='add_css'>" +
+                "<th class='th1'></th><th class='th2'></th><th class='th3'></th><th class='th4'></th><th class='th5'></th><th class='sd'>" +
+                "<a class='btn btn-danger' >删除</a></th>" +
+                "</tr>");
+            $('.add_css>th').attr('contenteditable', 'true');
+            $('.sd').attr('contenteditable', 'false');
+
+            $('.btn-danger').click(function () {
+                $(this).parents("tr").remove();
+            });
+
+            var th1, th2, th3, th4, th5;
+            $('.add_css').click(function () {
+                $(".add_css").keydown(function () {
+                    var thi = this;
+                    setTimeout(function () {
+                        th1 = $(thi).children('.th1').html();
+                        th2 = $(thi).children('.th2').html();
+                        th3 = $(thi).children('.th3').html();
+                        th4 = $(thi).children('.th4').html();
+                        th5 = $(thi).children('.th5').html();
+                        if (th1 != "" && th1 != null) {
+                            if (th2 != "" && th2 != null) {
+                                if (th3 != "" && th3 != null) {
+                                    if (th4 != "" && th4 != null) {
+                                        if (th5 != "" && th5 != null) {
+                                            console.log(th1, th2, th3, th4, th5);
+                                            $.post('/Json/course_add/add', {college: th1, series: th2, major: th3, grade: th4,course:th5},
+                                                function (data) {
+
+                                                });
+                                            th1=null;th2=null;th3=null;th4=null;th5=null;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 300);
+                });
+            });
+
+            function alertFunc(thiss) {
+                th1 = $(thiss).children('.th1').html();
+                th2 = $(thiss).children('.th2').html();
+                th3 = $(thiss).children('.th3').html();
+                th4 = $(thiss).children('.th4').html();
+                th5 = $(thiss).children('.th5').html();
+            }
+        });
+
+    })
+
+</script>
+</html>

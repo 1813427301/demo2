@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="../static/css/style.css"/>
+    <link th:href="@{/css/login.css}" href="../static/css/login.css" rel="stylesheet">
+    <!-- 重置文件 -->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}" href="../static/css/normalize.css">
+    <link rel="stylesheet" th:href="@{/css/style1.css}" href="../static/css/style1.css">
+
+</head>
+
+<body>
+
+<!--
+
+ * 17素材vip建站专区模块代码
+ * 详尽信息请看官网：http://www.17sucai.com/pins/vip
+ *
+ * Copyright , 温州易站网络科技有限公司版权所有
+ * 图片不能商用，代码可商用。
+
+ * 请尊重原创，未经允许请勿转载。
+ * 在保留版权的前提下可应用于个人或商业用途
+
+-->
+<div class="gongneng">
+    <div class="gongneng_main" id="gongneng_main">
+        <div class="Small_tedian_tit">建站小程序功能特点</div>
+        <div class="gongneng_tab">
+            <div class="gongneng_tabmin">
+                <div class="gongneng_click cur" id="denglu"><i></i><b>用户登录</b></div>
+                <div class="gongneng_click" id="manage"><i></i><b>管理员登录</b></div>
+                <div class="gongneng_click" id="zhuche"><i></i><b>注册</b></div>
+
+            </div>
+        </div>
+        <div class="conBox">
+            <div class="gongneng_tabcon" id="logs">
+                <div class="gongneng_left1 fadeInLeft">
+                    <div class="login">
+                        <form action="/user/login" method="post">
+                            <div class="title">用户登录</div>
+                            <div class="line">
+                                <img th:src="@{/img/icon1.png}" src="../static/img/icon1.png" class="smallImg"/>
+                                <input name="username" placeholder="请输入账号" type="text" class="username"/>
+                            </div>
+                            <div class="line">
+                                <img th:src="@{/img/icon2.png}" src="../static/img/icon2.png" class="smallImg"/>
+                                <input name="password" placeholder="请输入密码" type="password" class="password"/>
+                            </div>
+                            <button type="submit" class="logBut" id="log">登&nbsp;&nbsp;录</button>
+                            <button type="reset" class="logBut">重&nbsp;&nbsp;置</button>
+                        </form>
+                    </div>
+                </div>
+                    <div class="gongneng_right1">
+                        <b style="font-size: 50px">错误信息</b>
+                        <em class="em1" th:text="${error1}" style="color: red"></em>
+                </div>
+            </div>
+            <div class="gongneng_tabcon" id="mang">
+                <div class="gongneng_right2">
+                    <div class="login" style="width: 300px;background: whitesmoke" >
+                        <form action="/manage/login" method="post">
+                            <div class="title" style="color: #0f0f0f">管理登录</div>
+                            <div class="line">
+                                <img th:src="@{/img/icon1.png}" src="../static/img/icon1.png" class="smallImg"/>
+                                <input name="username" placeholder="请输入账号" type="text" class="name"/>
+                            </div>
+                            <div class="line">
+                                <img th:src="@{/img/icon2.png}" src="../static/img/icon2.png" class="smallImg"/>
+                                <input name="password" placeholder="请输入密码" type="password" class="psd"/>
+                            </div>
+                            <button type="submit" class="logBut" id="managelog">登&nbsp;&nbsp;录</button>
+                            <button type="reset" class="logBut">重&nbsp;&nbsp;置</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="gongneng_left2 fadeInRight">
+                    <b style="font-size: 50px">错误信息</b><p></p>
+                    <em class="em2" th:text="${error2}" style="color: red"></em>
+                </div>
+            </div>
+            <div class="gongneng_tabcon" id="regs">
+                <div class="gongneng_left3 fadeInLeft">
+                    <div class="reg_div">
+                        <p>注册</p>
+                        <form action="/user/regist" method="post">
+                            <ul class="reg_ul">
+                                <li>
+                                    <span><img th:src="@{/img/icon1.png}" src="../static/img/icon1.png"
+                                               style="height: 20px"/></span>
+                                    <input type="text" name="username" value="" placeholder="4-8位用户名" class="reg_user">
+                                    <span class="tip user_hint"></span>
+                                </li>
+                                <li>
+                                    <span><img th:src="@{/img/icon2.png}" src="../static/img/icon2.png"
+                                               style="height: 20px"/></span>
+                                    <input type="password" name="password" value="" placeholder="6-16位密码"
+                                           class="reg_password">
+                                    <span class="tip password_hint"></span>
+                                </li>
+                                <li>
+                                    <span><img th:src="@{/img/icon2.png}" src="../static/img/icon2.png"
+                                               style="height: 20px"/></span>
+                                    <input type="password" name="password2" value="" placeholder="确认密码"
+                                           class="reg_confirm">
+                                    <span class="tip confirm_hint"></span>
+                                </li>
+                                <li>
+                                    <span><img th:src="@{/img/icon2.png}" src="../static/img/emil.jpg"
+                                               style="height: 20px;width: 20px"/></span>
+                                    <input type="text" name="email" value="" placeholder="邮箱" class="reg_email">
+                                    <span class="tip email_hint"></span>
+                                </li>
+
+                                <li>
+                                    <button type="submit" name="button" class="red_button" id="red">注册</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+                <div class="gongneng_right3 fadeInRight">
+                    <b style="font-size: 50px">错误信息：</b>
+                    <em class="em3" style="color: red" th:text="${error3}"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/jquery-1.11.0.js}" src="../static/js/jquery-1.11.0.js" type="text/javascript"
+        charset="utf-8"></script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $("#red").click(function () {
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Json/regist',
+                async: false,
+                data: {
+                    "username": $('.reg_user').val(),
+                    "password": $('.reg_password').val(),
+                    "password2": $('.reg_confirm').val(),
+                    "email": $('.reg_email').val()
+                },
+
+                success: function (data) {
+                    $(".em3").empty();
+                    $.each(data, function (index, value) {
+                        if (value != null) {
+
+                            $(".em3").append("<br/>" + value + "<br/>");
+                            $("#red").attr("type", "button");
+                            $("#denglu").attr("class", "gongneng_click");
+                            $("#zhuche").attr("class", "gongneng_click cur");
+                        }
+                    });
+                }
+            });
+        });
+        //tab切换
+        $('.gongneng_tabmin div').hover(function () {
+            var conBox = $("#gongneng_main").find('.conBox');
+            $(this).addClass("cur").siblings('.cur').removeClass("cur");
+            conBox.find(".gongneng_tabcon").eq($(this).index()).show().siblings(':visible').hide();
+        });
+        var status = [[${status}]];
+        if (status == "regist") {
+            $("#denglu").attr("class", "gongneng_click");
+            $("#zhuche").attr("class", "gongneng_click cur");
+            $(" #regs").css("display","block");
+        }else if(status =='managelogin'){
+            $("#denglu").attr("class", "gongneng_click");
+            $("#manage").attr("class", "gongneng_click cur");
+            $(" #mang").css("display","block");
+        } else {
+            $(" #logs").css("display","block");
+        }
+
+        $("#log").click(function () {
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Json/login',
+                async: false,
+                data: {
+                    "username": $('.username').val(),
+                    "password": $('.password').val(),
+                },
+
+                success: function (data) {
+                    $(".em1").empty();
+                    $.each(data, function (index, value) {
+                        if (value != null) {
+
+                            $(".em1").append("<br/>" + value + "<br/>");
+                            $("#log").attr("type", "button");
+                        }
+                    });
+                }
+            });
+        });
+
+        $("#managelog").click(function () {
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Json/managelogin',
+                async: false,
+                data: {
+                    "username": $('.name').val(),
+                    "password": $('.psd').val(),
+                },
+
+                success: function (data) {
+                    $(".em2").empty();
+                    $.each(data, function (index, value) {
+                        if (value != null) {
+
+                            $(".em2").append("<br/>" + value + "<br/>");
+                            $("#managelog").attr("type", "button");
+                        }
+                    });
+                }
+            });
+        });
+
+
+    })
+
+</script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}" src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/script.js}" src="../static/js/script.js"></script>
+
+</body>
+</html>

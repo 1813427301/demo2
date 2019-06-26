@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>wangEditor富文本编辑器</title>
+    <link rel="stylesheet" type="text/css" href="../../static/js/wangEditor.min.css">
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
+    <!-- 引入wangEditor富文本编辑器 -->
+    <script type="text/javascript" src="../../static/js/wangEditor.js"></script>
+     <script type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
+</head>
+
+<div id="intro" ></div>
+<h2>欢迎使用wangEditor 富文本编辑器</h2>
+<a target="na" href="/afters/rolelist">4555</a>
+<iframe src="" style="width: 400px; height: 250px" name="na"></iframe>
+<div id="page1"  style="width: 100px;">1</div>
+<script type="text/javascript" th:inline="javascript">
+    var E = window.wangEditor
+    var editor = new E('#intro');
+    var $text1 = $('#txtIntro');
+    editor.customConfig.onchange = function(html) {
+        $text1.val(html);// 监控变化，同步更新到 textarea
+    }
+    editor.create();
+    $text1.val(editor.txt.html()); // 初始化 textarea 的值
+
+</script>
+
+</body>
+</html>

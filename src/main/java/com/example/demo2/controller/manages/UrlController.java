@@ -1,0 +1,117 @@
+package com.example.demo2.controller.manages;
+
+import com.example.demo2.domian.User;
+import com.example.demo2.domian.UserDetails;
+import com.example.demo2.service.UserDetailsService;
+import com.example.demo2.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+@RequestMapping("/afterss")
+public class UrlController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private User user;
+
+    //进入后台首页
+    @GetMapping("index")
+    public String index(){
+        return "afters/index";
+    }
+
+
+    @GetMapping("add_role")
+    public String add_role(){
+        return "afters/add_role";
+    }
+
+    //管理员个人中心
+    @GetMapping("user_center")
+    public String user_center(String id,Model model){
+        User user = new User();
+        user.setId(Long.parseLong(id));
+        UserDetails userDetails=new UserDetails();
+        userDetails.setUser(user);
+        UserDetails userDetails1 = userDetailsService.findById(userDetails);
+        model.addAttribute("userDetails",userDetails1);
+        return "afters/user_center";
+    }
+    //用户列表
+    @RequestMapping("userlist")
+    public String rolelist(Model model){
+        List<User> users = userService.findAll();
+        user.setStartPageSize(0);
+        user.setEndPageSize(5);
+        int count = (users.size()%5)==0?(users.size()/5):(users.size()/5)+1;
+        List<User> userlist = userService.paging(user);
+        List<Integer> counts = new ArrayList<Integer>();
+        for (int i=0;i<count;i++){
+            counts.add(i+1);
+        }
+        model.addAttribute("users",userlist);
+        model.addAttribute("counts",counts);
+        return "afters/userlist";
+    }
+
+    /**
+     * 管理添加用户
+     * @param model
+     * @return
+     */
+    @RequestMapping("adduser")
+    public String adduser(Model model){
+        return "afters/adduser";
+    }
+
+    /**
+     * 管理修改用户
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("updateuser")
+    public String updateuser(String id,Model model){
+        User user_up = userService.findByid(Long.parseLong(id));
+        model.addAttribute("user_up",user_up);
+        return "afters/updateuser";
+    }
+
+    /**
+     * 学生列表页面
+     * @return
+     */
+    @RequestMapping("studentlist")
+    public String studentlist(){
+        return "afters/studentlist";
+    }
+
+    /**
+     * 进入添加学生信息页面
+     * @return
+     */
+    @RequestMapping("write_student")
+    public String write_student(){
+        return "afters/write_student";
+    }
+
+    /**
+     * 进入课程添加页面
+     * @return
+     */
+    @RequestMapping("course_add")
+    public String course_add(){
+        return "afters/course_add";
+    }
+}
