@@ -27,7 +27,7 @@
 
     <tr class="add_tr">
         <th colspan="6">
-            <h4 class="add_radio">点击添加课程</h4>
+            <h4 class="add_radio">点击添加课程</h4> <span class="cs" style="color: #0eb662"></span>
         </th>
     </tr>
 </table>
@@ -37,56 +37,77 @@
 
         $('.add_radio').click(function () {
             $('.add_tr').after("<tr class='add_css'>" +
-                "<th class='th1'></th><th class='th2'></th><th class='th3'></th><th class='th4'></th><th class='th5'></th><th class='sd'>" +
+                "<th><input type='text' class='inp1'></th>" +
+                "<th><input type='text' class='inp2'></th>" +
+                "<th><input type='text' class='inp3'></th>" +
+                "<th><input type='text' class='inp4'></th>" +
+                "<th><input type='text' class='inp5'></th>" +
+                "<th class='sd'>" +
                 "<a class='btn btn-danger' >删除</a></th>" +
                 "</tr>");
-            $('.add_css>th').attr('contenteditable', 'true');
-            $('.sd').attr('contenteditable', 'false');
-
+            $('.add_css>th>input').css('width', '150px');
             $('.btn-danger').click(function () {
                 $(this).parents("tr").remove();
             });
 
             var th1, th2, th3, th4, th5;
+            var lastTime;
             $('.add_css').click(function () {
-                $(".add_css").keydown(function () {
+                $(".add_css").keyup(function (e) {
+                    lastTime = e.timeStamp;
                     var thi = this;
                     setTimeout(function () {
-                        th1 = $(thi).children('.th1').html();
-                        th2 = $(thi).children('.th2').html();
-                        th3 = $(thi).children('.th3').html();
-                        th4 = $(thi).children('.th4').html();
-                        th5 = $(thi).children('.th5').html();
-                        if (th1 != "" && th1 != null) {
-                            if (th2 != "" && th2 != null) {
-                                if (th3 != "" && th3 != null) {
-                                    if (th4 != "" && th4 != null) {
-                                        if (th5 != "" && th5 != null) {
-                                            console.log(th1, th2, th3, th4, th5);
-                                            $.post('/Json/course_add/add', {college: th1, series: th2, major: th3, grade: th4,course:th5},
-                                                function (data) {
+                        th1 = $(thi).children('th').children('.inp1').val().replace(/\s/g, "");
+                        th2 = $(thi).children('th').children('.inp2').val().replace(/\s/g, "");
+                        th3 = $(thi).children('th').children('.inp3').val().replace(/\s/g, "");
+                        th4 = $(thi).children('th').children('.inp4').val().replace(/\s/g, "");
+                        th5 = $(thi).children('th').children('.inp5').val().replace(/\s/g, "");
+                    }, 100);
+                    setTimeout(function () {
+                        if (lastTime - e.timeStamp == 0) {
+                            console.log(th1 + th2 + th3 + th4 + th5);
+                            if (th1 != "" && th1 != null) {
+                                if (th2 != "" && th2 != null) {
+                                    if (th3 != "" && th3 != null) {
+                                        if (th4 != "" && th4 != null) {
+                                            if (th5 != "" && th5 != null) {
+                                                $.post('/Json/course_add/add', {
+                                                        college: th1,
+                                                        series: th2,
+                                                        major: th3,
+                                                        grade: th4,
+                                                        course: th5
+                                                    },
+                                                    function (data) {
+                                                        $.each(data, function (index) {
+                                                            if (data[index] == (1)) {
+                                                                $('.cs').empty();
+                                                                $('.cs').append("创建成功！");
+                                                                setTimeout(function () {
+                                                                    $('.cs').empty();
+                                                                }, 4000);
+                                                            }
 
-                                                });
-                                            th1=null;th2=null;th3=null;th4=null;th5=null;
+                                                        });
+                                                        th1 = null;
+                                                        th1 = null;
+                                                        th2 = null;
+                                                        th3 = null;
+                                                        th4 = null;
+                                                        th5 = null;
+                                                    });
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }, 300);
+                    }, 3000);
                 });
-            });
 
-            function alertFunc(thiss) {
-                th1 = $(thiss).children('.th1').html();
-                th2 = $(thiss).children('.th2').html();
-                th3 = $(thiss).children('.th3').html();
-                th4 = $(thiss).children('.th4').html();
-                th5 = $(thiss).children('.th5').html();
-            }
+            });
         });
 
     })
-
 </script>
 </html>

@@ -2,6 +2,7 @@ package com.example.demo2.controller;
 
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
+import com.example.demo2.service.CourseService;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.UserDetailsService;
 import com.example.demo2.service.UserService;
@@ -28,6 +29,9 @@ public class JsonController {
 
     @Autowired
     private User user;
+
+    @Autowired
+    private CourseService courseService;
 
     @RequestMapping("regist")
     public Map<String, Object> jsonRegist(String username, String password, String password2, String email) {
@@ -150,8 +154,7 @@ public class JsonController {
 
     @RequestMapping("course_add/add")
     public Map<Object, Object> course_Add(String college,String series,String major, String grade,String course){
-        Map<Object, Object> map = new HashMap<>();
-        System.out.println( "college:"+college +"series:"+series +"major:"+major+"grade:"+grade+"course:"+ course);
+        Map<Object, Object> map = courseService.create(college, series, major, grade, course);
         return map;
     }
 }

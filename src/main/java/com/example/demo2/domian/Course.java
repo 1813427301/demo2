@@ -14,7 +14,13 @@ public class Course {
     @Id //主键注解
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long Cid;
+
     private String Cname;
+    private String college;
+    private String series;
+    private String major;
+    @Column(name = "grade", nullable = false , unique = true)
+    private String grade;
 
     @ManyToMany(mappedBy = "courseList")
     private List<Student> studentList;
