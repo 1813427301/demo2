@@ -1,10 +1,7 @@
 package com.example.demo2.mapper;
 
 import com.example.demo2.domian.User;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,8 +35,8 @@ public interface UserMapper{
     })
     User findByName(String username);
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Select("INSERT INTO t_user (id,create_time,email,upass,sex,status,type,url_head,uname,salt) VALUES (null, #{createTime}, #{email}, #{password}, #{sex}, #{status}, #{type}, #{urlHead}, #{username},#{salt})")
-    void create(User user);
+    @Insert("INSERT INTO t_user (id,create_time,email,upass,sex,status,type,url_head,uname,salt) VALUES (null, #{createTime}, #{email}, #{password}, #{sex}, #{status}, #{type}, #{urlHead}, #{username},#{salt})")
+    int create(User user);
 
     @Select("SELECT * FROM t_user WHERE id=#{id} and status=1 ")
     @Results({
@@ -55,11 +52,11 @@ public interface UserMapper{
     })
     User findById(long id);
 
-    @Select("UPDATE t_user SET create_time=#{createTime}, email=#{email}, upass=#{password}, salt=#{salt}, sex=#{sex}, status=#{status}, type=#{type}, url_head=#{urlHead}, uname=#{username} WHERE (id=#{id})")
-    void update(User user);
+    @Update("UPDATE t_user SET create_time=#{createTime}, email=#{email}, upass=#{password}, salt=#{salt}, sex=#{sex}, status=#{status}, type=#{type}, url_head=#{urlHead}, uname=#{username} WHERE (id=#{id})")
+    int update(User user);
 
-    @Select("UPDATE t_user SET url_head=#{urlHead} WHERE (id=#{id})")
-    void updateImg(User user);
+    @Update("UPDATE t_user SET url_head=#{urlHead} WHERE (id=#{id})")
+    int updateImg(User user);
 
     @Select("SELECT * FROM t_user where uname like '%${keyname}%' and status=1;")
     @Results({

@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public Map<Object,Object> insert(String uid, String dateBirth, String phone, String address, String synopsis) {
         Map<Object,Object> map = new HashMap<>();
-        try {
+            map.put("ok",false);
             UserDetails userDetails = new UserDetails();
             userDetails.setId(Long.parseLong(uid));
             User user = new User();
@@ -34,21 +34,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             userDetails.setPhone(phone);
             userDetails.setAddress(address);
             userDetails.setSynopsis(synopsis);
-            userDetailsMapper.delete(userDetails);
-            userDetailsMapper.create(userDetails);
+            int row = userDetailsMapper.delete(userDetails);
+             row = userDetailsMapper.create(userDetails);
             UserDetails us = userDetailsMapper.findById(userDetails);
-            map.put("ok",true);
-            map.put("userDetails",us);
-        }catch (Exception e){
-            map.put("ok",false);
-        }
+            if(row>0){
+                map.put("ok",true);
+                map.put("userDetails",us);
+            }
 
         return map;
     }
 
     @Override
-    public void delete(UserDetails userDetails) {
-
+    public int delete(UserDetails userDetails) {
+        return userDetailsMapper.delete(userDetails);
     }
 
     @Override

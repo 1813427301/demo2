@@ -53,24 +53,25 @@
                         </tr>
                         </thead>
                         <tbody id="tds">
-                        <tr >
-                            <td class="t_id" >1</td>
-                            <td >王小明</td>
-                            <td >本科</td>
-                            <td >java</td>
-                            <th>一班</th>
+                        <tr th:each="teacher:${teacherList}">
+                            <td class="t_id" th:text="${teacher.tid}">1</td>
+                            <td  th:text="${teacher.tname}">王小明</td>
+                            <td th:text="${teacher.teducation}">本科</td>
+                           <td th:if="${teacher.course}" th:text="${teacher.course.cname}">java</td>
+                           <td th:unless="${teacher.course}"></td>
+                            <th th:text="${teacher.tgrade}">一班</th>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
-                                   onclick="xadmin.open('编辑','/afterss/updateuser?id='+($(this).children('input').attr('value')),600,500)"
+                                   onclick="xadmin.open('编辑','/afterss/updateteacher?id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
-                                    <input class="inp" type="hidden" />
+                                    <input class="inp" type="hidden" th:value="${teacher.tid}" />
                                 </a>
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
-                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/userDelete')"
+                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/teacherDelete')"
                                    href="javascript:;">
                                     删除
-                                    <input class="dele" type="hidden" />
+                                    <input class="dele" type="hidden" th:value="${teacher.tid}" />
                                 </a>
                             </td>
                         </tr>
@@ -170,31 +171,11 @@
     $(function () {
 
         $('#dim').click(function () {
-            $.post('/Json/userDimCheck', {keyname: $('#keynames').val()},
+            $.post('/Json/teacherDimCheck', {keyname: $('#keynames').val()},
                 function (data) {
                     $('#tds').empty();
                     $.each(data, function (index) {
-                        var type;
-                        if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
-                            type = '管理员';
-                        }
-                        $("#tds").append("<tr><td>" + data[index].id + "</td>"
-                            + "<td>" + data[index].username + "</td>"
-                            + "<td>" + type + "</td>"
-                            +
-                            "<td>" + data[index].createTime + "</td>" +
-                            "<td class=\"td-manage\" th:value='"+data[index].id+"' >\n" +
-                            "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"'  title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
-                            "                                                编辑\n"+
-                            "                                            </a>\n" +
-                            "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
-                            "                                                删除\n" +
-                            "                                            </a>\n" +
-                            "                                        </td>" +
-                            "</tr>"
-                        );
+                        $("#tds").append("");
                     });
                     $("#uls li").each(function(){
                         var t2=$(this).val();

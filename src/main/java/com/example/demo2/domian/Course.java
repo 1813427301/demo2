@@ -28,6 +28,5 @@ public class Course {
     private List<Student> studentList;
 
     @OneToMany(mappedBy = "course",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-
     private List<Teacher> CteacherList;
 }

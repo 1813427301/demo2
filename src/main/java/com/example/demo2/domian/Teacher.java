@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,14 @@ public class Teacher {
     @Id //主键注解
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long Tid;
+
+    @Column(name = "Tname", nullable = false , unique = true)
     private String Tname;
+
+    private String Tgrade;//班级
+    private String Teducation;//学历
+    private Timestamp Tdate_time;//创建时间
+    private int status;//状态
 
     @ManyToMany(cascade= CascadeType.PERSIST)
     @JoinTable(name = "t_tea_stu",
@@ -30,4 +38,7 @@ public class Teacher {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Tuser;
 
+
+    @Transient
+    private String keyname;
 }

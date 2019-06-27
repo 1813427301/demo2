@@ -2,19 +2,16 @@ package com.example.demo2.mapper;
 
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDetailsMapper {
-    @Select("INSERT INTO t_user_details (address,date_birth,phone,synopsis,user_id) VALUES ( #{address}, #{dateBirth},#{phone},#{synopsis},#{user.id})")
-     void create(UserDetails userDetails);
+    @Insert("INSERT INTO t_user_details (address,date_birth,phone,synopsis,user_id) VALUES ( #{address}, #{dateBirth},#{phone},#{synopsis},#{user.id})")
+     int create(UserDetails userDetails);
 
-    @Select("DELETE FROM t_user_details WHERE user_id=#{user.id}")
-    void delete(UserDetails userDetails);
+    @Delete("DELETE FROM t_user_details WHERE user_id=#{user.id}")
+    int delete(UserDetails userDetails);
 
     @Select("SELECT * FROM t_user_details WHERE user_id=#{user.id}")
     @Results({

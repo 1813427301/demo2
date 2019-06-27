@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByid(Long id) {
-       user = userMapper.findById(id);
+        user = userMapper.findById(id);
         return user;
     }
 
 
     @Override
-    public Map<String, Object> create(String username, String password, String password2, String email,String city) {
+    public Map<String, Object> create(String username, String password, String password2, String email, String city) {
         Map<String, Object> map = new HashMap<>();
         map.put("ok", false);
         if (password.equals(password2)) {
@@ -58,15 +58,16 @@ public class UserServiceImpl implements UserService {
                 user.setUrlHead("img/3.png");
                 user.setSex("保密");
                 user.setStatus(1);
-                user.setType(Integer.parseInt(city)==0?0:1);
+                user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
                 user.setCreateTime(new Timestamp(new Date().getTime()));
-                try {
-                    userMapper.create(user);
-                } catch (Exception e) {
+                int row = userMapper.create(user);
+                if (row > 0) {
+                    map.put("ok", true);
+                    map.put("error", "创建成功！");
+                } else {
                     map.put("error", "插入数据报错，创建失败！");
                 }
-                map.put("ok", true);
-                map.put("error", "创建成功！");
+
             } else {
                 map.put("error", "用户已被创建！");
             }
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> login(String username, String password) {
-        System.out.println(username+":"+password);
+        System.out.println(username + ":" + password);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ok", false);
         //使用shiro的认证
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
             //从subject中获取当前登录用户的对象
             User user = (User) subject.getPrincipal();
             map.put("user", user);
-        } catch ( IncorrectCredentialsException e) {
+        } catch (IncorrectCredentialsException e) {
             map.put("error", "登录失败！密码错误！");
         } catch (AuthenticationException e) {
             map.put("error", "登录失败！用户不存在！");
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object>  updateUser(Long id,String username, String password, String password2, String email, String city,String date) {
+    public Map<String, Object> updateUser(Long id, String username, String password, String password2, String email, String city, String date) {
         Map<String, Object> map = new HashMap<>();
         map.put("ok", false);
         if (password.equals(password2)) {
@@ -116,24 +117,26 @@ public class UserServiceImpl implements UserService {
             user.setUrlHead("img/3.png");
             user.setSex("保密");
             user.setStatus(1);
-            user.setType(Integer.parseInt(city)==0?0:1);
+            user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
             user.setCreateTime(Timestamp.valueOf(date));
             if (user1 == null) {
-                try {
-                    userMapper.create(user);
-                } catch (Exception e) {
+                int row = userMapper.create(user);
+                if (row > 0) {
+                    map.put("ok", true);
+                    map.put("error", "创建成功！");
+                } else {
                     map.put("error", "插入数据报错，创建失败！");
                 }
-                map.put("ok", true);
-                map.put("error", "创建成功！");
             } else {
-                try {
-                    userMapper.update(user);
+
+                int row = userMapper.update(user);
+                if (row > 0) {
                     map.put("ok", true);
                     map.put("error", "用户修改成功！");
-                }catch (Exception e){
+                } else {
                     map.put("error", "修改失败！");
                 }
+
             }
 
         }
@@ -141,16 +144,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> updateImg(String finalImg,String id) {
+    public Map<String, Object> updateImg(String finalImg, String id) {
         Map<String, Object> map = new HashMap<>();
-        try {
-            user.setUrlHead(finalImg);
-            user.setId(Long.valueOf(id));
-            userMapper.updateImg(user);
-            map.put("ok",true);
-        }catch (Exception e){
-            map.put("ok",false);
-            System.out.println(e);
+        map.put("ok", false);
+        user.setUrlHead(finalImg);
+        user.setId(Long.valueOf(id));
+        int row = userMapper.updateImg(user);
+        if (row > 0) {
+            map.put("ok", true);
         }
         return map;
     }
@@ -159,14 +160,14 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> deleteUser(Long id) {
         Map<String, Object> map = new HashMap<>();
         map.put("ok", false);
+        map.put("error", "删除失败！");
         User byId = userMapper.findById(id);
         byId.setStatus(0);
-        if(byId!=null){
-            try {
-                userMapper.update(byId);
-                map.put("ok",true);
-            }catch (Exception e){
-                map.put("error","删除失败！");
+        if (byId != null) {
+            int row = userMapper.update(byId);
+            if (row > 0) {
+                map.put("ok", true);
+                map.put("error", "删除成功！");
             }
         }
         return map;

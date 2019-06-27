@@ -1,16 +1,15 @@
 package com.example.demo2.controller;
 
 import com.example.demo2.domian.Course;
+import com.example.demo2.domian.Teacher;
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
-import com.example.demo2.service.CourseService;
-import com.example.demo2.service.StudentService;
-import com.example.demo2.service.UserDetailsService;
-import com.example.demo2.service.UserService;
+import com.example.demo2.service.*;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sun.security.provider.certpath.CertId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,9 @@ public class JsonController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     @RequestMapping("regist")
     public Map<String, Object> jsonRegist(String username, String password, String password2, String email) {
@@ -123,7 +125,7 @@ public class JsonController {
         List<User> counts = userService.findAll();
         int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
         System.out.println(cunSize);
-        user.setStartPageSize(Integer.parseInt(downTurning) == cunSize  ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
+        user.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
         user.setEndPageSize(5);
         List<User> users = userService.paging(user);
         user.setEndPageSize(Integer.parseInt(downTurning) >= cunSize ? (Integer.parseInt(downTurning)) : (Integer.parseInt(downTurning) + 1));
@@ -153,24 +155,53 @@ public class JsonController {
         return map;
     }
 
+    //课程添加
     @RequestMapping("course_add/add")
-    public Map<Object, Object> course_Add(String college,String series,String major, String grade,String course,String cid){
-        Map<Object, Object> map = courseService.create(college, series, major, grade, course,cid);
+    public Map<Object, Object> course_Add(String college, String series, String major, String grade, String course, String cid) {
+        Map<Object, Object> map = courseService.create(college, series, major, grade, course, cid);
         return map;
     }
 
+    //课程删除
     @RequestMapping("course_add/delete")
-    public Map<Object, Object> course_Add(String cid){
+    public Map<Object, Object> course_Add(String cid) {
         Map<Object, Object> map = new HashMap<>();
-        map.put("ok",true);
-        try {
-            Course course = new Course();
-            course.setCid(Long.parseLong(cid));
-            courseService.delete(course);
-        }catch (Exception e){
-            map.put("ok",false);
+        map.put("ok", false);
+        Course course = new Course();
+        course.setCid(Long.parseLong(cid));
+        int row = courseService.delete(course);
+        if(row>0){
+            map.put("ok", true);
+        }
+
+        return map;
+    }
+
+    //老师删除
+    @RequestMapping("teacherDelete")
+    public Map<Object, Object> teacherDelete(String id) {
+        Map<Object, Object> map = new HashMap<>();
+        Teacher teacher = new Teacher();
+        teacher.setStatus(0);
+        teacher.setTid(Long.parseLong(id));
+        int row = teacherService.updateDelete(teacher);
+        if (row > 0) {
+            map.put("ok", true);
+        } else {
+            map.put("ok", false);
         }
         return map;
+    }
+
+    //teacher关键字搜索
+    @RequestMapping("teacherDimCheck")
+    public List<Teacher> teacherDimCheck(String keyname) {
+        System.out.println("关键字：" + keyname);
+        Teacher teacher = new Teacher();
+        teacher.setKeyname(keyname);
+        List<Teacher> teacherList = teacherService.dim(teacher);
+        System.out.println("模糊查询：" + teacherList.toString());
+        return teacherList;
     }
 
 }

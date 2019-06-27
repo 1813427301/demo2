@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface UserDetailsService {
      Map<Object,Object> insert(String uid, String dateBirth, String phone, String address, String synopsis);
-     void delete(UserDetails userDetails);
+     int delete(UserDetails userDetails);
      UserDetails findById(UserDetails userDetails);
 }

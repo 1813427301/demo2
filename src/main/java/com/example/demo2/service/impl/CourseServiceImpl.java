@@ -45,8 +45,8 @@ public class CourseServiceImpl implements CourseService {
                     int rom = update(course);
                     map.put("row",rom);
                 }else {
-                    delete(course);
-                    map.put("row","1");
+                    int row = delete(course);
+                    map.put("row",row);
                 }
             }catch (Exception e){
                 map.put("row","0");
@@ -62,17 +62,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int update(Course course) {
-        int row = 0;
-        try {
-            courseMapper.update(course);
-            row = 1;
-        }catch (Exception e){
-        }
+
+        int row = courseMapper.update(course);
+
         return row;
     }
 
     @Override
-    public void delete(Course course) {
-        courseMapper.delete(course);
+    public int delete(Course course) {
+        return courseMapper.delete(course);
     }
 }

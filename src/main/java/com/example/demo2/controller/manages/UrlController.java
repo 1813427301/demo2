@@ -1,9 +1,11 @@
 package com.example.demo2.controller.manages;
 
 import com.example.demo2.domian.Course;
+import com.example.demo2.domian.Teacher;
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
 import com.example.demo2.service.CourseService;
+import com.example.demo2.service.TeacherService;
 import com.example.demo2.service.UserDetailsService;
 import com.example.demo2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class UrlController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private TeacherService teacherService;
     
     @Autowired
     private User user;
@@ -123,10 +128,12 @@ public class UrlController {
     }
 
     /**
-     * 进入老师添加页面
+     * 进入老师页面
      */
     @RequestMapping("teacherlist")
-    public String teacherlist(){
+    public String teacherlist(Model model){
+        List<Teacher> teacherList = teacherService.findAll();
+        model.addAttribute("teacherList",teacherList);
         return "afters/teacherlist";
     }
 
@@ -138,5 +145,19 @@ public class UrlController {
         List<Course> courseList = courseService.findAll();
         model.addAttribute("courseList",courseList);
         return "afters/teacher_add";
+    }
+
+    /**
+     * 进入老师修改页面
+     */
+    @RequestMapping("updateteacher")
+    public String updateteacher(String id,Model model){
+        Teacher teacher = new Teacher();
+        teacher.setTid(Long.parseLong(id));
+        Teacher teacher1 = teacherService.findById(teacher);
+        List<Course> courseList = courseService.findAll();
+        model.addAttribute("courseList",courseList);
+        model.addAttribute("teacher",teacher1);
+        return "afters/updateteacher";
     }
 }

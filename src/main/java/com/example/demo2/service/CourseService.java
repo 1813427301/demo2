@@ -10,5 +10,5 @@ public interface CourseService {
     Map<Object,Object> create(String college,String series,String major, String grade,String course,String cid);
     Course findByGrade(Course course);
     int update(Course course);
-    void delete(Course course);
+    int delete(Course course);
 }
