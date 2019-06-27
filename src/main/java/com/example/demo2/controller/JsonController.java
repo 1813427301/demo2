@@ -1,5 +1,6 @@
 package com.example.demo2.controller;
 
+import com.example.demo2.domian.Course;
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
 import com.example.demo2.service.CourseService;
@@ -153,8 +154,23 @@ public class JsonController {
     }
 
     @RequestMapping("course_add/add")
-    public Map<Object, Object> course_Add(String college,String series,String major, String grade,String course){
-        Map<Object, Object> map = courseService.create(college, series, major, grade, course);
+    public Map<Object, Object> course_Add(String college,String series,String major, String grade,String course,String cid){
+        Map<Object, Object> map = courseService.create(college, series, major, grade, course,cid);
         return map;
     }
+
+    @RequestMapping("course_add/delete")
+    public Map<Object, Object> course_Add(String cid){
+        Map<Object, Object> map = new HashMap<>();
+        map.put("ok",true);
+        try {
+            Course course = new Course();
+            course.setCid(Long.parseLong(cid));
+            courseService.delete(course);
+        }catch (Exception e){
+            map.put("ok",false);
+        }
+        return map;
+    }
+
 }

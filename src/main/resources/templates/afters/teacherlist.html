@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
+          href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/after/css/font.css}" href="../../static/after/css/font.css">
+    <link rel="stylesheet" th:href="@{/after/css/xadmin.css}" href="../../static/after/css/xadmin.css">
+    <script th:src="@{/after/lib/layui/layui.js}" src="../../static/after/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/after/js/xadmin.js}" src="../../static/after/js/xadmin.js"></script>
+    <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}"
+            src="../../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <div class="layui-input-inline layui-show-xs-block">
+                        <input type="text"  id="keynames" placeholder="用户名" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline lafite_search layui-show-xs-block">
+                        <button id="dim" class="layui-btn" lay-submit="" lay-filter="sreach">
+                            查询
+                        </button>
+                    </div>
+                </div>
+
+                <div class="layui-card-header">
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增用户','/afterss/teacher_add',600,500)"><i
+                            class="layui-icon" ></i>新增用户</a>
+                </div>
+
+                <div class="layui-card-body">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr style="background: #F8E5E5;">
+                            <th>老师编号</th>
+                            <th>老师名称</th>
+                            <th>学历</th>
+                            <th>授课</th>
+                            <th>班级</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tds">
+                        <tr >
+                            <td class="t_id" >1</td>
+                            <td >王小明</td>
+                            <td >本科</td>
+                            <td >java</td>
+                            <th>一班</th>
+                            <td class="td-manage">
+                                <a class="lafitewu_auditing" title="编辑"
+                                   onclick="xadmin.open('编辑','/afterss/updateuser?id='+($(this).children('input').attr('value')),600,500)"
+                                   href="javascript:;">
+                                    编辑
+                                    <input class="inp" type="hidden" />
+                                </a>
+                                <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
+                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/userDelete')"
+                                   href="javascript:;">
+                                    删除
+                                    <input class="dele" type="hidden" />
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-left: 30%">
+                    <nav aria-label="Page navigation" >
+                        <ul class="pagination" id="uls">
+                            <li>
+                                <a href="#" id="userOnTurning" aria-label="Previous">
+                                    <span aria-hidden="true">上一页</span>
+                                </a>
+                            </li>
+
+                            <li   class="lis" value="1" >
+                                <a  href="#"  class="lisa">1</a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Next" id="userDownTurning">
+                                    <span aria-hidden="true" >下一页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <span aria-hidden="true">总页数: <span ></span></span>
+                            </li>
+                            <li class="current">
+                                <span>当前第: <span class="masum" id="1">1</span> 页</span>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['laypage', 'laydate', 'form'],
+        function () {
+            var laydate = layui.laydate;
+            var laypage = layui.laypage;
+            // 分页样式
+            laypage.render({
+                elem: 'lafite_pages'
+                , count: 100
+                , theme: '#D91715',
+                jump: function (obj) {
+                    //模拟渲染
+                    console.log(obj);
+                }
+            });
+            $(document).ready(function () {
+                $("#uls li").each(function(){
+                    var t2=$(this).val();
+                    var t=$('.masum').attr('id');
+                    if(t==t2){
+                        $(this).children('a').css('background','red');
+                    }else {
+
+                        $(this).children('a').css('background','');
+                    }
+                })
+            })
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+        });
+
+    /*用户-删除*/
+    function member_del(obj, id, u_id, url) {
+        layer.confirm('是否确认删除当前项目？',
+            {title: "项目删除"},
+            function (index) {
+                //发异步删除数据
+                $(obj).parents("tr").remove();
+                $.post(url, {id: u_id},
+                    function (data) {
+                    });
+
+                layer.msg('已删除!', {
+                    icon: 1,
+                    time: 1000
+                });
+            });
+    }
+
+    //分页处理
+    $(function () {
+
+        $('#dim').click(function () {
+            $.post('/Json/userDimCheck', {keyname: $('#keynames').val()},
+                function (data) {
+                    $('#tds').empty();
+                    $.each(data, function (index) {
+                        var type;
+                        if (data[index].type == 0) {
+                            type = '普通用户';
+                        } else {
+                            type = '管理员';
+                        }
+                        $("#tds").append("<tr><td>" + data[index].id + "</td>"
+                            + "<td>" + data[index].username + "</td>"
+                            + "<td>" + type + "</td>"
+                            +
+                            "<td>" + data[index].createTime + "</td>" +
+                            "<td class=\"td-manage\" th:value='"+data[index].id+"' >\n" +
+                            "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"'  title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
+                            "                                                编辑\n"+
+                            "                                            </a>\n" +
+                            "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
+                            "                                                删除\n" +
+                            "                                            </a>\n" +
+                            "                                        </td>" +
+                            "</tr>"
+                        );
+                    });
+                    $("#uls li").each(function(){
+                        var t2=$(this).val();
+                        var t=$('.masum').attr('id');
+                        if(t==t2){
+                            $(this).children('a').css('background','red');
+                        }else {
+
+                            $(this).children('a').css('background','');
+                        }
+                    })
+                });
+        });
+
+        $('.lis').click(function () {
+            $.post('/Json/userPaging', {curPage: $(this).val()},
+                function (data) {
+                    $('#tds').empty();
+                    $.each(data, function (index) {
+                        var type;
+                        if (data[index].type == 0) {
+                            type = '普通用户';
+                        } else {
+                            type = '管理员';
+                        }
+                        if(data[index].endPageSize>0){
+                            $(".current").empty();
+                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + " </span>页</span>");
+                        }else {
+                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
+                                + "<td>" + data[index].username + "</td>"
+                                + "<td>" + type + "</td>"
+                                +
+                                "<td>" + data[index].createTime + "</td>" +
+                                "<td class=\"td-manage\">\n" +
+                                "                                            <a  class=\"lafitewu_auditing\" title=\"编辑\" th:value='"+data[index].id+"'    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
+                                "                                                编辑\n" +
+                                "                                            </a>\n" +
+                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
+                                "                                                删除\n" +
+                                "                                            </a>\n" +
+                                "                                        </td>" +
+                                "</tr>"
+                            );
+                        }
+                    });
+                    $("#uls li").each(function(){
+                        var t2=$(this).val();
+                        var t=$('.masum').attr('id');
+                        if(t==t2){
+                            $(this).children('a').css('background','red');
+                        }else {
+
+                            $(this).children('a').css('background','');
+                        }
+                    })
+                });
+        });
+
+        $('#userOnTurning').click(function () {
+            $.post('/Json/userOnTurning', {onTurning: $('.masum').attr('id')},
+                function (data) {
+                    $('#tds').empty();
+                    $.each(data, function (index) {
+                        var type;
+                        if (data[index].type == 0) {
+                            type = '普通用户';
+                        } else {
+                            type = '管理员';
+                        }
+                        if(data[index].endPageSize>0){
+                            $(".current").empty();
+                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + "</span> 页</span>");
+
+                        }else {
+                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
+                                + "<td>" + data[index].username + "</td>"
+                                + "<td>" + type + "</td>"
+                                +
+                                "<td>" + data[index].createTime + "</td>" +
+                                "<td class=\"td-manage\">\n" +
+                                "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"' title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
+                                "                                                编辑\n" +
+                                "                                            </a>\n" +
+                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
+                                "                                                删除\n" +
+                                "                                            </a>\n" +
+                                "                                        </td>" +
+                                "</tr>"
+                            );
+                        }
+                    });
+                    $("#uls li").each(function(){
+                        var t2=$(this).val();
+                        var t=$('.masum').attr('id');
+                        if(t==t2){
+                            $(this).children('a').css('background','red');
+                        }else {
+
+                            $(this).children('a').css('background','');
+                        }
+                    })
+                });
+        });
+
+        $('#userDownTurning').click(function () {
+            $.post('/Json/userDownTurning', {downTurning: $('.masum').attr('id')},
+                function (data) {
+                    $('#tds').empty();
+                    $.each(data, function (index) {
+                        var type;
+                        if (data[index].type == 0) {
+                            type = '普通用户';
+                        } else {
+                            type = '管理员';
+                        }
+                        if(data[index].endPageSize>0){
+                            $(".current").empty();
+                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + "</span> 页</span>");
+
+
+                        }else {
+                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
+                                + "<td>" + data[index].username + "</td>"
+                                + "<td>" + type+ "</td>"+
+                                "<td>" + data[index].createTime + "</td>" +
+                                "<td class=\"td-manage\">\n" +
+                                "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"' title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
+                                "                                                编辑\n" +
+                                "                                            </a>\n" +
+                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
+                                "                                                删除\n" +
+                                "                                            </a>\n" +
+                                "                                        </td>" +
+                                "</tr>"
+                            );
+                        }
+                    });
+                    $("#uls li").each(function(){
+                        var t2=$(this).val();
+                        var t=$('.masum').attr('id');
+                        if(t==t2){
+                            $(this).children('a').css('background','red');
+                        }else {
+                            $(this).children('a').css('background','');
+                        }
+                    })
+                });
+        });
+    })
+
+    /*用户-撤销*/
+    function member_revoke(obj, id) {
+        layer.confirm('确认冻结吗？',
+            {title: "用户冻结"},
+            function (index) {
+                //发异步删除数据
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!', {
+                    icon: 1,
+                    time: 1000
+                });
+            });
+    }
+
+</script>
+
+</html>

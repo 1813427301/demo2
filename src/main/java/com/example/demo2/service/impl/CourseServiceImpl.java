@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,10 +17,16 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
 
     @Override
-    public Map<Object, Object> create(String college, String series, String major, String grade, String course1) {
+    public List<Course> findAll() {
+        return courseMapper.findAll();
+    }
+
+    @Override
+    public Map<Object, Object> create(String college, String series, String major, String grade, String course1,String cid) {
         Map<Object, Object> map = new HashMap<>();
         map.put("ok",false);
         Course course = new Course();
+        course.setCid(Long.parseLong(cid));
         course.setCollege(college);
         course.setMajor(major);
         course.setGrade(grade);
@@ -33,8 +40,17 @@ public class CourseServiceImpl implements CourseService {
             }catch (Exception e){
             }
         }else {
-            int row = update(course);
-            map.put("row",row);
+            try {
+                if(!course.getCid().equals("0")||course.getCid()!=0){
+                    int rom = update(course);
+                    map.put("row",rom);
+                }else {
+                    delete(course);
+                    map.put("row","1");
+                }
+            }catch (Exception e){
+                map.put("row","0");
+            }
         }
         return map;
     }
@@ -53,5 +69,10 @@ public class CourseServiceImpl implements CourseService {
         }catch (Exception e){
         }
         return row;
+    }
+
+    @Override
+    public void delete(Course course) {
+        courseMapper.delete(course);
     }
 }

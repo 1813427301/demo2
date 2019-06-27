@@ -24,11 +24,19 @@
         <th>课程</th>
         <th>操作</th>
     </tr>
-
     <tr class="add_tr">
         <th colspan="6">
             <h4 class="add_radio">点击添加课程</h4> <span class="cs" style="color: #0eb662"></span>
         </th>
+    </tr>
+    <tr class='add_css'  th:if="${!courseList.isEmpty()}" th:each="course:${courseList}">
+        <th><input type='text' class='inp1' th:value="${course.college}" style="width: 150px" >
+            </th>
+        <th><input type='text' class='inp2' th:value="${course.series}" style="width: 150px"></th>
+        <th><input type='text' class='inp3' th:value="${course.major}" style="width: 150px"></th>
+        <th><input type='text' class='inp4' th:value="${course.grade}" style="width: 150px"></th>
+        <th><input type='text' class='inp5' th:value="${course.cname}" style="width: 150px"></th>
+        <th class='sd'><a class='btn btn-danger' >删除<input type='hidden' class='inp6' th:value="${course.cid}"></a></th>
     </tr>
 </table>
 </body>
@@ -48,6 +56,10 @@
             $('.add_css>th>input').css('width', '150px');
             $('.btn-danger').click(function () {
                 $(this).parents("tr").remove();
+                $.post("/Json/course_add/delete",{cid:'-1'
+                },
+                    function (data) {
+                })
             });
 
             var th1, th2, th3, th4, th5;
@@ -63,6 +75,7 @@
                         th4 = $(thi).children('th').children('.inp4').val().replace(/\s/g, "");
                         th5 = $(thi).children('th').children('.inp5').val().replace(/\s/g, "");
                     }, 100);
+                    //console.log(th1+"::::1")
                     setTimeout(function () {
                         if (lastTime - e.timeStamp == 0) {
                             console.log(th1 + th2 + th3 + th4 + th5);
@@ -76,7 +89,8 @@
                                                         series: th2,
                                                         major: th3,
                                                         grade: th4,
-                                                        course: th5
+                                                        course: th5,
+                                                        cid:"0"
                                                     },
                                                     function (data) {
                                                         $.each(data, function (index) {
@@ -85,11 +99,11 @@
                                                                 $('.cs').append("创建成功！");
                                                                 setTimeout(function () {
                                                                     $('.cs').empty();
-                                                                }, 4000);
+                                                                    window.parent.location.reload();
+                                                                }, 2000);
                                                             }
 
                                                         });
-                                                        th1 = null;
                                                         th1 = null;
                                                         th2 = null;
                                                         th3 = null;
@@ -107,6 +121,74 @@
 
             });
         });
+        $('.btn-danger').click(function () {
+            $(this).parents("tr").remove();
+            $.post("/Json/course_add/delete",{cid:$(this).find('.inp6').val()
+                },
+                function (data) {
+                })
+        });
+        $('input').click(function () {
+
+            var th1, th2, th3, th4, th5,th6;
+            var lastTime;
+            $('.add_css').click(function () {
+                $(".add_css").keyup(function (e) {
+                    lastTime = e.timeStamp;
+                    var thi = this;
+                    setTimeout(function () {
+                        th1 = $(thi).children('th').children('.inp1').val().replace(/\s/g, "");
+                        th2 = $(thi).children('th').children('.inp2').val().replace(/\s/g, "");
+                        th3 = $(thi).children('th').children('.inp3').val().replace(/\s/g, "");
+                        th4 = $(thi).children('th').children('.inp4').val().replace(/\s/g, "");
+                        th5 = $(thi).children('th').children('.inp5').val().replace(/\s/g, "");
+                        th6 = $(thi).children('th').children('a').children('.inp6').val();
+                    }, 100);
+                    setTimeout(function () {
+                        if (lastTime - e.timeStamp == 0) {
+                            //console.log(th1 + th2 + th3 + th4 + th5+th6);
+                            if (th1 != "" && th1 != null) {
+                                if (th2 != "" && th2 != null) {
+                                    if (th3 != "" && th3 != null) {
+                                        if (th4 != "" && th4 != null) {
+                                            if ((th5 != "" && th5 != null)&&(th6 !="" && th6 != null)) {
+                                                $.post('/Json/course_add/add', {
+                                                        college: th1,
+                                                        series: th2,
+                                                        major: th3,
+                                                        grade: th4,
+                                                        course: th5,
+                                                        cid:th6
+                                                    },
+                                                    function (data) {
+                                                        $.each(data, function (index) {
+                                                            if (data[index] == (1)) {
+                                                                $('.cs').empty();
+                                                                $('.cs').append("创建成功！");
+                                                                setTimeout(function () {
+                                                                    $('.cs').empty();
+                                                                }, 2000);
+                                                            }
+
+                                                        });
+                                                        th6 = null;
+                                                        th1 = null;
+                                                        th2 = null;
+                                                        th3 = null;
+                                                        th4 = null;
+                                                        th5 = null;
+                                                    });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 3000);
+                });
+
+            });
+        })
 
     })
 </script>

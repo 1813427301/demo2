@@ -18,7 +18,9 @@ public class Course {
     private String Cname;
     private String college;
     private String series;
+
     private String major;
+
     @Column(name = "grade", nullable = false , unique = true)
     private String grade;
 

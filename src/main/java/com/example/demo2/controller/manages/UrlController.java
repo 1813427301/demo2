@@ -1,7 +1,9 @@
 package com.example.demo2.controller.manages;
 
+import com.example.demo2.domian.Course;
 import com.example.demo2.domian.User;
 import com.example.demo2.domian.UserDetails;
+import com.example.demo2.service.CourseService;
 import com.example.demo2.service.UserDetailsService;
 import com.example.demo2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UrlController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private CourseService courseService;
     
     @Autowired
     private User user;
@@ -111,7 +116,27 @@ public class UrlController {
      * @return
      */
     @RequestMapping("course_add")
-    public String course_add(){
+    public String course_add(Model model){
+        List<Course> courseList = courseService.findAll();
+        model.addAttribute("courseList",courseList);
         return "afters/course_add";
+    }
+
+    /**
+     * 进入老师添加页面
+     */
+    @RequestMapping("teacherlist")
+    public String teacherlist(){
+        return "afters/teacherlist";
+    }
+
+    /**
+     * 进入老师添加页面
+     */
+    @RequestMapping("teacher_add")
+    public String teacher_add(Model model){
+        List<Course> courseList = courseService.findAll();
+        model.addAttribute("courseList",courseList);
+        return "afters/teacher_add";
     }
 }
