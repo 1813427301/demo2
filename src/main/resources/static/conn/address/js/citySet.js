@@ -1,6 +1,6 @@
 function SelCity(obj, e) {
     var ths = obj;
-    var dal = '<div class="_citys"><span title="关闭" id="cColse" >×</span><div id="_citysheng" class="_citys0">请选择省份</div><div id="_citys0" class="_citys1"></div><div style="display:none" id="_citys1" class="_citys1"></div><div style="display:none" id="_citys2" class="_citys1"></div></div>';
+    var dal = '<div class="_citys"><span title="关闭" id="cColse" >×</span><div id="_citysheng" class="_citys0">请选择省份</div><div id="_citys0" class="_citys1" style="background: #ce8483"></div><div style="display:none; background: #ce8483" id="_citys1" class="_citys1"></div><div style="display:none; background: #ce8483" id="_citys2" class="_citys1" ></div></div>';
     Iput.show({
         id: ths,
         event: e,

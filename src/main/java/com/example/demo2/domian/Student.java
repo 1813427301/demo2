@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,15 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long Sid;
 
-    private String Sonid;
-    private String Sname;
-    private int Sage;
-    private String Sgender;
+    private String Sname;//姓名
+    private int Sage;//年龄
+    private String Sgender;//性别
+    private int SidCard;//身份证
+    private String Saddr; //家庭地址
+    private String Smoajr;//专业
+    private String grade;//班级
+    private Timestamp Sdate_time;//创建时间
+    private int status;
 
     @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(name = "t_stu_cour",

@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="layui-card-header">
-                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增用户','/afterss/adduser',600,500)"><i
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增用户','/afterss/student_add',600,500)"><i
                             class="layui-icon" ></i>新增用户</a>
                 </div>
 
@@ -44,9 +44,13 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr style="background: #F8E5E5;">
-                            <th>用户编号</th>
-                            <th>用户名称</th>
-                            <th>是否管理员</th>
+                            <th>学生编号</th>
+                            <th>学生名字</th>
+                            <th>性别</th>
+                            <th>身份证</th>
+                            <th>家庭地址</th>
+                            <th>专业</th>
+                            <th>所在班级</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -55,13 +59,24 @@
                         <tr >
                             <td class="t_id" >1</td>
                             <td >王小明</td>
-                            <td >管理员</td>
+                            <td >男</td>
+                            <td >45072122255</td>
+                            <td >磨豆腐司法考试</td>
+                            <td >电子专业</td>
+                            <td >所在班级</td>
                             <td >2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
                                    onclick="xadmin.open('编辑','/afterss/updateuser?id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
+                                    <input class="inp" type="hidden" />
+                                </a>
+                                &nbsp;
+                                <a class="lafitewu_auditing" title="课程表"
+                                   onclick="xadmin.open('课程表','/afterss/updateuser',600,500)"
+                                   href="javascript:;">
+                                    课程表
                                     <input class="inp" type="hidden" />
                                 </a>
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"

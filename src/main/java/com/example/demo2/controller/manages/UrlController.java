@@ -107,6 +107,19 @@ public class UrlController {
         return "afters/studentlist";
     }
 
+    //进入学生添加页面
+    @RequestMapping("student_add")
+    public String student_add(Model model){
+        List<Teacher> teacherList = teacherService.findAll();//班级
+        List<Course> courseList = courseService.findAll();//专业与课程
+
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("courseList",courseList);
+        return "afters/student_add";
+    }
+
+
+
     /**
      * 进入添加学生信息页面
      * @return

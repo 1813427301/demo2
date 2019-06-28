@@ -4,6 +4,7 @@ import com.example.demo2.domian.Course;
 import com.example.demo2.domian.Teacher;
 import com.example.demo2.mapper.TeacherMapper;
 import com.example.demo2.service.CourseService;
+import com.example.demo2.service.StudentService;
 import com.example.demo2.service.TeacherService;
 import com.example.demo2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class ManageController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping("login")
     public String managelogin(Model model) {
@@ -103,6 +107,7 @@ public class ManageController {
         return "afters/teacherlist";
     }
 
+    //更新老师数据
     @PostMapping("/update_teacher")
     public String update_teacher(String Tname, String Tgrade, String Teducation, String Cid,String tid,Model model, HttpServletResponse response) throws IOException{
         if ((Tname == null || Tname.equals("")) || (Tgrade == null || Tgrade.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
@@ -130,5 +135,25 @@ public class ManageController {
         out.flush();
         out.close();
         return "afters/teacherlist";
+    }
+
+    //添加学生
+    @PostMapping("/student_add")
+    public String student_add(String grade,String sname,String sage,String sgender,int sid_card,String saddr,String smoajr ,Model model,HttpServletResponse response) throws IOException{
+        if((Integer.valueOf(sage))<150||(Integer.valueOf(sage))>15){
+            model.addAttribute("error","添加学生失败,年龄不符合！");
+            return "afters/student_add";
+        }
+        Map<Object, Object> map = studentService.create(grade,sname, sage, sgender, sid_card, saddr, smoajr);
+        if((Boolean) map.get("ok")){
+            model.addAttribute("error","添加学生失败！");
+            return "afters/student_add";
+        }
+        model.addAttribute("error","添加学生成功！");
+        PrintWriter out = response.getWriter();
+        out.print("<script>window.parent.location.href='/afterss/studentlist';</script>");
+        out.flush();
+        out.close();
+        return "afters/studentlist";
     }
 }
