@@ -18,7 +18,7 @@ public interface CourseMapper {
     @Select("SELECT * FROM t_course ORDER BY cid DESC")
     List<Course> findAll();
 
-    @Insert("INSERT INTO t_course (cname,college,grade,major,series) VALUES (#{cname}, #{college}, #{grade}, #{major}, #{series});")
+    @Insert("INSERT INTO t_course (cname,grade,major,series) VALUES (#{cname}, #{grade}, #{major}, #{series});")
     int create(Course course);
 
     @Select("SELECT * FROM t_course WHERE grade=#{grade} ORDER BY cid DESC")
@@ -27,7 +27,7 @@ public interface CourseMapper {
     @Select("SELECT * FROM t_course WHERE cid=#{cid} ORDER BY cid DESC")
     Course findById(Course course);
 
-    @Update("UPDATE t_course SET cname=#{cname}, college=#{college}, major=#{major},series=#{series} WHERE grade=#{grade};")
+    @Update("UPDATE t_course SET cname=#{cname}, major=#{major},series=#{series} WHERE grade=#{grade};")
     int update(Course course);
 
     @Delete("DELETE FROM t_course WHERE cid=#{cid}")

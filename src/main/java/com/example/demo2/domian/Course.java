@@ -16,7 +16,6 @@ public class Course {
     private Long Cid;
 
     private String Cname;
-    private String college;
     private String series;
 
     private String major;

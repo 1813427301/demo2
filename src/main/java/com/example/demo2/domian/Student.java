@@ -19,7 +19,7 @@ public class Student {
     private String Sname;//姓名
     private int Sage;//年龄
     private String Sgender;//性别
-    private int SidCard;//身份证
+    private String SidCard;//身份证
     private String Saddr; //家庭地址
     private String Smoajr;//专业
     private String grade;//班级

@@ -17,7 +17,6 @@
 <body>
 <table class="table">
     <tr>
-        <th>学院</th>
         <th>系列</th>
         <th>专业</th>
         <th>班级</th>
@@ -30,8 +29,6 @@
         </th>
     </tr>
     <tr class='add_css'  th:if="${!courseList.isEmpty()}" th:each="course:${courseList}">
-        <th><input type='text' class='inp1' th:value="${course.college}" style="width: 150px" >
-            </th>
         <th><input type='text' class='inp2' th:value="${course.series}" style="width: 150px"></th>
         <th><input type='text' class='inp3' th:value="${course.major}" style="width: 150px"></th>
         <th><input type='text' class='inp4' th:value="${course.grade}" style="width: 150px"></th>
@@ -45,7 +42,6 @@
 
         $('.add_radio').click(function () {
             $('.add_tr').after("<tr class='add_css'>" +
-                "<th><input type='text' class='inp1'></th>" +
                 "<th><input type='text' class='inp2'></th>" +
                 "<th><input type='text' class='inp3'></th>" +
                 "<th><input type='text' class='inp4'></th>" +
@@ -62,14 +58,13 @@
                 })
             });
 
-            var th1, th2, th3, th4, th5;
+            var th2, th3, th4, th5;
             var lastTime;
             $('.add_css').click(function () {
                 $(".add_css").keyup(function (e) {
                     lastTime = e.timeStamp;
                     var thi = this;
                     setTimeout(function () {
-                        th1 = $(thi).children('th').children('.inp1').val().replace(/\s/g, "");
                         th2 = $(thi).children('th').children('.inp2').val().replace(/\s/g, "");
                         th3 = $(thi).children('th').children('.inp3').val().replace(/\s/g, "");
                         th4 = $(thi).children('th').children('.inp4').val().replace(/\s/g, "");
@@ -78,14 +73,12 @@
                     //console.log(th1+"::::1")
                     setTimeout(function () {
                         if (lastTime - e.timeStamp == 0) {
-                            console.log(th1 + th2 + th3 + th4 + th5);
-                            if (th1 != "" && th1 != null) {
+                            console.log(th2 + th3 + th4 + th5);
                                 if (th2 != "" && th2 != null) {
                                     if (th3 != "" && th3 != null) {
                                         if (th4 != "" && th4 != null) {
                                             if (th5 != "" && th5 != null) {
                                                 $.post('/Json/course_add/add', {
-                                                        college: th1,
                                                         series: th2,
                                                         major: th3,
                                                         grade: th4,
@@ -104,7 +97,6 @@
                                                             }
 
                                                         });
-                                                        th1 = null;
                                                         th2 = null;
                                                         th3 = null;
                                                         th4 = null;
@@ -112,7 +104,6 @@
                                                     });
                                             }
                                         }
-                                    }
                                 }
                             }
                         }
@@ -130,14 +121,13 @@
         });
         $('input').click(function () {
 
-            var th1, th2, th3, th4, th5,th6;
+            var th2, th3, th4, th5,th6;
             var lastTime;
             $('.add_css').click(function () {
                 $(".add_css").keyup(function (e) {
                     lastTime = e.timeStamp;
                     var thi = this;
                     setTimeout(function () {
-                        th1 = $(thi).children('th').children('.inp1').val().replace(/\s/g, "");
                         th2 = $(thi).children('th').children('.inp2').val().replace(/\s/g, "");
                         th3 = $(thi).children('th').children('.inp3').val().replace(/\s/g, "");
                         th4 = $(thi).children('th').children('.inp4').val().replace(/\s/g, "");
@@ -147,13 +137,11 @@
                     setTimeout(function () {
                         if (lastTime - e.timeStamp == 0) {
                             //console.log(th1 + th2 + th3 + th4 + th5+th6);
-                            if (th1 != "" && th1 != null) {
                                 if (th2 != "" && th2 != null) {
                                     if (th3 != "" && th3 != null) {
                                         if (th4 != "" && th4 != null) {
                                             if ((th5 != "" && th5 != null)&&(th6 !="" && th6 != null)) {
                                                 $.post('/Json/course_add/add', {
-                                                        college: th1,
                                                         series: th2,
                                                         major: th3,
                                                         grade: th4,
@@ -172,7 +160,6 @@
 
                                                         });
                                                         th6 = null;
-                                                        th1 = null;
                                                         th2 = null;
                                                         th3 = null;
                                                         th4 = null;
@@ -182,7 +169,6 @@
                                         }
                                     }
                                 }
-                            }
                         }
                     }, 3000);
                 });

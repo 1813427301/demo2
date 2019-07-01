@@ -46,6 +46,7 @@
                         <tr style="background: #F8E5E5;">
                             <th>学生编号</th>
                             <th>学生名字</th>
+                            <th>年龄</th>
                             <th>性别</th>
                             <th>身份证</th>
                             <th>家庭地址</th>
@@ -56,34 +57,28 @@
                         </tr>
                         </thead>
                         <tbody id="tds">
-                        <tr >
-                            <td class="t_id" >1</td>
-                            <td >王小明</td>
-                            <td >男</td>
-                            <td >45072122255</td>
-                            <td >磨豆腐司法考试</td>
-                            <td >电子专业</td>
-                            <td >所在班级</td>
-                            <td >2016-10-08 13:00</td>
+                        <tr th:each="student:${studentList}">
+                            <td class="t_id" th:text="${student.sid}" >1</td>
+                            <td th:text="${student.sname}">王小明</td>
+                            <td th:text="${student.sage}">16</td>
+                            <td th:text="${student.sgender}">男</td>
+                            <td th:text="${student.sidCard}">45072122255</td>
+                            <td th:text="${student.saddr}">磨豆腐司法考试</td>
+                            <td th:text="${student.smoajr}">电子专业</td>
+                            <td th:text="${student.grade}">所在班级</td>
+                            <td th:text="${student.sdate_time}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
-                                   onclick="xadmin.open('编辑','/afterss/updateuser?id='+($(this).children('input').attr('value')),600,500)"
+                                   onclick="xadmin.open('编辑','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
-                                    <input class="inp" type="hidden" />
-                                </a>
-                                &nbsp;
-                                <a class="lafitewu_auditing" title="课程表"
-                                   onclick="xadmin.open('课程表','/afterss/updateuser',600,500)"
-                                   href="javascript:;">
-                                    课程表
-                                    <input class="inp" type="hidden" />
+                                    <input class="inp" type="hidden" th:value="${student.sid}" />
                                 </a>
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
-                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/userDelete')"
+                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/studentDelete')"
                                    href="javascript:;">
                                     删除
-                                    <input class="dele" type="hidden" />
+                                    <input class="dele" type="hidden" th:value="${student.sid}" />
                                 </a>
                             </td>
                         </tr>
@@ -161,7 +156,7 @@
             });
         });
 
-    /*用户-删除*/
+    /*学生-删除*/
     function member_del(obj, id, u_id, url) {
         layer.confirm('是否确认删除当前项目？',
             {title: "项目删除"},

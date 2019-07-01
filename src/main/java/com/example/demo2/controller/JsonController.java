@@ -1,9 +1,6 @@
 package com.example.demo2.controller;
 
-import com.example.demo2.domian.Course;
-import com.example.demo2.domian.Teacher;
-import com.example.demo2.domian.User;
-import com.example.demo2.domian.UserDetails;
+import com.example.demo2.domian.*;
 import com.example.demo2.service.*;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,8 +154,8 @@ public class JsonController {
 
     //课程添加
     @RequestMapping("course_add/add")
-    public Map<Object, Object> course_Add(String college, String series, String major, String grade, String course, String cid) {
-        Map<Object, Object> map = courseService.create(college, series, major, grade, course, cid);
+    public Map<Object, Object> course_Add(String series, String major, String grade, String course, String cid) {
+        Map<Object, Object> map = courseService.create( series, major, grade, course, cid);
         return map;
     }
 
@@ -204,4 +201,20 @@ public class JsonController {
         return teacherList;
     }
 
+    //学生删除
+
+    @RequestMapping("studentDelete")
+    public Map<Object, Object> studentDelete(String id){
+        Map<Object, Object> map = new HashMap<>();
+        Student student = new Student();
+        student.setSid(Long.parseLong(id));
+        student.setStatus(0);
+        int row = studentService.delete(student);
+        if (row > 0) {
+            map.put("ok", true);
+        } else {
+            map.put("ok", false);
+        }
+        return map;
+    }
 }

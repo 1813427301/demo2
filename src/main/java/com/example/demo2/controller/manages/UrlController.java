@@ -1,13 +1,7 @@
 package com.example.demo2.controller.manages;
 
-import com.example.demo2.domian.Course;
-import com.example.demo2.domian.Teacher;
-import com.example.demo2.domian.User;
-import com.example.demo2.domian.UserDetails;
-import com.example.demo2.service.CourseService;
-import com.example.demo2.service.TeacherService;
-import com.example.demo2.service.UserDetailsService;
-import com.example.demo2.service.UserService;
+import com.example.demo2.domian.*;
+import com.example.demo2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +25,9 @@ public class UrlController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private StudentService studentService;
     
     @Autowired
     private User user;
@@ -103,7 +100,9 @@ public class UrlController {
      * @return
      */
     @RequestMapping("studentlist")
-    public String studentlist(){
+    public String studentlist(Model model){
+        List<Student> studentList = studentService.findAll();
+        model.addAttribute("studentList",studentList);
         return "afters/studentlist";
     }
 
@@ -117,6 +116,24 @@ public class UrlController {
         model.addAttribute("courseList",courseList);
         return "afters/student_add";
     }
+
+    /**
+     * 修改学生页面
+     */
+    @RequestMapping("updatestudent")
+    public String updatestudent(String id,Model model){
+        Student student = new Student();
+        student.setSid(Long.parseLong(id));
+        Student S = studentService.findById(student);
+        List<Teacher> teacherList = teacherService.findAll();//班级
+        List<Course> courseList = courseService.findAll();//专业与课程
+
+        model.addAttribute("teacherList",teacherList);
+        model.addAttribute("courseList",courseList);
+        model.addAttribute("student",S);
+        return "afters/updatestudent";
+    }
+
 
 
 

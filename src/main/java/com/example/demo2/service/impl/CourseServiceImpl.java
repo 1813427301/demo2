@@ -22,12 +22,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Map<Object, Object> create(String college, String series, String major, String grade, String course1,String cid) {
+    public Map<Object, Object> create( String series, String major, String grade, String course1,String cid) {
         Map<Object, Object> map = new HashMap<>();
         map.put("ok",false);
         Course course = new Course();
         course.setCid(Long.parseLong(cid));
-        course.setCollege(college);
         course.setMajor(major);
         course.setGrade(grade);
         course.setCname(course1);

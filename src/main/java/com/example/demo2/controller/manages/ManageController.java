@@ -1,12 +1,15 @@
 package com.example.demo2.controller.manages;
 
+import com.example.demo2.dao.TestRegex;
 import com.example.demo2.domian.Course;
+import com.example.demo2.domian.Student;
 import com.example.demo2.domian.Teacher;
 import com.example.demo2.mapper.TeacherMapper;
 import com.example.demo2.service.CourseService;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.TeacherService;
 import com.example.demo2.service.UserService;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -139,17 +142,65 @@ public class ManageController {
 
     //添加学生
     @PostMapping("/student_add")
-    public String student_add(String grade,String sname,String sage,String sgender,int sid_card,String saddr,String smoajr ,Model model,HttpServletResponse response) throws IOException{
-        if((Integer.valueOf(sage))<150||(Integer.valueOf(sage))>15){
+    public String student_add(String grade,String sname,String sage,String sgender,String sid_card,String saddr,String smoajr ,Model model,HttpServletResponse response) throws IOException{
+        List<Teacher> teacherList = teacherService.findAll();//班级
+        List<Course> courseList = courseService.findAll();//专业与课程
+        if(Integer.valueOf(sage)>150 || Integer.valueOf(sage)<15){
             model.addAttribute("error","添加学生失败,年龄不符合！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
+            return "afters/student_add";
+        }
+        if((new TestRegex().isCardId(sid_card))==false){
+            model.addAttribute("error","添加学生失败,身份证错误！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
             return "afters/student_add";
         }
         Map<Object, Object> map = studentService.create(grade,sname, sage, sgender, sid_card, saddr, smoajr);
-        if((Boolean) map.get("ok")){
+        if((Boolean) map.get("ok")==false){
             model.addAttribute("error","添加学生失败！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
             return "afters/student_add";
         }
+        List<Student> studentList = studentService.findAll();
+        model.addAttribute("studentList",studentList);
         model.addAttribute("error","添加学生成功！");
+        PrintWriter out = response.getWriter();
+        out.print("<script>window.parent.location.href='/afterss/studentlist';</script>");
+        out.flush();
+        out.close();
+        return "afters/studentlist";
+    }
+
+    //修改学生
+    @PostMapping("/updatestudent")
+    public String updatestudent(String id,String grade,String sname,String sage,String sgender,String sid_card,String saddr,String smoajr ,Model model,HttpServletResponse response) throws IOException{
+        List<Teacher> teacherList = teacherService.findAll();//班级
+        List<Course> courseList = courseService.findAll();//专业与课程
+        if(Integer.valueOf(sage)>150 || Integer.valueOf(sage)<15){
+            model.addAttribute("error","修改学生失败,年龄不符合！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
+            return "afters/updatestudent";
+        }
+        if((new TestRegex().isCardId(sid_card))==false){
+            model.addAttribute("error","修改学生失败,身份证错误！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
+            return "afters/updatestudent";
+        }
+       int row = studentService.update(id,grade,sname, sage, sgender, sid_card, saddr, smoajr);
+        if(row <= 0){
+            model.addAttribute("error","修改学生失败！");
+            model.addAttribute("teacherList",teacherList);
+            model.addAttribute("courseList",courseList);
+            return "afters/updatestudent";
+        }
+        List<Student> studentList = studentService.findAll();
+        model.addAttribute("studentList",studentList);
+        model.addAttribute("error","修改学生成功！");
         PrintWriter out = response.getWriter();
         out.print("<script>window.parent.location.href='/afterss/studentlist';</script>");
         out.flush();
