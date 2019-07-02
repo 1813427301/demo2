@@ -19,7 +19,7 @@ public class Teacher {
     @Column(name = "Tname", nullable = false , unique = true)
     private String Tname;
 
-    private String Tgrade;//班级
+    private String jiao_course;//授课
     private String Teducation;//学历
     private Timestamp Tdate_time;//创建时间
     private int status;//状态

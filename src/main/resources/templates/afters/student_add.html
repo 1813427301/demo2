@@ -199,8 +199,7 @@
                 <div class="layui-input-block lafite_width_60">
                     <select id="L_city" name="grade" lay-verify="required">
                         <option value=""></option>
-                        <option selected th:each="teacher:${teacherList}" th:value="${teacher.tgrade}"
-                                th:text="${teacher.tgrade}">java
+                        <option selected th:each="teacher:${teacherList}">java
                         </option>
                     </select>
                 </div>

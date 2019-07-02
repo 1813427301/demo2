@@ -57,9 +57,10 @@
                             <td class="t_id" th:text="${teacher.tid}">1</td>
                             <td  th:text="${teacher.tname}">王小明</td>
                             <td th:text="${teacher.teducation}">本科</td>
-                           <td th:if="${teacher.course}" th:text="${teacher.course.cname}">java</td>
-                           <td th:unless="${teacher.course}"></td>
-                            <th th:text="${teacher.tgrade}">一班</th>
+                            <td th:unless="${teacher.jiao_course}"></td>
+                            <td th:if="${teacher.jiao_course}" th:text="${teacher.jiao_course}">java</td>
+                            <td th:if="${teacher.course}" th:text="${teacher.course.grade}">java</td>
+                            <td th:unless="${teacher.course}"></td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
                                    onclick="xadmin.open('编辑','/afterss/updateteacher?id='+($(this).children('input').attr('value')),600,500)"
@@ -117,7 +118,7 @@
             "                            <td>"+value.tname+"</td>\n" +
             "                            <td>"+value.teducation+"</td>\n" +
             "                           <td>"+value.course.cname+"</td>\n" +
-            "                            <th >"+value.tgrade+"</th>\n" +
+            "                            <th >"+value.jiao_course+"</th>\n" +
             "                            <td class=\"td-manage\">\n" +
             "                                <a class=\"lafitewu_auditing\" th:value='"+value.tid+"' title=\"编辑\"\n" +
             "                                   onclick=\"xadmin.open('编辑','/afterss/updateteacher?id='+$(this).attr('th:value'),600,500)\"\n" +

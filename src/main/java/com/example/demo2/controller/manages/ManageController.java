@@ -90,14 +90,15 @@ public class ManageController {
 
     //添加用户
     @PostMapping("/teacher_add")
-    public String teacher_add(String Tname, String Tgrade, String Teducation, String Cid,Model model, HttpServletResponse response) throws IOException{
-        if ((Tname == null || Tname.equals("")) || (Tgrade == null || Tgrade.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
+    public String teacher_add(String Tname, String jiao_course, String Teducation, String Cid,Model model, HttpServletResponse response) throws IOException{
+        System.out.println( Tname+jiao_course+Teducation+Cid);
+        if ((Tname == null || Tname.equals("")) || (jiao_course == null || jiao_course.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
             model.addAttribute("error","不可留空!");
             List<Course> courseList = courseService.findAll();
             model.addAttribute("courseList",courseList);
             return "afters/teacher_add";
         }
-        Map<Object, Object> map = teacherService.create(Tname, Tgrade, Teducation, Cid);
+        Map<Object, Object> map = teacherService.create(Tname, jiao_course, Teducation, Cid);
         if((boolean)map.get("ok")){
             model.addAttribute("error","添加老师成功!");
         }else {
@@ -112,8 +113,8 @@ public class ManageController {
 
     //更新老师数据
     @PostMapping("/update_teacher")
-    public String update_teacher(String Tname, String Tgrade, String Teducation, String Cid,String tid,Model model, HttpServletResponse response) throws IOException{
-        if ((Tname == null || Tname.equals("")) || (Tgrade == null || Tgrade.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
+    public String update_teacher(String Tname, String jiao_course, String Teducation, String Cid,String tid,Model model, HttpServletResponse response) throws IOException{
+        if ((Tname == null || Tname.equals("")) || (jiao_course == null || jiao_course.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
             model.addAttribute("error","不可留空!");
             List<Course> courseList = courseService.findAll();
             model.addAttribute("courseList",courseList);
@@ -124,7 +125,7 @@ public class ManageController {
         teacher.setTid(Long.parseLong(tid));
         course.setCid(Long.parseLong(Cid));
         teacher.setTname(Tname);
-        teacher.setTgrade(Tgrade);
+        teacher.setJiao_course(jiao_course);
         teacher.setTeducation(Teducation);
         teacher.setCourse(course);
         int row = teacherService.update(teacher);

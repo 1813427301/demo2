@@ -27,14 +27,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Map<Object, Object> create(String Tname, String Tgrade, String Teducation, String Cid) {
+    public Map<Object, Object> create(String Tname, String jiao_course, String Teducation, String Cid) {
         Map<Object, Object> map = new HashMap<>();
         Teacher teacher = new Teacher();
         Course course = new Course();
         course.setCid(Long.parseLong(Cid));
         teacher.setStatus(1);
         teacher.setTname(Tname);
-        teacher.setTgrade(Tgrade);
+        teacher.setJiao_course(jiao_course);
         teacher.setTeducation(Teducation);
         teacher.setCourse(course);
         teacher.setTdate_time(new Timestamp(new Date().getTime()));
