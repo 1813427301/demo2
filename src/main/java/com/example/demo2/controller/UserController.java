@@ -37,7 +37,7 @@ public class UserController {
             model.addAttribute("error3","不能留空");
             return "login";
         }
-        Map<String, Object> map = userService.create(username, password, password2, email,"0");
+        Map<String, Object> map = userService.create("",username, password, password2, email,"0");
         model.addAttribute("error3",map.get("error"));
         if((boolean)map.get("ok")==false){
             return "login";

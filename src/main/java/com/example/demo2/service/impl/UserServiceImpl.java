@@ -1,5 +1,7 @@
 package com.example.demo2.service.impl;
 
+import com.example.demo2.domian.Student;
+import com.example.demo2.domian.Teacher;
 import com.example.demo2.domian.User;
 import com.example.demo2.mapper.UserMapper;
 import com.example.demo2.service.UserService;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Map<String, Object> create(String username, String password, String password2, String email, String city) {
+    public Map<String, Object> create(String student_id,String username, String password, String password2, String email, String city) {
         Map<String, Object> map = new HashMap<>();
         map.put("ok", false);
         if (password.equals(password2)) {
@@ -52,6 +54,8 @@ public class UserServiceImpl implements UserService {
                 //加盐加密
                 String salt = ShiroUtil.createSalt();
                 String passwordBySalt = ShiroUtil.createPwdBySalt(password, salt);
+                Student student = new Student();
+                student.setSid(Long.parseLong(student_id));
                 user.setPassword(passwordBySalt);
                 user.setSalt(salt);
                 user.setEmail(email);
@@ -60,6 +64,45 @@ public class UserServiceImpl implements UserService {
                 user.setStatus(1);
                 user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
                 user.setCreateTime(new Timestamp(new Date().getTime()));
+                user.setUstudent(student);
+                int row = userMapper.create(user);
+                if (row > 0) {
+                    map.put("ok", true);
+                    map.put("error", "创建成功！");
+                } else {
+                    map.put("error", "插入数据报错，创建失败！");
+                }
+
+            } else {
+                map.put("error", "用户已被创建！");
+            }
+
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> create2(String teacher_id, String username, String password, String password2, String email, String city) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ok", false);
+        if (password.equals(password2)) {
+            User user1 = userMapper.findByName(username);
+            if (user1 == null) {
+                user.setUsername(username);
+                //加盐加密
+                String salt = ShiroUtil.createSalt();
+                String passwordBySalt = ShiroUtil.createPwdBySalt(password, salt);
+                Teacher teacher = new Teacher();
+                teacher.setTid(Long.parseLong(teacher_id));
+                user.setPassword(passwordBySalt);
+                user.setSalt(salt);
+                user.setEmail(email);
+                user.setUrlHead("img/3.png");
+                user.setSex("保密");
+                user.setStatus(1);
+                user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
+                user.setCreateTime(new Timestamp(new Date().getTime()));
+                user.setUteacher(teacher);
                 int row = userMapper.create(user);
                 if (row > 0) {
                     map.put("ok", true);

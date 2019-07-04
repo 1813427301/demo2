@@ -12,32 +12,35 @@
             charset="utf-8"></script>
 </head>
 <body>
-
+<div style="padding-top: 50px; width: 500px; padding-left: 50px;">
 <table class="table table-bordered">
     <tr>
+        <th colspan="4" style="text-align: center">详情</th>
+    </tr>
+    <tr>
         <th>姓名：</th>
-        <th th:text="${student.sname}"></th>
+        <th style="background-color: #9D9D9D;font-family: 黑体;" th:text="${student.student_id.sname}"></th>
         <th>性别：</th>
-        <th th:text="${student.sgender}"></th>
+        <th th:text="${student.student_id.sgender}" style="background-color: #9D9D9D;font-family: 黑体;"></th>
     </tr>
     <tr>
         <th>系：</th>
-        <th></th>
+        <th th:text="${student.course_id.series}" style="background-color: #9D9D9D;font-family: 黑体;"></th>
         <th>专业：</th>
-        <th></th>
+        <th th:text="${student.course_id.major}" style="background-color: #9D9D9D;font-family: 黑体;"></th>
     </tr>
     <tr>
         <th>班级：</th>
-        <th></th>
+        <th th:text="${student.course_id.grade}" style="background-color: #9D9D9D;font-family: 黑体;"></th>
         <th>上课老师：</th>
-        <th></th>
+        <th th:text="${teacher?.tname}" style="background-color: #9D9D9D;font-family: 黑体;">占时唯有舍的教师</th>
     </tr>
     <tr>
         <th>课程：</th>
-        <th colspan="3"></th>
+        <th colspan="3" th:text="${teacher?.course?.cname}" style="background-color: #9D9D9D;font-family: 黑体;">无</th>
     </tr>
 
 </table>
-
+</div>
 </body>
 </html>

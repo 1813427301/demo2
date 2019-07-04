@@ -1,5 +1,7 @@
 package com.example.demo2.mapper;
 
+import com.example.demo2.domian.Course;
+import com.example.demo2.domian.Student;
 import com.example.demo2.domian.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,8 @@ public interface UserMapper{
             @Result(property = "urlHead", column = "url_head"),
             @Result(property = "type", column = "type"),
             @Result(property = "status", column = "status"),
-            @Result(property = "salt", column = "salt")
+            @Result(property = "salt", column = "salt"),
+            @Result(property = "ustudent", column = "ustudent_id",javaType = Student.class,one = @One(select = "com.example.demo2.mapper.StudentMapper.findById"))
     })
     List<User> findAll();
     @Select("SELECT * FROM t_user WHERE uname=#{username} and status=1 ")
@@ -34,9 +37,12 @@ public interface UserMapper{
             @Result(property = "salt", column = "salt")
     })
     User findByName(String username);
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("INSERT INTO t_user (id,create_time,email,upass,sex,status,type,url_head,uname,salt) VALUES (null, #{createTime}, #{email}, #{password}, #{sex}, #{status}, #{type}, #{urlHead}, #{username},#{salt})")
+
+    @Insert("INSERT INTO t_user (id,create_time,email,upass,sex,status,type,url_head,uname,salt,ustudent_id) VALUES (null, #{createTime}, #{email}, #{password}, #{sex}, #{status}, #{type}, #{urlHead}, #{username},#{salt},#{ustudent.Sid});")
     int create(User user);
+
+    @Insert("INSERT INTO t_user (id,create_time,email,upass,sex,status,type,url_head,uname,salt,uteacher_id) VALUES (null, #{createTime}, #{email}, #{password}, #{sex}, #{status}, #{type}, #{urlHead}, #{username},#{salt},#{uteacher.Tid});")
+    int create2(User user);
 
     @Select("SELECT * FROM t_user WHERE id=#{id} and status=1 ")
     @Results({

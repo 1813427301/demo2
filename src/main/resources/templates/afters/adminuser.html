@@ -50,24 +50,10 @@
                         <div class="layui-input-block lafite_width_60">
                             <select id="L_city" name="city" lay-verify="required">
                                 <option value=""></option>
-                                <option value="0" selected>学生</option>
+                                <option value="2" selected>管理员</option>
                             </select>    
                         </div>
                     </div>
-
-                    <div class="layui-form-item">
-                        <label for="L_repass" class="layui-form-label">
-                            <span class="x-red">*</span>关联的学生
-                        </label>
-                        <div class="layui-input-block lafite_width_60">
-                            <select id="L_city2" name="student_id" lay-verify="required">
-                                <option value=""></option>
-                                <option  th:each="student:${studentList}" th:text="${student?.sname}" th:value="${student?.sid}">普通用户</option>
-
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                         <div class="lafite-layui-btn lafite_float_left lafite_height_35px" onclick="xadmin.close()">取消</div>

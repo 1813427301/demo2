@@ -34,7 +34,7 @@ public class Teacher {
     @JoinColumn(name="Tcourse_id", referencedColumnName = "Cid")
     private Course course;
 
-    @OneToOne(mappedBy = "Uteacher", cascade = {
+    @OneToOne(mappedBy = "uteacher", cascade = {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Tuser;
 

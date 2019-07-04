@@ -44,16 +44,16 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
     private UserDetails userDetails;
 
-    @OneToOne(cascade = CascadeType.ALL)//People是关系的维护端，当删除 people，会级联删除 address
-    @JoinColumn(name = "Ustudent_id", referencedColumnName = "Sid")//people中的address_id字段参考address表中的id字段
-    private Student Ustudent;
+    @OneToOne(cascade ={ CascadeType.MERGE ,CascadeType.REFRESH},optional=false)
+    @JoinColumn(name = "ustudent_id", referencedColumnName = "Sid",unique = true)
+    private Student ustudent;
 
-    @OneToOne(cascade = CascadeType.ALL)//People是关系的维护端，当删除 people，会级联删除 address
-    @JoinColumn(name = "Uteacher_id", referencedColumnName = "Tid")
-    private Teacher Uteacher;
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional=false)//People是关系的维护端，当删除 people，会级联删除 address
+    @JoinColumn(name = "uteacher_id", referencedColumnName = "Tid",unique = true)
+    private Teacher uteacher;
 
     @Transient
     private String keyname;
@@ -64,5 +64,23 @@ public class User {
     @Transient
     private int endPageSize;
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", sex='" + sex + '\'' +
+                ", urlHead='" + urlHead + '\'' +
+                ", createTime=" + createTime +
+                ", type=" + type +
+                ", status=" + status +
+                ", salt='" + salt + '\'' +
+                ", email='" + email + '\'' +
+                ", userDetails=" + userDetails +
+                ", keyname='" + keyname + '\'' +
+                ", startPageSize=" + startPageSize +
+                ", endPageSize=" + endPageSize +
+                '}';
+    }
 }

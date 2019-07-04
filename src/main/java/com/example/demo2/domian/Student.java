@@ -37,9 +37,13 @@ public class Student {
     @ManyToMany(mappedBy = "TstudentList")
     private List<Teacher> SteacherList;
 
-    @OneToOne(mappedBy = "Ustudent", cascade = {
+    @OneToOne(mappedBy = "ustudent", cascade = {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Suser;
+
+    @OneToOne(cascade = CascadeType.MERGE)//People是关系的维护端，当删除 people，会级联删除 address
+    @JoinColumn(name = "results_id", referencedColumnName = "rid")//people中的address_id字段参考address表中的id字段
+    private Results results;
 
     @Transient
     private Long course_id;
@@ -55,4 +59,23 @@ public class Student {
 
     @Transient
     private int endPageSize;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "Sid=" + Sid +
+                ", Sname='" + Sname + '\'' +
+                ", Sage=" + Sage +
+                ", Sgender='" + Sgender + '\'' +
+                ", SidCard='" + SidCard + '\'' +
+                ", Saddr='" + Saddr + '\'' +
+                ", Sdate_time=" + Sdate_time +
+                ", status=" + status +
+                ", course_id=" + course_id +
+                ", student_id=" + student_id +
+                ", studentDimCheck='" + studentDimCheck + '\'' +
+                ", startPageSize=" + startPageSize +
+                ", endPageSize=" + endPageSize +
+                '}';
+    }
 }

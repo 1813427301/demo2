@@ -6,8 +6,6 @@
     <title>用户列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
     <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
           href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css">
     <link rel="stylesheet" th:href="@{/after/css/font.css}" href="../../static/after/css/font.css">
@@ -36,8 +34,12 @@
                 </div>
 
                 <div class="layui-card-header">
-                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增用户','/afterss/adduser',600,500)"><i
-                            class="layui-icon" ></i>新增用户</a>
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增学生账号','/afterss/adduser',600,500)"><i
+                            class="layui-icon" ></i>新增学生账号</a>
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增老师账号','/afterss/teacheruser',600,500)"><i
+                            class="layui-icon" ></i>新增老师账号</a>
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增管理员账号','/afterss/adminuser',600,500)"><i
+                            class="layui-icon" ></i>新增管理员账号</a>
                 </div>
 
                 <div class="layui-card-body">
@@ -55,8 +57,9 @@
                         <tr th:each="user : ${users}">
                             <td class="t_id" th:text="${user.id}">1</td>
                             <td th:text="${user.username}">王小明</td>
-                            <td th:if="${user.type eq 1}">管理员</td>
-                            <td th:if="${user.type eq 0}">普通用户</td>
+                            <td th:if="${user.type eq 1}">老师</td>
+                            <td th:if="${user.type eq 0}">学生</td>
+                            <td th:if="${user.type eq 2}">管理员</td>
                             <td th:text="${user.createTime}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
@@ -175,8 +178,10 @@
                     $.each(data, function (index) {
                         var type;
                         if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
+                            type = '学生';
+                        } else if(data[index].type == 1){
+                            type = '老师';
+                        }else {
                             type = '管理员';
                         }
                         $("#tds").append("<tr><td>" + data[index].id + "</td>"
@@ -215,8 +220,10 @@
                     $.each(data, function (index) {
                         var type;
                         if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
+                            type = '学生';
+                        } else if(data[index].type == 1){
+                            type = '老师';
+                        }else {
                             type = '管理员';
                         }
                         if(data[index].endPageSize>0){
@@ -260,8 +267,10 @@
                     $.each(data, function (index) {
                         var type;
                         if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
+                            type = '学生';
+                        } else if(data[index].type == 1){
+                            type = '老师';
+                        }else {
                             type = '管理员';
                         }
                         if(data[index].endPageSize>0){
@@ -306,8 +315,10 @@
                     $.each(data, function (index) {
                         var type;
                         if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
+                            type = '学生';
+                        } else if(data[index].type == 1){
+                            type = '老师';
+                        }else {
                             type = '管理员';
                         }
                         if(data[index].endPageSize>0){

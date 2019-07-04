@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="layui-card-header">
-                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增学生','/afterss/student_add',600,500)"><i
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增学生','/afterss/student_results_add',600,500)"><i
                             class="layui-icon" ></i>新增学生</a>
                 </div>
 
@@ -46,12 +46,9 @@
                         <tr style="background: #F8E5E5;">
                             <th>学生编号</th>
                             <th>学生名字</th>
-                            <th>年龄</th>
-                            <th>性别</th>
-                            <th>身份证</th>
-                            <th>家庭地址</th>
-                            <th>所选专业</th>
-                            <th>所在班级</th>
+                            <th>课程</th>
+                            <th>上课老师</th>
+                            <th>成绩</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -60,12 +57,9 @@
                         <tr th:each="stu_cour:${studentList}">
                             <td class="t_id" th:text="${stu_cour.student_id?.sid}" >1</td>
                             <td th:text="${stu_cour.student_id?.sname}">王小明</td>
-                            <td th:text="${stu_cour.student_id?.sage}">16</td>
-                            <td th:text="${stu_cour.student_id?.sgender}">男</td>
-                            <td th:text="${stu_cour.student_id?.sidCard}">45072122255</td>
-                            <td th:text="${stu_cour.student_id?.saddr}">磨豆腐司法考试</td>
-                            <td th:text="${stu_cour.course_id?.major}">电子专业</td>
-                            <td th:text="${stu_cour.course_id?.grade}">所在班级</td>
+                            <th>课程</th>
+                            <th>上课老师</th>
+                            <th>成绩</th>
                             <td th:text="${stu_cour.student_id?.sdate_time}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
@@ -130,12 +124,9 @@
         $("#tds").append("<tr>\n" +
             "                        <td class=\"t_id\" >"+va.student_id.sid+"</td>\n" +
             "                            <td >"+va.student_id.sname+"</td>\n" +
-            "                            <td >"+va.student_id.sage+"</td>\n" +
-            "                            <td >"+va.student_id.sgender+"</td>\n" +
-            "                            <td >"+va.student_id.sidCard+"</td>\n" +
-            "                            <td >"+va.student_id.saddr+"</td>\n" +
-            "                            <td >"+va.course_id.major+"</td>\n" +
-            "                            <td >"+va.course_id.grade+"</td>\n" +
+            "                            <td >课程</td>\n" +
+            "                            <td >上课老师</td>\n" +
+            "                            <td >成绩</td>\n" +
             "                            <td >"+va.student_id.sdate_time+"</td>\n" +
             "                        <td class=\"td-manage\">\n" +
             "                            <a class=\"lafitewu_auditing\" th:value='"+va.student_id.sid+"' title=\"编辑\"\n" +

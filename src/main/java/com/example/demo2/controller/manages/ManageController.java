@@ -62,10 +62,10 @@ public class ManageController {
         return "login";
     }
 
-    //后台用户添加
+    //后台用户添加学生账号
     @PostMapping("adduser")
-    public String adduser(String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = userService.create(username, pass, repass, email, city);
+    public String adduser(String student_id,String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
+        Map<String, Object> map = userService.create(student_id,username, pass, repass, email, city);
         model.addAttribute("error3", map.get("error"));
         if ((boolean) map.get("ok") == false) {
             return "afters/adduser";
@@ -73,7 +73,23 @@ public class ManageController {
         PrintWriter out = response.getWriter();
         out.print("<script>window.parent.location.href='/afterss/userlist';</script>");
         out.flush();
-        return "/afterss/userlist";
+        out.close();
+        return "afters/userlist";
+    }
+
+    //后台用户添加老师账号
+    @PostMapping("teacheruser")
+    public String teacheruser(String teacher_id,String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
+        Map<String, Object> map = userService.create2(teacher_id,username, pass, repass, email, city);
+        model.addAttribute("error3", map.get("error"));
+        if ((boolean) map.get("ok") == false) {
+            return "afters/adduser";
+        }
+        PrintWriter out = response.getWriter();
+        out.print("<script>window.parent.location.href='/afterss/userlist';</script>");
+        out.flush();
+        out.close();
+        return "afters/userlist";
     }
 
     //修改用户
@@ -91,7 +107,7 @@ public class ManageController {
         return "afters/userlist";
     }
 
-    //添加用户
+    //添加老师
     @PostMapping("/teacher_add")
     public String teacher_add(String Tname, String jiao_course, String Teducation, String Cid,Model model, HttpServletResponse response) throws IOException{
         System.out.println( Tname+jiao_course+Teducation+Cid);

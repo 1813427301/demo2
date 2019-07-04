@@ -55,7 +55,6 @@ public class StudentServiceImpl2 implements StudentService2 {
     @Override
     public List<Student> findAll() {
         List<Student> studentList = (List<Student>)studentRepository.findAll();
-        System.out.println(studentList.toString());
         return studentList;
     }
 
