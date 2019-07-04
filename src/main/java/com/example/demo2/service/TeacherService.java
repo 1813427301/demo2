@@ -14,4 +14,5 @@ public interface TeacherService {
     int update(Teacher teacher);
     int updateDelete(Teacher teacher);
     List<Teacher> dim(Teacher keyname);
+    List<Teacher> paging(Teacher teacher);
 }

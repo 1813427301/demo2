@@ -57,4 +57,18 @@ public interface TeacherMapper {
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })
     List<Teacher> dim(Teacher keyname);
+
+
+    @Select("select * from t_teacher where status=1 ORDER BY Tdate_time DESC limit #{startPageSize},#{endPageSize};")
+    @Results({
+            @Result(property = "tid",  column = "tid"),
+            @Result(property = "Tname",  column = "tname"),
+            @Result(property = "tgrade", column = "tgrade"),
+            @Result(property = "teducation", column = "teducation"),
+            @Result(property = "tdate_time", column = "tdate_time"),
+            @Result(property = "status", column = "status"),
+            @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
+                    select="com.example.demo2.mapper.CourseMapper.findById"))
+    })
+    List<Teacher> paging(Teacher teacher);
 }

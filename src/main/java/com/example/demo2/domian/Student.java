@@ -19,18 +19,20 @@ public class Student {
     private String Sname;//姓名
     private int Sage;//年龄
     private String Sgender;//性别
+
+    @Column(name = "sid_card", unique = true, nullable = false)
     private String SidCard;//身份证
+
     private String Saddr; //家庭地址
-    private String Smoajr;//专业
-    private String grade;//班级
     private Timestamp Sdate_time;//创建时间
     private int status;
 
-    @ManyToMany(cascade=CascadeType.PERSIST)
+    @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(name = "t_stu_cour",
-            joinColumns = {@JoinColumn(name = "studentId")},
-            inverseJoinColumns=@JoinColumn(name="courseId"))
+            joinColumns = {@JoinColumn(name = "studentId",referencedColumnName = "Sid")},
+            inverseJoinColumns=@JoinColumn(name="courseId",referencedColumnName = "Cid"))
     private List<Course> courseList;
+
 
     @ManyToMany(mappedBy = "TstudentList")
     private List<Teacher> SteacherList;
@@ -38,4 +40,19 @@ public class Student {
     @OneToOne(mappedBy = "Ustudent", cascade = {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Suser;
+
+    @Transient
+    private Long course_id;
+
+    @Transient
+    private Long student_id;
+
+    @Transient
+    private String studentDimCheck;
+
+    @Transient
+    private int startPageSize;
+
+    @Transient
+    private int endPageSize;
 }

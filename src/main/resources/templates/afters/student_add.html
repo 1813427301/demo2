@@ -126,11 +126,19 @@
         background-color: #05920a !important;
         color: #fff !important;
     }
+    #area select {
+        background: transparent;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        height: 34px;
+    }
 </style>
 <body>
 <div class="layui-fluid lafite_add_alert">
     <div class="layui-row">
-        <form class="layui-form" method="post" action="/manage/student_add">
+        <form  method="post" action="/manage/student_add">
+            <input type="hidden" name="sid" id="sid">
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span> 学生名字
@@ -166,8 +174,8 @@
                 </label>
                 <div class="layui-input-block lafite_width_60">
                     <div class="wrap">
-                        <input class="input" name="saddr" id="city" type="text" placeholder="请选择" autocomplete="off"
-                               readonly="true" style="width: 345px"/><s></s></div>
+                        <input  class="input" name="saddr" id="city" type="text" placeholder="请选择" autocomplete="off"
+                               readonly="true" style="width: 342px"/><s></s></div>
 
                     <script type="text/javascript">
                         $("#city").click(function (e) {
@@ -182,26 +190,9 @@
 
             <div class="layui-form-item">
                 <label class="layui-form-label">
-                    <span class="x-red">*</span> 专业</label>
+                    <span class="x-red">*</span> 所选的班级</label>
                 <div class="layui-input-block lafite_width_60">
-                    <select  name="smoajr" lay-verify="required">
-                        <option value=""></option>
-                        <option selected th:each="course:${courseList}" th:value="${course.major}"
-                                th:text="${course.major}">java
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span> 班级</label>
-                <div class="layui-input-block lafite_width_60">
-                    <select id="L_city" name="grade" lay-verify="required">
-                        <option value=""></option>
-                        <option selected th:each="teacher:${teacherList}">java
-                        </option>
-                    </select>
+                    <div id="area"></div>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -218,7 +209,97 @@
         </form>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+
+    var ss = [[${courseList}]];
+    var json = [];
+    var bin;
+    var bin2 = {};
+    var bin3;
+    for (var i = 0; i < ss.length; i++) {
+        var json4 = [];
+        var json3 = [];
+        var j = {}, j2 = {}, j4 = {};
+        for (var a = 0; a < json.length; a++) {
+            if (json[a].name == ss[i].series) {
+                bin3 = true;
+                break;
+            } else {
+                bin3 = false;
+            }
+        }
+        if (bin3 == true) {
+            j4 = ss[i].grade;
+            json4.push(j4)
+            j2.name = ss[i].major;
+            j2.area = json4
+            bin2 = j2;
+            for (var j = 0; j < json.length; j++) {
+
+                if (json[j].name == ss[i].series) {
+                    var jv = [];
+                    jv.push(bin2);
+                    for (var j2 = 0; j2 < json[j].city.length; j2++) {
+                        jv.push(json[j].city[j2]);
+                    }
+                    json[j].city = jv;
+                    console.log(JSON.stringify(jv).toString() + "1")
+                    console.log(json[j].city.length + "1")
+                    console.log(JSON.stringify(json[j].city[j2]).toString())
+                    break
+                }
+            }
+        } else {
+            j.name = ss[i].series;
+            j2.name = ss[i].major;
+            j4 = ss[i].grade;
+            json4.push(j4)
+            j2.area = json4
+            json3.push(j2);
+            j.city = json3;
+            json.push(j);
+        }
+        bin = ss[i].series;
+    }
+    var jsonObj = JSON.stringify(json);
+    console.log(jsonObj)
+    var city = json;
+    var sheng = document.createElement("select");
+    sheng.id='se1';
+    var shi = document.createElement("select");
+    shi.id='se2';
+    var qu = document.createElement("select");
+    var area = document.getElementById("area");
+    qu.id='se3';
+    area.appendChild(sheng);
+    area.appendChild(shi);
+    area.appendChild(qu);
+    sheng.options[0] = new Option("请输入系");
+    shi.options[0] = new Option("请输入专业");
+    qu.options[0] = new Option("请输入班级");
+
+    // 循环第一步,把省循环进select
+    for (var i = 0; i < city.length; i++) {
+        sheng.options[sheng.length] = new Option(city[i].name);
+        // 循环第二步,把所有的市都循环进select
+        sheng.onchange = function () {
+            shi.options.length = 0;
+            shi.options[shi.length] = new Option("请输入专业");
+            for (var j = 0; j < city[sheng.selectedIndex - 1].city.length; j++) {
+                shi.options[shi.length] = new Option(city[sheng.selectedIndex - 1].city[j].name)
+            }
+
+        }
+        shi.onchange = function () {
+            qu.options.length = 0;
+            qu.options[qu.length] = new Option("请输入班级");
+            for (var k = 0; k < city[sheng.selectedIndex - 1].city[shi.selectedIndex - 1].area.length; k++) {
+                qu.options[qu.length] = new Option(city[sheng.selectedIndex - 1].city[shi.selectedIndex - 1].area[k]);
+            }
+            ;
+        }
+    }
+    ;
 
     function isNum(inputID) {
         if ($("#" + inputID).val() != '') {
@@ -287,7 +368,15 @@
            setTimeout(function () {
               $('#span').empty();
            },5000)
-       }
+       };
+        $('.lafite-layui-btn2').click(function () {
+            for (var i = 0; i < ss.length; i++) {
+                if($('#se1').val()==ss[i].series  && $('#se2').val()==ss[i].major &&$('#se3').val()==ss[i].grade){
+                    $('#sid').attr('value',ss[i].cid);
+                }
+            }
+
+        })
     })
 </script>
 </body>

@@ -2,6 +2,8 @@ package com.example.demo2.controller.manages;
 
 import com.example.demo2.domian.*;
 import com.example.demo2.service.*;
+import com.example.demo2.service.StudentService;
+import com.example.demo2.service.serviceDao.StudentService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,9 @@ public class UrlController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private StudentService2 studentService2;
     
     @Autowired
     private User user;
@@ -101,7 +106,17 @@ public class UrlController {
      */
     @RequestMapping("studentlist")
     public String studentlist(Model model){
-        List<Student> studentList = studentService.findAll();
+        Student student = new Student();
+        List<Stu_cour> stu_courList = studentService.findAll();
+        student.setStartPageSize(0);
+        student.setEndPageSize(5);
+        int count = (stu_courList.size()%5)==0?(stu_courList.size()/5):(stu_courList.size()/5)+1;
+        List<Stu_cour> studentList = studentService.paging(student);
+        List<Integer> counts = new ArrayList<Integer>();
+        for (int i=0;i<count;i++){
+            counts.add(i+1);
+        }
+        model.addAttribute("counts",counts);
         model.addAttribute("studentList",studentList);
         return "afters/studentlist";
     }
@@ -109,10 +124,7 @@ public class UrlController {
     //进入学生添加页面
     @RequestMapping("student_add")
     public String student_add(Model model){
-        List<Teacher> teacherList = teacherService.findAll();//班级
-        List<Course> courseList = courseService.findAll();//专业与课程
-
-        model.addAttribute("teacherList",teacherList);
+        List<Course> courseList = courseService.findAll();//专业与班级
         model.addAttribute("courseList",courseList);
         return "afters/student_add";
     }
@@ -124,11 +136,9 @@ public class UrlController {
     public String updatestudent(String id,Model model){
         Student student = new Student();
         student.setSid(Long.parseLong(id));
-        Student S = studentService.findById(student);
-        List<Teacher> teacherList = teacherService.findAll();//班级
-        List<Course> courseList = courseService.findAll();//专业与课程
+        Stu_cour S = studentService.findById2(Long.parseLong(id));
+        List<Course> courseList = courseService.findAll();//专业与班级
 
-        model.addAttribute("teacherList",teacherList);
         model.addAttribute("courseList",courseList);
         model.addAttribute("student",S);
         return "afters/updatestudent";
@@ -147,6 +157,20 @@ public class UrlController {
     }
 
     /**
+     * 进入学生查看课程页面
+     * @return
+     */
+    @RequestMapping("student_see")
+    public String student_see(String id,Model model){
+        Student student = new Student();
+        student.setSid(Long.parseLong(id));
+        Student byId = studentService.findById(student);
+        List<Teacher> teacherList = teacherService.findAll();
+        model.addAttribute("student",byId);
+        return "afters/student_see";
+    }
+
+    /**
      * 进入课程添加页面
      * @return
      */
@@ -162,8 +186,18 @@ public class UrlController {
      */
     @RequestMapping("teacherlist")
     public String teacherlist(Model model){
+        Teacher teacher = new Teacher();
         List<Teacher> teacherList = teacherService.findAll();
-        model.addAttribute("teacherList",teacherList);
+        teacher.setStartPageSize(0);
+        teacher.setEndPageSize(5);
+        int count = (teacherList.size()%5)==0?(teacherList.size()/5):(teacherList.size()/5)+1;
+        List<Teacher> userlist = teacherService.paging(teacher);
+        List<Integer> counts = new ArrayList<Integer>();
+        for (int i=0;i<count;i++){
+            counts.add(i+1);
+        }
+        model.addAttribute("counts",counts);
+        model.addAttribute("teacherList",userlist);
         return "afters/teacherlist";
     }
 

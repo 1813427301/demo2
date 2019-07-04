@@ -23,7 +23,7 @@ public class Course {
     @Column(name = "grade", nullable = false , unique = true)
     private String grade;
 
-    @ManyToMany(mappedBy = "courseList")
+    @ManyToMany(mappedBy = "courseList",cascade=CascadeType.MERGE)
     private List<Student> studentList;
 
     @OneToMany(mappedBy = "course",cascade=CascadeType.ALL,fetch=FetchType.LAZY)

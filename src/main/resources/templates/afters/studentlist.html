@@ -26,7 +26,7 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <input type="text"  id="keynames" placeholder="用户名" autocomplete="off" class="layui-input">
+                        <input type="text"  id="keynames" placeholder="学生编号" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline lafite_search layui-show-xs-block">
                         <button id="dim" class="layui-btn" lay-submit="" lay-filter="sreach">
@@ -36,8 +36,8 @@
                 </div>
 
                 <div class="layui-card-header">
-                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增用户','/afterss/student_add',600,500)"><i
-                            class="layui-icon" ></i>新增用户</a>
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增学生','/afterss/student_add',600,500)"><i
+                            class="layui-icon" ></i>新增学生</a>
                 </div>
 
                 <div class="layui-card-body">
@@ -50,35 +50,42 @@
                             <th>性别</th>
                             <th>身份证</th>
                             <th>家庭地址</th>
-                            <th>专业</th>
+                            <th>所选专业</th>
                             <th>所在班级</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody id="tds">
-                        <tr th:each="student:${studentList}">
-                            <td class="t_id" th:text="${student.sid}" >1</td>
-                            <td th:text="${student.sname}">王小明</td>
-                            <td th:text="${student.sage}">16</td>
-                            <td th:text="${student.sgender}">男</td>
-                            <td th:text="${student.sidCard}">45072122255</td>
-                            <td th:text="${student.saddr}">磨豆腐司法考试</td>
-                            <td th:text="${student.smoajr}">电子专业</td>
-                            <td th:text="${student.grade}">所在班级</td>
-                            <td th:text="${student.sdate_time}">2016-10-08 13:00</td>
+                        <tr th:each="stu_cour:${studentList}">
+                            <td class="t_id" th:text="${stu_cour.student_id?.sid}" >1</td>
+                            <td th:text="${stu_cour.student_id?.sname}">王小明</td>
+                            <td th:text="${stu_cour.student_id?.sage}">16</td>
+                            <td th:text="${stu_cour.student_id?.sgender}">男</td>
+                            <td th:text="${stu_cour.student_id?.sidCard}">45072122255</td>
+                            <td th:text="${stu_cour.student_id?.saddr}">磨豆腐司法考试</td>
+                            <td th:text="${stu_cour.course_id?.major}">电子专业</td>
+                            <td th:text="${stu_cour.course_id?.grade}">所在班级</td>
+                            <td th:text="${stu_cour.student_id?.sdate_time}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
-                                   onclick="xadmin.open('编辑','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)"
+                                   onclick="xadmin.open('修改学生','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
-                                    <input class="inp" type="hidden" th:value="${student.sid}" />
+                                    <input class="inp" type="hidden" th:value="${stu_cour.student_id?.sid}" />
                                 </a>
+                                <a class="lafitewu_auditing" title="查询"
+                                   onclick="xadmin.open('查询','/afterss/student_see',600,500)"
+                                   href="javascript:;">
+                                    查询
+                                    <input class="inp" type="hidden" th:value="${stu_cour.student_id?.sid}" />
+                                </a>
+
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
                                    onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/studentDelete')"
                                    href="javascript:;">
                                     删除
-                                    <input class="dele" type="hidden" th:value="${student.sid}" />
+                                    <input class="dele" type="hidden" th:value="${stu_cour.student_id?.sid}" />
                                 </a>
                             </td>
                         </tr>
@@ -94,8 +101,8 @@
                                 </a>
                             </li>
 
-                            <li   class="lis" value="1" >
-                                <a  href="#"  class="lisa">1</a>
+                            <li th:each="count,userStat:${counts}"  class="lis" value="1"  th:value="${count}">
+                                <a  href="#"  th:text="${count}" class="lisa">1</a>
                             </li>
                             <li>
                                 <a href="#" aria-label="Next" id="userDownTurning">
@@ -103,7 +110,7 @@
                                 </a>
                             </li>
                             <li>
-                                <span aria-hidden="true">总页数: <span ></span></span>
+                                <span aria-hidden="true">总页数: <span th:text="${counts.size()}"></span></span>
                             </li>
                             <li class="current">
                                 <span>当前第: <span class="masum" id="1">1</span> 页</span>
@@ -118,6 +125,42 @@
 </div>
 </body>
 <script>
+
+    function app(va){
+        $("#tds").append("<tr>\n" +
+            "                        <td class=\"t_id\" >"+va.student_id.sid+"</td>\n" +
+            "                            <td >"+va.student_id.sname+"</td>\n" +
+            "                            <td >"+va.student_id.sage+"</td>\n" +
+            "                            <td >"+va.student_id.sgender+"</td>\n" +
+            "                            <td >"+va.student_id.sidCard+"</td>\n" +
+            "                            <td >"+va.student_id.saddr+"</td>\n" +
+            "                            <td >"+va.course_id.major+"</td>\n" +
+            "                            <td >"+va.course_id.grade+"</td>\n" +
+            "                            <td >"+va.student_id.sdate_time+"</td>\n" +
+            "                        <td class=\"td-manage\">\n" +
+            "                            <a class=\"lafitewu_auditing\" title=\"编辑\"\n" +
+            "                        onclick=\"xadmin.open('修改学生','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)\"\n" +
+            "                        href=\"javascript:;\">\n" +
+            "                            编辑\n" +
+            "                            <input class=\"inp\" type=\"hidden\"  />\n" +
+            "                            </a>\n" +
+            "                            <a class=\"lafitewu_auditing\" title=\"查询\"\n" +
+            "                        onclick=\"xadmin.open('查询','/afterss/student_see',600,500)\"\n" +
+            "                        href=\"javascript:;\">\n" +
+            "                            查询\n" +
+            "                            <input class=\"inp\" type=\"hidden\" />\n" +
+            "                            </a>\n" +
+            "\n" +
+            "                            <a class=\"lafitewu_del lafitewu_margin_left_10\" title=\"删除\"\n" +
+            "                        onclick=\"member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/studentDelete')\"\n" +
+            "                        href=\"javascript:;\">\n" +
+            "                            删除\n" +
+            "                            <input class=\"dele\" type=\"hidden\"  />\n" +
+            "                            </a>\n" +
+            "                            </td>\n" +
+            "                            </tr>"
+        );
+    }
     layui.use(['laypage', 'laydate', 'form'],
         function () {
             var laydate = layui.laydate;
@@ -176,33 +219,14 @@
 
     //分页处理
     $(function () {
-
+//关键字查询
         $('#dim').click(function () {
-            $.post('/Json/userDimCheck', {keyname: $('#keynames').val()},
+            $.post('/Json/studentDimCheck', {keyname: $('#keynames').val()},
                 function (data) {
                     $('#tds').empty();
-                    $.each(data, function (index) {
-                        var type;
-                        if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
-                            type = '管理员';
-                        }
-                        $("#tds").append("<tr><td>" + data[index].id + "</td>"
-                            + "<td>" + data[index].username + "</td>"
-                            + "<td>" + type + "</td>"
-                            +
-                            "<td>" + data[index].createTime + "</td>" +
-                            "<td class=\"td-manage\" th:value='"+data[index].id+"' >\n" +
-                            "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"'  title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
-                            "                                                编辑\n"+
-                            "                                            </a>\n" +
-                            "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
-                            "                                                删除\n" +
-                            "                                            </a>\n" +
-                            "                                        </td>" +
-                            "</tr>"
-                        );
+                    $.each(data, function (index,va) {
+                        app(va);
+
                     });
                     $("#uls li").each(function(){
                         var t2=$(this).val();
@@ -218,35 +242,16 @@
         });
 
         $('.lis').click(function () {
-            $.post('/Json/userPaging', {curPage: $(this).val()},
+            $.post('/Json/studentPaging', {curPage: $(this).val()},
                 function (data) {
                     $('#tds').empty();
-                    $.each(data, function (index) {
-                        var type;
-                        if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
-                            type = '管理员';
-                        }
-                        if(data[index].endPageSize>0){
+                    $.each(data, function (index,va) {
+
+                        if(va.student_id.endPageSize>0){
                             $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + " </span>页</span>");
+                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" + va.student_id.endPageSize + " </span>页</span>");
                         }else {
-                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
-                                + "<td>" + data[index].username + "</td>"
-                                + "<td>" + type + "</td>"
-                                +
-                                "<td>" + data[index].createTime + "</td>" +
-                                "<td class=\"td-manage\">\n" +
-                                "                                            <a  class=\"lafitewu_auditing\" title=\"编辑\" th:value='"+data[index].id+"'    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
-                                "                                                编辑\n" +
-                                "                                            </a>\n" +
-                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
-                                "                                                删除\n" +
-                                "                                            </a>\n" +
-                                "                                        </td>" +
-                                "</tr>"
-                            );
+                            app(va);
                         }
                     });
                     $("#uls li").each(function(){
@@ -263,36 +268,16 @@
         });
 
         $('#userOnTurning').click(function () {
-            $.post('/Json/userOnTurning', {onTurning: $('.masum').attr('id')},
+            $.post('/Json/studentOnTurning', {onTurning: $('.masum').attr('id')},
                 function (data) {
                     $('#tds').empty();
-                    $.each(data, function (index) {
-                        var type;
-                        if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
-                            type = '管理员';
-                        }
-                        if(data[index].endPageSize>0){
+                    $.each(data, function (index,va) {
+                        if(va.student_id.endPageSize>0){
                             $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + "</span> 页</span>");
+                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" +va.student_id.endPageSize + "</span> 页</span>");
 
                         }else {
-                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
-                                + "<td>" + data[index].username + "</td>"
-                                + "<td>" + type + "</td>"
-                                +
-                                "<td>" + data[index].createTime + "</td>" +
-                                "<td class=\"td-manage\">\n" +
-                                "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"' title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
-                                "                                                编辑\n" +
-                                "                                            </a>\n" +
-                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
-                                "                                                删除\n" +
-                                "                                            </a>\n" +
-                                "                                        </td>" +
-                                "</tr>"
-                            );
+                            app(va);
                         }
                     });
                     $("#uls li").each(function(){
@@ -309,36 +294,18 @@
         });
 
         $('#userDownTurning').click(function () {
-            $.post('/Json/userDownTurning', {downTurning: $('.masum').attr('id')},
+            $.post('/Json/studentDownTurning', {downTurning: $('.masum').attr('id')},
                 function (data) {
                     $('#tds').empty();
-                    $.each(data, function (index) {
-                        var type;
-                        if (data[index].type == 0) {
-                            type = '普通用户';
-                        } else {
-                            type = '管理员';
-                        }
-                        if(data[index].endPageSize>0){
+                    $.each(data, function (index,va) {
+
+                        if(va.student_id.endPageSize>0){
                             $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+data[index].endPageSize+"'>" + data[index].endPageSize + "</span> 页</span>");
+                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" + va.student_id.endPageSize + "</span> 页</span>");
 
 
                         }else {
-                            $("#tds").append("<tr><td>" + data[index].id + "</td>"
-                                + "<td>" + data[index].username + "</td>"
-                                + "<td>" + type+ "</td>"+
-                                "<td>" + data[index].createTime + "</td>" +
-                                "<td class=\"td-manage\">\n" +
-                                "                                            <a  class=\"lafitewu_auditing\" th:value='"+data[index].id+"' title=\"编辑\"    onclick=\"xadmin.open('编辑','/afterss/updateuser?id='+($(this).attr('th:value')),600,500)\"   href=\"javascript:;\">\n" +
-                                "                                                编辑\n" +
-                                "                                            </a>\n" +
-                                "                                             <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].id+"' title=\"删除\" onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/userDelete')\" href=\"javascript:;\">\n" +
-                                "                                                删除\n" +
-                                "                                            </a>\n" +
-                                "                                        </td>" +
-                                "</tr>"
-                            );
+                            app(va);
                         }
                     });
                     $("#uls li").each(function(){

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
+          href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"
+            charset="utf-8"></script>
+</head>
+<body>
+
+<table class="table table-bordered">
+    <tr>
+        <th>姓名：</th>
+        <th th:text="${student.sname}"></th>
+        <th>性别：</th>
+        <th th:text="${student.sgender}"></th>
+    </tr>
+    <tr>
+        <th>系：</th>
+        <th></th>
+        <th>专业：</th>
+        <th></th>
+    </tr>
+    <tr>
+        <th>班级：</th>
+        <th></th>
+        <th>上课老师：</th>
+        <th></th>
+    </tr>
+    <tr>
+        <th>课程：</th>
+        <th colspan="3"></th>
+    </tr>
+
+</table>
+
+</body>
+</html>

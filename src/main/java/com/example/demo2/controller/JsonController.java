@@ -2,11 +2,10 @@ package com.example.demo2.controller;
 
 import com.example.demo2.domian.*;
 import com.example.demo2.service.*;
-import org.omg.CORBA.PUBLIC_MEMBER;
+import com.example.demo2.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sun.security.provider.certpath.CertId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +91,18 @@ public class JsonController {
         List<User> users = userService.dim(user);
         System.out.println("模糊查询：" + users.toString());
         return users;
+    }
+
+    //student关键字搜索
+    @RequestMapping("studentDimCheck")
+    public List<Stu_cour> studentDimCheck(String keyname) {
+        if(keyname==null || keyname.equals("")){
+            return null;
+        }
+        System.out.println("关键字：" + keyname);
+        List<Stu_cour> stu_cour = studentService.findByNameKey(keyname);
+        System.out.println("模糊查询：" + stu_cour.toString());
+        return stu_cour;
     }
 
     //user分页
@@ -193,6 +204,9 @@ public class JsonController {
     //teacher关键字搜索
     @RequestMapping("teacherDimCheck")
     public List<Teacher> teacherDimCheck(String keyname) {
+        if(keyname==null || keyname.equals("")){
+            return null;
+        }
         System.out.println("关键字：" + keyname);
         Teacher teacher = new Teacher();
         teacher.setKeyname(keyname);
@@ -201,8 +215,46 @@ public class JsonController {
         return teacherList;
     }
 
-    //学生删除
+    //teacherPaging分页
+    @RequestMapping("teacherPaging")
+    public List<Teacher> teacherPaging(String curPage) {
+        Teacher teacher = new Teacher();
+        teacher.setEndPageSize(5);
+        teacher.setStartPageSize((Integer.parseInt(curPage) - 1) * 5);
+        List<Teacher> teachers = teacherService.paging(teacher);
+        teacher.setEndPageSize(Integer.parseInt(curPage));
+        teachers.add(teacher);
+        return teachers;
+    }
 
+    //teacher上一页
+    @RequestMapping("teacherOnTurning")
+    public List<Teacher> teacherOnTurning(String onTurning) {
+        Teacher teacher = new Teacher();
+        teacher.setStartPageSize((Integer.parseInt(onTurning) * 5) - 10 < 0 ? 0 : ((Integer.parseInt(onTurning) * 5) - 10));
+        teacher.setEndPageSize(5);
+        List<Teacher> teachers = teacherService.paging(teacher);
+        teacher.setEndPageSize(Integer.parseInt(onTurning) - 1 == 0 ? 1 : Integer.parseInt(onTurning) - 1);
+        teachers.add(teacher);
+        return teachers;
+    }
+
+    //teacher下一页
+    @RequestMapping("teacherDownTurning")
+    public List<Teacher> teacherDownTurning(String downTurning) {
+        Teacher teacher = new Teacher();
+        List<Teacher> counts = teacherService.findAll();
+        int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
+        System.out.println(cunSize);
+        teacher.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
+        teacher.setEndPageSize(5);
+        List<Teacher> teachers = teacherService.paging(teacher);
+        teacher.setEndPageSize(Integer.parseInt(downTurning) >= cunSize ? (Integer.parseInt(downTurning)) : (Integer.parseInt(downTurning) + 1));
+        teachers.add(teacher);
+        return teachers;
+    }
+
+    //学生删除
     @RequestMapping("studentDelete")
     public Map<Object, Object> studentDelete(String id){
         Map<Object, Object> map = new HashMap<>();
@@ -216,5 +268,50 @@ public class JsonController {
             map.put("ok", false);
         }
         return map;
+    }
+
+    //student分页
+    @RequestMapping("studentPaging")
+    public List<Stu_cour> studentPaging(String curPage) {
+        Stu_cour stu_cour= new Stu_cour();
+        Student student = new Student();
+        student.setEndPageSize(5);
+        student.setStartPageSize((Integer.parseInt(curPage) - 1) * 5);
+        List<Stu_cour> stu_cours = studentService.paging(student);
+        student.setEndPageSize(Integer.parseInt(curPage));
+        stu_cour.setStudent_id(student);
+        stu_cours.add(stu_cour);
+        return stu_cours;
+    }
+
+    //student上一页
+    @RequestMapping("studentOnTurning")
+    public List<Stu_cour> studentOnTurning(String onTurning) {
+        Stu_cour stu_cour = new Stu_cour();
+        Student student = new Student();
+        student.setStartPageSize((Integer.parseInt(onTurning) * 5) - 10 < 0 ? 0 : ((Integer.parseInt(onTurning) * 5) - 10));
+        student.setEndPageSize(5);
+        List<Stu_cour> stu_cours = studentService.paging(student);
+        student.setEndPageSize(Integer.parseInt(onTurning) - 1 == 0 ? 1 : Integer.parseInt(onTurning) - 1);
+        stu_cour.setStudent_id(student);
+        stu_cours.add(stu_cour);
+        return stu_cours;
+    }
+
+    //student下一页
+    @RequestMapping("studentDownTurning")
+    public List<Stu_cour> studentDownTurning(String downTurning) {
+        Stu_cour stu_cour = new Stu_cour();
+        Student student = new Student();
+        List<Stu_cour> counts = studentService.findAll();
+        int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
+        System.out.println(cunSize);
+        student.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
+        student.setEndPageSize(5);
+        List<Stu_cour> stu_cours = studentService.paging(student);
+        student.setEndPageSize(Integer.parseInt(downTurning) >= cunSize ? (Integer.parseInt(downTurning)) : (Integer.parseInt(downTurning) + 1));
+        stu_cour.setStudent_id(student);
+        stu_cours.add(stu_cour);
+        return stu_cours;
     }
 }

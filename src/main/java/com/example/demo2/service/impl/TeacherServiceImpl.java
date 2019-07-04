@@ -67,4 +67,9 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> dim(Teacher keyname) {
         return teacherMapper.dim(keyname);
     }
+
+    @Override
+    public List<Teacher> paging(Teacher teacher) {
+        return teacherMapper.paging(teacher);
+    }
 }

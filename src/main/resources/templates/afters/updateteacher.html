@@ -152,9 +152,9 @@
     area.appendChild(sheng);
     area.appendChild(shi);
     area.appendChild(qu);
-    sheng.options[0] = new Option("请输入系");
-    shi.options[0] = new Option("请输入专业");
-    qu.options[0] = new Option("请输入班级");
+    sheng.options[0] = new Option(""+[[${teacher.course?.series}]]+"");
+    shi.options[0] = new Option(""+[[${teacher.course?.major}]]+"");
+    qu.options[0] = new Option(""+[[${teacher.course?.grade}]]+"");
 
     // 循环第一步,把省循环进select
     for (var i = 0; i < city.length; i++) {

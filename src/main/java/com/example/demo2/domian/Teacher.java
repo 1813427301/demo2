@@ -26,12 +26,12 @@ public class Teacher {
 
     @ManyToMany(cascade= CascadeType.PERSIST)
     @JoinTable(name = "t_tea_stu",
-            joinColumns = {@JoinColumn(name = "teacher_Id")},
-            inverseJoinColumns=@JoinColumn(name="student_Id"))
+            joinColumns = {@JoinColumn(name = "teacher_Id",referencedColumnName="Tid")},
+            inverseJoinColumns=@JoinColumn(name="student_Id", referencedColumnName="Sid"))
     private List<Student> TstudentList;
 
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
-    @JoinColumn(name="Tcourse_id")
+    @JoinColumn(name="Tcourse_id", referencedColumnName = "Cid")
     private Course course;
 
     @OneToOne(mappedBy = "Uteacher", cascade = {
@@ -41,4 +41,10 @@ public class Teacher {
 
     @Transient
     private String keyname;
+
+    @Transient
+    private int startPageSize;
+
+    @Transient
+    private int endPageSize;
 }
