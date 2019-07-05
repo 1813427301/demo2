@@ -85,6 +85,9 @@ public class JsonController {
     //user关键字搜索
     @RequestMapping("userDimCheck")
     public List<User> userDimCheck(String keyname) {
+        if(keyname==null  || keyname.equals("")){
+            return null;
+        }
         System.out.println("关键字：" + keyname);
         User user = new User();
         user.setKeyname(keyname);

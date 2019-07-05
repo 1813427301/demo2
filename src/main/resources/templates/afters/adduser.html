@@ -5,25 +5,40 @@
         <meta charset="UTF-8">
         <title>欢迎页面-X-admin2.2</title>
         <meta name="renderer" content="webkit">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
         <link rel="stylesheet" th:href="@{/after/css/font.css}" href="../../static/after/css/font.css">
         <link rel="stylesheet" th:href="@{/after/css/xadmin.css}" href="../../static/after/css/xadmin.css">
+
+        <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"
+                charset="utf-8"></script>
         <script th:src="@{/after/lib/layui/layui.js}" src="../../static/after/lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" th:src="@{/after/js/xadmin.js}" src="../../static/after/js/xadmin.js"></script>
     </head>
     <body>
+
         <div class="layui-fluid lafite_add_alert">
             <div class="layui-row">
-                <form class="layui-form" method="post" action="/manage/adduser">
+                <form  method="post" action="/manage/adduser">
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>关联的学生
+                        </label>
+                        <div class="layui-input-block lafite_width_60">
+                            <select id="L_city2" name="student_id" style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
+                                <option selected disabled>请选择</option>
+                                <option  th:each="student:${studentList}" th:text="${student?.sname}" th:value="${student?.sid}">普通用户</option>
+
+                            </select>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label for="L_username" class="layui-form-label">
                             <span class="x-red">*</span> 用户名
                         </label>
                         <div class="layui-input-block lafite_width_60">
-                            <input type="text" id="L_username" name="username" required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
+                            <input type="text" id="L_username"  name="username" disabled class=" L_username2 layui-input"/>
+                            <input type="hidden" class="L_username2" name="username" value=""/> </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item layui-form">
                         <label for="L_email" class="layui-form-label">
                             <span class="x-red">*</span> 邮箱
                         </label>
@@ -35,36 +50,24 @@
                         <label for="L_pass" class="layui-form-label">
                             <span class="x-red">*</span> 密码</label>
                         <div class="layui-input-block lafite_width_60">
-                            <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
+                            <input type="password" id="L_pass" name="pass" disabled required="" lay-verify="pass" value="123456" autocomplete="off" class="layui-input">
+                            <input type="hidden"  name="pass"  value="123456"></div>
                         </div>
                     <div class="layui-form-item">
                         <label for="L_repass" class="layui-form-label">
                             <span class="x-red">*</span> 确认密码</label>
                         <div class="layui-input-block lafite_width_60">
-                            <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input"></div>
+                            <input type="password" id="L_repass" disabled name="repass" required="" value="123456" lay-verify="repass" autocomplete="off" class="layui-input">
+                            <input type="hidden"  name="repass"   value="123456" >
+                        </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label for="L_repass" class="layui-form-label">
                             <span class="x-red">*</span> 角色</label>
                         <div class="layui-input-block lafite_width_60">
-                            <select id="L_city" name="city" lay-verify="required">
-                                <option value=""></option>
-                                <option value="0" selected>学生</option>
-                            </select>    
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="L_repass" class="layui-form-label">
-                            <span class="x-red">*</span>关联的学生
-                        </label>
-                        <div class="layui-input-block lafite_width_60">
-                            <select id="L_city2" name="student_id" lay-verify="required">
-                                <option value=""></option>
-                                <option  th:each="student:${studentList}" th:text="${student?.sname}" th:value="${student?.sid}">普通用户</option>
-
-                            </select>
+                            <input type="hidden"  name="city" value="0" >
+                            <input type="text" disabled required="" lay-verify="repass" autocomplete="off" class="layui-input" value="学生">
                         </div>
                     </div>
 
@@ -75,54 +78,66 @@
                         </div>
                     </div>
 
-                    <!-- <div class="layui-form-item">
-                        <label for="L_repass" class="layui-form-label"></label>
-                        <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div> -->
+                    <div style="align-content: center">
+                        <span id="span" style="color: #0eb662;font-size: 30px" th:text="${error}"></span>
+                    </div>
                 </form>
             </div>
-        </div>
-        <script>
-
-            layui.use(['form', 'layer','jquery'],
-            function() {
-                $ = layui.jquery;
-                var form = layui.form,
-                layer = layui.layer;
-
-                //自定义验证规则
-                form.verify({
-                    nikename: function(value) {
-                        if (value.length < 5) {
-                            return '昵称至少得5个字符啊';
-                        }
-                    },
-                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
-                    repass: function(value) {
-                        if ($('#L_pass').val() != $('#L_repass').val()) {
-                            return '两次密码不一致';
-                        }
-                    }
-                });
-
-                //监听提交
-                form.on('submit(add)',
-                function(data) {
-                    console.log(data);
-                    //发异步，把数据提交给php
-                    layer.alert("增加成功", {
-                        icon: 6
-                    },
+            <script>
+                layui.use(['form', 'layer','jquery'],
                     function() {
-                        //关闭当前frame
-                        xadmin.close();
+                        $ = layui.jquery;
+                        var form = layui.form,
+                            layer = layui.layer;
 
-                        // 可以对父窗口进行刷新 
-                        xadmin.father_reload();
+                        //自定义验证规则
+                        form.verify({
+                            nikename: function(value) {
+                                if (value.length < 5) {
+                                    return '昵称至少得5个字符啊';
+                                }
+                            },
+                            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                            repass: function(value) {
+                                if ($('#L_pass').val() != $('#L_repass').val()) {
+                                    return '两次密码不一致';
+                                }
+                            }
+                        });
+
+                        //监听提交
+                        form.on('submit(add)',
+                            function(data) {
+                                console.log(data);
+                                //发异步，把数据提交给php
+                                layer.alert("增加成功", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+
+                                        // 可以对父窗口进行刷新
+                                        xadmin.father_reload();
+                                    });
+                                return false;
+                            });
                     });
-                    return false;
-                });
-            });
-        </script>
+            </script>
+        </div>
     </body>
+    <script th:inline="javascript">
+        var students=[[${studentList}]];
+        $("#L_city2").click(function () {
+            var value=$(this).val();
+            for(var i=0;i<students.length;i++){
+                if(value==students[i].sid){
+                    console.log(students);
+                    $(".L_username2").attr("value",students[i].xueNumberId);
+                }
+            }
+        });
+
+    </script>
 
 </html>

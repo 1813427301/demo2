@@ -26,7 +26,7 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherMapper.findAll();
     }
 
-    @Override
+    /*@Override
     public Map<Object, Object> create(String Tname, String jiao_course, String Teducation, String Cid) {
         Map<Object, Object> map = new HashMap<>();
         Teacher teacher = new Teacher();
@@ -45,7 +45,7 @@ public class TeacherServiceImpl implements TeacherService {
             map.put("ok", false);
         }
         return map;
-    }
+    }*/
 
     @Override
     public Teacher findById(Teacher teacher) {

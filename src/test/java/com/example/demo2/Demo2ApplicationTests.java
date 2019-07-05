@@ -5,6 +5,7 @@ import com.example.demo2.dao.StudentRepository;
 import com.example.demo2.dao.TeacherRepository;
 import com.example.demo2.domian.*;
 import com.example.demo2.mapper.UserMapper;
+import com.example.demo2.shiro.md5.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -15,7 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class Demo2ApplicationTests {
     private UserMapper userMapper;
 
     @Autowired
+    private User user;
+    @Autowired
     private StudentRepository studentRepository;
 
     @Test
@@ -34,19 +39,18 @@ public class Demo2ApplicationTests {
     }
 
     @Test
-    public void testUser() {
-        Course course = new Course();
-        course.setCname("dfsdf");
-        course.setGrade("dfsf");
-        course.setMajor("dsfdf");
-        course.setSeries("dfsfd");
-        Student student = new Student();
-        student.setSage(15);
-        student.setStatus(1);
-        List list =new ArrayList();
-        list.add(course);
-        student.setCourseList(list);
-        Student save = studentRepository.save(student);
-        System.out.println(save);
+    public void testUser(){
+
+    }
+
+
+}
+class Example{
+    public static void main(String args[]){
+        int var=10;
+        int var2=20;
+        System.out.println(var+var2+++""+var2);
     }
 }
+
+

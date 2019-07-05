@@ -14,10 +14,12 @@ import java.util.List;
 public class Teacher {
     @Id //主键注解
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
-    private Long Tid;
+    private Long tid;
 
     @Column(name = "Tname", nullable = false , unique = true)
     private String Tname;
+
+    private String xueNumberId; //老师编号
 
     private String jiao_course;//授课
     private String Teducation;//学历
@@ -26,7 +28,7 @@ public class Teacher {
 
     @ManyToMany(cascade= CascadeType.PERSIST)
     @JoinTable(name = "t_tea_stu",
-            joinColumns = {@JoinColumn(name = "teacher_Id",referencedColumnName="Tid")},
+            joinColumns = {@JoinColumn(name = "teacher_Id",referencedColumnName="tid")},
             inverseJoinColumns=@JoinColumn(name="student_Id", referencedColumnName="Sid"))
     private List<Student> TstudentList;
 
@@ -34,9 +36,8 @@ public class Teacher {
     @JoinColumn(name="Tcourse_id", referencedColumnName = "Cid")
     private Course course;
 
-    @OneToOne(mappedBy = "uteacher", cascade = {
-            CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
-    private User Tuser;
+    @OneToOne(mappedBy = "uteacher", cascade = {CascadeType.MERGE}, optional = false)
+    private User tuser;
 
 
     @Transient

@@ -52,7 +52,7 @@ public class User {
     private Student ustudent;
 
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional=false)//People是关系的维护端，当删除 people，会级联删除 address
-    @JoinColumn(name = "uteacher_id", referencedColumnName = "Tid",unique = true)
+    @JoinColumn(name = "uteacher_id", referencedColumnName = "tid",unique = true)
     private Teacher uteacher;
 
     @Transient

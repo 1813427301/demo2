@@ -1,15 +1,14 @@
 package com.example.demo2.controller.manages;
 
 import com.example.demo2.dao.TestRegex;
-import com.example.demo2.domian.Course;
-import com.example.demo2.domian.Stu_cour;
-import com.example.demo2.domian.Student;
-import com.example.demo2.domian.Teacher;
+import com.example.demo2.dao.UserRepository;
+import com.example.demo2.domian.*;
 import com.example.demo2.service.CourseService;
 import com.example.demo2.service.serviceDao.StudentService2;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.TeacherService;
 import com.example.demo2.service.UserService;
+import com.example.demo2.service.serviceDao.TeacherService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +41,9 @@ public class ManageController {
     @Autowired
     private StudentService2 studentService2;
 
+    @Autowired
+    private TeacherService2 teacherService2;
+
     @GetMapping("login")
     public String managelogin(Model model) {
         model.addAttribute("status", "managelogin");
@@ -62,6 +64,21 @@ public class ManageController {
         return "login";
     }
 
+    //后台管理员添加账号
+    @PostMapping("addadmin")
+    public String addadmin(String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
+        Map<String, Object> map = userService.adminCreate(username, pass, repass,email,city);
+        model.addAttribute("error3", map.get("error"));
+        if ((boolean) map.get("ok") == false) {
+            return "afters/adminuser";
+        }
+        PrintWriter out = response.getWriter();
+        out.print("<script>window.parent.location.href='/afterss/userlist';</script>");
+        out.flush();
+        out.close();
+        return "afters/userlist";
+    }
+
     //后台用户添加学生账号
     @PostMapping("adduser")
     public String adduser(String student_id,String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
@@ -80,10 +97,10 @@ public class ManageController {
     //后台用户添加老师账号
     @PostMapping("teacheruser")
     public String teacheruser(String teacher_id,String username, String email, String pass, String repass, String city, Model model, HttpServletResponse response) throws IOException {
-        Map<String, Object> map = userService.create2(teacher_id,username, pass, repass, email, city);
+        Map<String, Object> map = userService.teacherCreate(teacher_id,username, pass, repass, email, city);
         model.addAttribute("error3", map.get("error"));
         if ((boolean) map.get("ok") == false) {
-            return "afters/adduser";
+            return "afters/teacheruser";
         }
         PrintWriter out = response.getWriter();
         out.print("<script>window.parent.location.href='/afterss/userlist';</script>");
@@ -108,7 +125,7 @@ public class ManageController {
     }
 
     //添加老师
-    @PostMapping("/teacher_add")
+    @PostMapping("teacher_add")
     public String teacher_add(String Tname, String jiao_course, String Teducation, String Cid,Model model, HttpServletResponse response) throws IOException{
         System.out.println( Tname+jiao_course+Teducation+Cid);
         if ((Tname == null || Tname.equals("")) || (jiao_course == null || jiao_course.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
@@ -117,7 +134,7 @@ public class ManageController {
             model.addAttribute("courseList",courseList);
             return "afters/teacher_add";
         }
-        Map<Object, Object> map = teacherService.create(Tname, jiao_course, Teducation, Cid);
+        Map<Object, Object> map = teacherService2.createRepository(Tname, jiao_course, Teducation, Cid);
         if((boolean)map.get("ok")){
             model.addAttribute("error","添加老师成功!");
         }else {
@@ -131,7 +148,7 @@ public class ManageController {
     }
 
     //更新老师数据
-    @PostMapping("/update_teacher")
+    @PostMapping("update_teacher")
     public String update_teacher(String Tname, String jiao_course, String Teducation, String Cid,String tid,Model model, HttpServletResponse response) throws IOException{
         if ((Tname == null || Tname.equals("")) || (jiao_course == null || jiao_course.equals("")) || (Teducation == null || Teducation.equals("")) || (Cid == null || Cid.equals(""))) {
             model.addAttribute("error","不可留空!");
@@ -161,7 +178,7 @@ public class ManageController {
     }
 
     //添加学生
-    @PostMapping("/student_add")
+    @PostMapping("student_add")
     public String student_add(String sid,String sname,String sage,String sgender,String sid_card,String saddr ,Model model,HttpServletResponse response) throws IOException{
         List<Teacher> teacherList = teacherService.findAll();//班级
         List<Course> courseList = courseService.findAll();//专业与课程
@@ -196,7 +213,7 @@ public class ManageController {
     }
 
     //修改学生
-    @PostMapping("/updatestudent")
+    @PostMapping("updatestudent")
     public String updatestudent(String id,String cid,String sname,String sage,String sgender,String sid_card,String saddr ,Model model,HttpServletResponse response) throws IOException{
         List<Teacher> teacherList = teacherService.findAll();//班级
         List<Course> courseList = courseService.findAll();//专业与课程
@@ -227,5 +244,11 @@ public class ManageController {
         out.flush();
         out.close();
         return "afters/studentlist";
+    }
+
+    @RequestMapping("student_results_add")
+    public String student_results_add(String results,Model model){
+
+        return "afters/student_results_add";
     }
 }

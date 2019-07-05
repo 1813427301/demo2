@@ -51,13 +51,8 @@
                     <label class="layui-form-label">
                         <span class="x-red">*</span> 授课</label>
                     <div class="layui-input-block lafite_width_60">
-
-                        <select id="L_city" name="jiao_course" lay-verify="required">
-                            <option value=""></option>
-                            <option selected th:each="course:${courseList}" th:value="${course.cname}"
-                                    th:text="${course.cname}">java
-                            </option>
-                        </select>
+                        <input type="text" id="L_city"  disabled autocomplete="off" placeholder="不用填..." class="layui-input L_city">
+                        <input type="hidden"  name="jiao_course"  class="L_city" >
                     </div>
                 </div>
             </div>
@@ -222,6 +217,7 @@
             for (var i = 0; i < ss.length; i++) {
                 if($('#se1').val()==ss[i].series  && $('#se2').val()==ss[i].major &&$('#se3').val()==ss[i].grade){
                     $('#tcid').attr('value',ss[i].cid);
+                    $('.L_city').attr("value",ss[i].cname);
                 }
             }
 

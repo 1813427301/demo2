@@ -1,5 +1,6 @@
 package com.example.demo2.service.impl;
 
+import com.example.demo2.dao.UserRepository;
 import com.example.demo2.domian.Student;
 import com.example.demo2.domian.Teacher;
 import com.example.demo2.domian.User;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private User user;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<User> findAll() {
@@ -62,7 +66,7 @@ public class UserServiceImpl implements UserService {
                 user.setUrlHead("img/3.png");
                 user.setSex("保密");
                 user.setStatus(1);
-                user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
+                user.setType(Integer.parseInt(city));
                 user.setCreateTime(new Timestamp(new Date().getTime()));
                 user.setUstudent(student);
                 int row = userMapper.create(user);
@@ -82,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> create2(String teacher_id, String username, String password, String password2, String email, String city) {
+    public Map<String, Object> teacherCreate(String teacher_id, String username, String password, String password2, String email, String city) {
         Map<String, Object> map = new HashMap<>();
         map.put("ok", false);
         if (password.equals(password2)) {
@@ -100,10 +104,45 @@ public class UserServiceImpl implements UserService {
                 user.setUrlHead("img/3.png");
                 user.setSex("保密");
                 user.setStatus(1);
-                user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
+                user.setType(Integer.parseInt(city));
                 user.setCreateTime(new Timestamp(new Date().getTime()));
                 user.setUteacher(teacher);
-                int row = userMapper.create(user);
+                int row = userMapper.teacherCreate(user);
+                if (row > 0) {
+                    map.put("ok", true);
+                    map.put("error", "创建成功！");
+                } else {
+                    map.put("error", "插入数据报错，创建失败！");
+                }
+
+            } else {
+                map.put("error", "用户已被创建！");
+            }
+
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> adminCreate(String username, String password, String password2, String email, String city) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ok", false);
+        if (password.equals(password2)) {
+            User user1 = userMapper.findByName(username);
+            if (user1 == null) {
+                user.setUsername(username);
+                //加盐加密
+                String salt = ShiroUtil.createSalt();
+                String passwordBySalt = ShiroUtil.createPwdBySalt(password, salt);
+                user.setPassword(passwordBySalt);
+                user.setSalt(salt);
+                user.setEmail(email);
+                user.setUrlHead("img/3.png");
+                user.setSex("保密");
+                user.setStatus(1);
+                user.setType(Integer.parseInt(city));
+                user.setCreateTime(new Timestamp(new Date().getTime()));
+                int row =userMapper.adminCreate(user);
                 if (row > 0) {
                     map.put("ok", true);
                     map.put("error", "创建成功！");
@@ -207,7 +246,7 @@ public class UserServiceImpl implements UserService {
         User byId = userMapper.findById(id);
         byId.setStatus(0);
         if (byId != null) {
-            int row = userMapper.update(byId);
+            int row = userMapper.update2(byId);
             if (row > 0) {
                 map.put("ok", true);
                 map.put("error", "删除成功！");

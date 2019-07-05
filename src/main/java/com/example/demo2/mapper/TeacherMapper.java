@@ -19,12 +19,13 @@ public interface TeacherMapper {
             @Result(property = "teducation", column = "teducation"),
             @Result(property = "tdate_time", column = "tdate_time"),
             @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
             @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })
     List<Teacher> findAll();
 
-    @Insert("INSERT INTO t_teacher (jiao_course,tname,tcourse_id,teducation,tdate_time,status) VALUES (#{jiao_course},#{tname}, #{course.cid}, #{teducation}, #{tdate_time}, #{status});")
+    @Insert("INSERT INTO t_teacher (jiao_course,tname,tcourse_id,teducation,tdate_time,status,xueNumberId) VALUES (#{jiao_course},#{tname}, #{course.cid}, #{teducation}, #{tdate_time}, #{status},#{xue_number_id});")
     int create(Teacher teacher);
 
     @Select("SELECT * FROM t_teacher WHERE tid=#{tid} and status=1")
@@ -35,6 +36,7 @@ public interface TeacherMapper {
             @Result(property = "teducation", column = "teducation"),
             @Result(property = "tdate_time", column = "tdate_time"),
             @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
             @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })
@@ -53,6 +55,7 @@ public interface TeacherMapper {
             @Result(property = "teducation", column = "teducation"),
             @Result(property = "tdate_time", column = "tdate_time"),
             @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
             @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })
@@ -67,6 +70,7 @@ public interface TeacherMapper {
             @Result(property = "teducation", column = "teducation"),
             @Result(property = "tdate_time", column = "tdate_time"),
             @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
             @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })

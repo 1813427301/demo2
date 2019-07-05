@@ -112,7 +112,7 @@ public class UrlController {
             int a=0;
             for (User user:users){
                 if(user.getUstudent()==null){
-                    break;
+                    continue;
                 }
                 if(student.getSid().equals(user.getUstudent().getSid())||student.getSid()==(user.getUstudent().getSid())){
                     a=1;
@@ -141,7 +141,30 @@ public class UrlController {
     @RequestMapping("teacheruser")
     public String teacheruser(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
-        model.addAttribute("teacherList", teacherList);
+        Map<String,Teacher> map =new HashMap<>();
+        List<Teacher> lists = new ArrayList<>();
+        List<User> users = userService.findAll();
+        for (Teacher teacher:teacherList){
+            int a=0;
+            for (User user:users){
+                if(user.getUteacher()==null){
+                    continue;
+                }
+                if(teacher.getTid().equals(user.getUteacher().getTid())||teacher.getTid()==(user.getUteacher().getTid())){
+                    a=1;
+                    break;
+                }
+
+            }
+            if(a==0){
+                map.put("teacher"+teacher.getTid(),teacher);
+            }
+        }
+        for (Teacher value : map.values())
+        {
+            lists.add(value);
+        }
+        model.addAttribute("teacherList", lists);
         return "afters/teacheruser";
     }
 
@@ -264,6 +287,7 @@ public class UrlController {
      */
     @RequestMapping("student_results_add")
     public String student_results_add(Model model) {
+        List<Teacher> teacherList = teacherService.findAll();
         List<Stu_cour> stu_courList = studentService.findAll();
         List<Results> resultsList = resultsService2.findAll();
         List<Stu_cour> stuCourList = new ArrayList<>();
@@ -287,7 +311,8 @@ public class UrlController {
                 }
             }
         }
-        System.out.println(stuCourList.toString());
+
+        model.addAttribute("teacherList", teacherList);
         model.addAttribute("stu_courList", stuCourList);
         return "afters/student_results_add";
     }

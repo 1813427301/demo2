@@ -138,17 +138,20 @@
 <body>
 <div class="layui-fluid lafite_add_alert">
     <div class="layui-row">
-        <form method="post" action="/manage/student_add">
+        <form method="post" action="/manage/student_results_add">
             <input type="hidden" name="sid" id="sid">
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span> 学生名字
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                        <select id="select10"  style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
-                            <option disabled selected>请选择</option>
-                            <option th:each="stu_cour:${stu_courList}" th:text="${stu_cour.student_id.sname}"></option>
-                        </select>
+                    <select id="select10"
+                            style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
+                        <option disabled selected>请选择</option>
+                        <option th:each="stu_cour:${stu_courList}"
+                                th:value="${stu_cour.student_id.sname}+'&'+${stu_cour.student_id.sid}"
+                                th:text="${stu_cour.student_id.sname}"></option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -156,7 +159,7 @@
                     <span class="x-red">*</span> 课程
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <input type="text"  id="L_email0" disabled name="sage" autocomplete="off"
+                    <input type="text" id="L_email0" disabled name="sage" autocomplete="off"
                            class="layui-input"></div>
             </div>
             <div class="layui-form-item">
@@ -173,7 +176,7 @@
                         <span class="x-red">*</span> 成绩
                     </label>
                     <div class="layui-input-block lafite_width_60">
-                        <input type="text" id="L_username3" name="sname" required="" lay-verify="nikename"
+                        <input type="text" id="L_username3" name="results" required="" lay-verify="nikename"
                                autocomplete="off" class="layui-input">
                     </div>
                     <br/>
@@ -194,61 +197,77 @@
                 </div>
             </div>
         </form>
-        <script th:inline="javascript">
+    </div>
+</div>
+<script th:inline="javascript">
 
-            $("#select10").change(function(){
-                alert($(this).val());
+    $("#select10").change(function () {
+        var data = $(this).val();
+        var str = data.split('&');
+        var stu_cours = [[${stu_courList}]];
+        for (var i = 0; i < stu_cours.length; i++) {
+            if (stu_cours[i].student_id.sname == str[0] && stu_cours[i].student_id.sid == str[1]) {
+                $('#L_email0').attr("value", stu_cours[i].course_id.cname);
+                var teachers = [[${teacherList}]];
+                for (var j=0;j<teachers.length;j++) {
+                        if(teachers[j].course.cid==str[1]){
+                            $('#L_username2').attr("value", teachers[j].tname);
+                        }
+                }
+            }
+        }
+    });
+
+    layui.use(['form', 'layer', 'jquery'],
+        function () {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                nikename: function (value) {
+                    if (value.length > 2) {
+                        return '昵称至少得2个字符啊';
+                    }
+                },
+                pass: [value.length > 2, '学历不能留空，不需两个以上'],
+                repass: function (value) {
+                    if ($('#L_pass').val() != $('#L_repass').val()) {
+                        return '两次密码不一致';
+                    }
+                }
             });
 
-            layui.use(['form', 'layer', 'jquery'],
-                function () {
-                    $ = layui.jquery;
-                    var form = layui.form,
-                        layer = layui.layer;
-
-                    //自定义验证规则
-                    form.verify({
-                        nikename: function (value) {
-                            if (value.length > 2) {
-                                return '昵称至少得2个字符啊';
-                            }
+            //监听提交
+            form.on('submit(add)',
+                function (data) {
+                    console.log(data);
+                    //发异步，把数据提交给php
+                    layer.alert("增加成功", {
+                            icon: 6
                         },
-                        pass: [value.length > 2, '学历不能留空，不需两个以上'],
-                        repass: function (value) {
-                            if ($('#L_pass').val() != $('#L_repass').val()) {
-                                return '两次密码不一致';
-                            }
-                        }
-                    });
+                        function () {
+                            //关闭当前frame
+                            xadmin.close();
 
-                    //监听提交
-                    form.on('submit(add)',
-                        function (data) {
-                            console.log(data);
-                            //发异步，把数据提交给php
-                            layer.alert("增加成功", {
-                                    icon: 6
-                                },
-                                function () {
-                                    //关闭当前frame
-                                    xadmin.close();
-
-                                    // 可以对父窗口进行刷新
-                                    xadmin.father_reload();
-                                });
-                            return false;
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
                         });
+                    return false;
                 });
+        });
 
-            $(function () {
-                var spn = $('#span').html();
-                if (spn != null || apn != undefined) {
-                    setTimeout(function () {
-                        $('#span').empty();
-                    }, 5000)
-                };
-            })
-        </script>
+    $(function () {
+        var spn = $('#span').html();
+        if (spn != null || apn != undefined) {
+            setTimeout(function () {
+                $('#span').empty();
+            }, 5000)
+        }
+        ;
+    })
+</script>
 </body>
 
 </html>

@@ -9,7 +9,6 @@ import java.util.Map;
 
 public interface TeacherService {
     List<Teacher> findAll();
-    Map<Object,Object> create(String Tname, String jiao_course, String Teducation, String Cid);
     Teacher findById(Teacher teacher);
     int update(Teacher teacher);
     int updateDelete(Teacher teacher);

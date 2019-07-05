@@ -58,8 +58,8 @@
                             <td  th:text="${teacher.tname}">王小明</td>
                             <td th:text="${teacher.teducation}">本科</td>
                             <td th:unless="${teacher.jiao_course}"></td>
-                            <td th:if="${teacher.jiao_course}" th:text="${teacher.jiao_course}">java</td>
-                            <td th:if="${teacher.course}" th:text="${teacher.course.grade}">java</td>
+                            <td th:if="${teacher.course}" th:text="${teacher.course.cname}"></td>
+                            <td th:if="${teacher.course}" th:text="${teacher.course.grade}"></td>
                             <td th:unless="${teacher.course}"></td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
@@ -97,7 +97,7 @@
                                 </a>
                             </li>
                             <li>
-                                <span aria-hidden="true">总页数: <span th:text="${counts.size()}"></span></span>
+                                <span aria-hidden="true">总页数: <span th:text="${counts?.size()}"></span></span>
                             </li>
                             <li class="current">
                                 <span>当前第: <span class="masum" id="1">1</span> 页</span>
@@ -118,7 +118,7 @@
             "                            <td>"+value.tname+"</td>\n" +
             "                            <td>"+value.teducation+"</td>\n" +
             "                           <td>"+value.course.cname+"</td>\n" +
-            "                            <th >"+value.jiao_course+"</th>\n" +
+            "                            <th >"+value.course.grade+"</th>\n" +
             "                            <td class=\"td-manage\">\n" +
             "                                <a class=\"lafitewu_auditing\" th:value='"+value.tid+"' title=\"编辑\"\n" +
             "                                   onclick=\"xadmin.open('编辑','/afterss/updateteacher?id='+$(this).attr('th:value'),600,500)\"\n" +

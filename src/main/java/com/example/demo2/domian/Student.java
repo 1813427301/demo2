@@ -20,6 +20,8 @@ public class Student {
     private int Sage;//年龄
     private String Sgender;//性别
 
+    private String xueNumberId;//学号
+
     @Column(name = "sid_card", unique = true, nullable = false)
     private String SidCard;//身份证
 

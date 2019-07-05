@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface StudentMapper {
-    @Insert("INSERT INTO t_student ( sage, sgender, sname, sid_Card,saddr,sdate_time,status) VALUES (#{sage}, #{sgender}, #{sname},#{sidCard},#{saddr}, #{sdate_time},#{status});")
+    @Insert("INSERT INTO t_student ( sage, sgender, sname, sid_Card,saddr,sdate_time,status,xue_number_id) VALUES (#{sage}, #{sgender}, #{sname},#{sidCard},#{saddr}, #{sdate_time},#{status},#{xueNumberId});")
     int create(Student student);
 
     @Select("SELECT * FROM t_stu_cour ORDER BY student_id DESC")
@@ -29,6 +29,7 @@ public interface StudentMapper {
             @Result(property = "sgender", column = "sgender"),
             @Result(property = "sdate_time", column = "sdate_time"),
             @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
     })
     Student findById(Student student);
 

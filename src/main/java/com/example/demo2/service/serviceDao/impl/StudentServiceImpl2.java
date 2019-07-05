@@ -45,6 +45,17 @@ public class StudentServiceImpl2 implements StudentService2 {
             student.setStatus(1);
             Student save = studentRepository.save(student);
             if (save != null) {
+                Calendar calendar = Calendar.getInstance();//日历对象
+                calendar.setTime(new Date());
+                String yearStr = calendar.get(Calendar.YEAR)+"";//获取年份
+                int month = calendar.get(Calendar.MONTH) + 1;//获取月份
+                String monthStr = month < 10 ? "0" + month : month + "";
+                int day = calendar.get(Calendar.DATE);//获取日
+                String dayStr = day < 10 ? "0" + day : day + "";
+                String xueNumberId=yearStr+monthStr+dayStr+save.getSid();
+                student.setSid(save.getSid());
+                student.setXueNumberId(xueNumberId);
+                studentRepository.save(student);
                 map.put("ok", true);
             }
 

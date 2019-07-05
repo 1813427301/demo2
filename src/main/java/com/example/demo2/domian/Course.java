@@ -20,7 +20,7 @@ public class Course {
 
     private String major;
 
-    @Column(name = "grade", nullable = false , unique = true)
+    @Column(name = "grade", unique = true)
     private String grade;
 
     @ManyToMany(mappedBy = "courseList",cascade=CascadeType.MERGE)

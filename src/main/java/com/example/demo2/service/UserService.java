@@ -9,7 +9,8 @@ public interface UserService {
     List<User> findAll();
     User findByid(Long id);
     Map<String ,Object> create(String student_id,String username,String password,String password2,String email,String city);
-    Map<String ,Object> create2(String teacher_id,String username,String password,String password2,String email,String city);
+    Map<String ,Object> teacherCreate(String teacher_id,String username,String password,String password2,String email,String city);
+    Map<String ,Object> adminCreate(String username,String password,String password2,String email,String city);
     Map<String ,Object> login(String username,String password);
     Map<String, Object>  updateUser(Long id,String username,String password,String password2,String email,String city,String date);
     Map<String, Object>  updateImg(String finalImg,String id);
