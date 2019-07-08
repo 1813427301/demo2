@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Entity
@@ -13,12 +14,13 @@ import java.util.Map;
 public class Results {
 
     @Id //主键注解
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long rid;
 
     @OneToOne(mappedBy = "results", cascade = CascadeType.MERGE)
     private Student student;
 
     private Double Results;
+
+    private Timestamp rdate_time;
 
 }

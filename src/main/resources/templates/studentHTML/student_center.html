@@ -1,0 +1,315 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html  >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>我的简历是一个引导响应式网站</title>
+    <!--mobile apps-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="My Resume Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+	SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!--mobile apps-->
+    <!--Custom Theme files-->
+    <link rel="shortcut icon" th:href="@{/img/your_ico.ico}" href="../../static/img/your_ico.ico" type="image/x-icon">
+    <link rel="icon" th:href="@{/img/your_ico.ico}" href="../../static/img/your_ico.ico" type="image/x-icon">
+    <link th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
+          href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <link th:href="@{/css/style2.css}" href="../../static/css/style2.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" th:href="@{/css/swipebox.css}" href="../../static/css/swipebox.css">
+    <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/js/move-top.js}" src="../../static/js/move-top.js"></script>
+    <script type="text/javascript" th:src="@{/js/easing.js}" src="../../static/js/easing.js"></script>
+    <link rel="stylesheet" href="../../static/conn/css/cropper.min.css" th:href="@{/conn/css/cropper.min.css}">
+    <link rel="stylesheet" href="../../static/conn/css/ImgCropping.css" th:href="@{/conn/css/ImgCropping.css}">
+    <script type="text/javascript" src="../../static/conn/js/jquery.min.js" th:src="@{/conn/js/jquery.min.js}"></script>
+    <script type="text/javascript" src="../../static/conn/js/cropper.min.js" th:src="@{/conn/js/cropper.min.js}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({scrollTop: $(this.hash).offset().top}, 1000);
+            });
+        });
+    </script>
+    <!--//end-smooth-scrolling-->
+</head>
+<body>
+<!--banner-->
+<div id="home" class="banner">
+    <div class="banner-info">
+        <div class="container">
+            <div class="col-md-4 header-left">
+                <button id="replaceImg" class="l-btn">更换图片</button>
+                <div style="width: 320px;height: 320px;border: solid 1px #555;padding: 5px;margin-top: 10px">
+                    <img id="finalImg" th:if="${session.user.urlHead eq 'img/3.png'}"  width="100%"  th:src="@{'../'+${session.user.urlHead}}" height="100%">
+                    <img id="finalImg" th:if="${session.user.urlHead ne 'img/3.png'}" th:src="${session.user.urlHead}" width="100%"  height="100%">
+                </div>
+
+                <!--图片裁剪框 start-->
+                <div style="display: none" class="tailoring-container">
+                    <div class="black-cloth" onClick="closeTailor(this)"></div>
+                    <div class="tailoring-content" style="margin-top: 50px">
+                        <div class="tailoring-content-one">
+                            <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
+                                <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onChange="selectImg(this)">
+                                选择图片
+                            </label>
+                            <div class="close-tailoring"  onclick="closeTailor(this)">×</div>
+                        </div>
+                        <div class="tailoring-content-two" style="height: 300px">
+                            <div class="tailoring-box-parcel" style="height: 300px">
+                                <img id="tailoringImg">
+                            </div>
+                            <div class="preview-box-parcel" style="height: 300px">
+                                <p>图片预览：</p>
+                                <div class="square previewImg" style="height: 120px"></div>
+                                <div class="circular previewImg" style="height: 120px"></div>
+                            </div>
+                        </div>
+                        <div class="tailoring-content-three">
+                            <button class="l-btn cropper-reset-btn">复位</button>
+                            <button class="l-btn cropper-rotate-btn">旋转</button>
+                            <button class="l-btn cropper-scaleX-btn">换向</button>
+                            <button class="l-btn sureCut" id="sureCut">确定</button>
+                        </div>
+                    </div>
+                </div>
+                <!--图片裁剪框 end-->
+            </div>
+            <div class="col-md-8 header-right">
+                <h2>Hello</h2>
+                <h1 style="color: #0C0C0C">个人基本信息</h1>
+                <h6>与管理员账号</h6>
+                <input type="hidden" id="uid" th:value="${session.user.id}"/>
+                <ul class="address">
+                    <li>
+                        <ul class="address-text">
+                            <li style="color: #0C0C0C"><b>出生日期</b></li>
+                            <li style="color: #0C0C0C" contenteditable="true" id="dateBirth" th:text="${userDetails.dateBirth}">09-16-1981</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="address-text">
+                            <li style="color: #0C0C0C"><b>联系电话 </b></li>
+                            <li style="color: #0C0C0C" contenteditable="true" id="phone" th:text="${userDetails.phone}">1500008888</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="address-text">
+                            <li style="color: #0C0C0C"><b>居住地址 </b></li>
+                            <li style="color: #0C0C0C" contenteditable="true" id="address" th:text="${userDetails.address}">北京朝阳区赵九路风景线</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="address-text">
+                            <li style="color: #0C0C0C"><b>个人邮箱 </b></li>
+                            <li><a style="color: #0C0C0C" contenteditable="true" target="_blank" id="email" th:text="${session.user.email}">
+                                1139050729@qq.com</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="address-text">
+                            <li style="color: #0C0C0C"><b>名下企业 </b></li>
+                            <li><a style="color: #0C0C0C" contenteditable="true" id="synopsis"
+                                   target="_blank" th:text="${userDetails.synopsis}">冰冰影视传媒工作室</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <button type="button" class="btn btn-success" id="cun">保存数据</button>
+            </div>
+            <div class="clearfix"></div>
+            <button id="uploadImg" type="button" class="btn btn-success">上传头像</button><span id="spn" style="color: #0eb662"></span>
+        </div>
+    </div>
+</div>
+
+<!--smooth-scrolling-of-move-up-->
+<script type="text/javascript">
+    $(function () {
+        $("#spn").empty();
+        $('#uploadImg').click(function () {
+            $.post("/Json/uploadImg",{
+                finalImg:$('#finalImg').attr('src'),id: $('#uid').val()
+            },function (data) {
+                $.each(data, function (index) {
+                    if(data[index]){
+                        $("#spn").append("上传成功！");
+                    }else {
+                        $("#spn").append("上传失败！");
+                    }
+                })
+            })
+        })
+    });
+    $(document).ready(function () {
+
+        var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+        };
+
+        $().UItoTop({easingType: 'easeOutQuart'});
+
+    });
+        $('#cun').click(function () {
+            $.post('/Json/user_center/add', {
+                    uid: $('#uid').val(),
+                    dateBirth: $('#dateBirth').html(), phone: $('#phone').html(), address: $('#address').html(),
+                    synopsis: $('#synopsis').html(), email: $('#email').html()
+                },
+                function (data) {
+                    console.log(data.Object.email);
+                    $.each(data, function (index) {
+
+                        $(".address").empty();
+                        $(".address").append("<li>\n" +
+                            "                        <ul class=\"address-text\">\n" +
+                            "                            <li style=\"color: #0C0C0C\"><b>出生日期</b></li>\n" +
+                            "                            <li style=\"color: #0C0C0C\" contenteditable=\"true\" id=\"dateBirth\" >"+data[index].dateBirth+"</li>\n" +
+                            "                        </ul>\n" +
+                            "                    </li>\n" +
+                            "                    <li>\n" +
+                            "                        <ul class=\"address-text\">\n" +
+                            "                            <li style=\"color: #0C0C0C\"><b>联系电话 </b></li>\n" +
+                            "                            <li style=\"color: #0C0C0C\" contenteditable=\"true\" id=\"phone\">"+data[index].phone+"</li>\n" +
+                            "                        </ul>\n" +
+                            "                    </li>\n" +
+                            "                    <li>\n" +
+                            "                        <ul class=\"address-text\">\n" +
+                            "                            <li style=\"color: #0C0C0C\"><b>居住地址 </b></li>\n" +
+                            "                            <li style=\"color: #0C0C0C\" contenteditable=\"true\" id=\"address\" >"+data[index].address+"</li>\n" +
+                            "                        </ul>\n" +
+                            "                    </li>\n" +
+                            "                    <li>\n" +
+                            "                        <ul class=\"address-text\">\n" +
+                            "                            <li style=\"color: #0C0C0C\"><b>个人邮箱 </b></li>\n" +
+                            "                            <li><a style=\"color: #0C0C0C\" contenteditable=\"true\" target=\"_blank\" id=\"email\" >\n" +
+                            "                                "+data[index]+"</a></li>\n" +
+                            "                        </ul>\n" +
+                            "                    </li>\n" +
+                            "                    <li>\n" +
+                            "                        <ul class=\"address-text\">\n" +
+                            "                            <li style=\"color: #0C0C0C\"><b>名下企业 </b></li>\n" +
+                            "                            <li><a style=\"color: #0C0C0C\" contenteditable=\"true\" id=\"synopsis\"\n" +
+                            "                                   target=\"_blank\">"+data[index].synopsis+"</a></li>\n" +
+                            "                        </ul>\n" +
+                            "                    </li>");
+                    });
+                }
+            );
+
+    });
+
+
+    //弹出框水平垂直居中
+    (window.onresize = function () {
+        var win_height = $(window).height();
+        var win_width = $(window).width();
+        if (win_width <= 768){
+            $(".tailoring-content").css({
+                "top": (win_height - $(".tailoring-content").outerHeight())/2,
+                "left": 0
+            });
+        }else{
+            $(".tailoring-content").css({
+                "top": (win_height - $(".tailoring-content").outerHeight())/2,
+                "left": (win_width - $(".tailoring-content").outerWidth())/2
+            });
+        }
+    })();
+
+    //弹出图片裁剪框
+    $("#replaceImg").on("click",function () {
+        $(".tailoring-container").toggle();
+    });
+    //图像上传
+    function selectImg(file) {
+        if (!file.files || !file.files[0]){
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            var replaceSrc = evt.target.result;
+            //更换cropper的图片
+            $('#tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+        }
+        reader.readAsDataURL(file.files[0]);
+    }
+    //cropper图片裁剪
+    $('#tailoringImg').cropper({
+        aspectRatio: 1/1,//默认比例
+        preview: '.previewImg',//预览视图
+        guides: false,  //裁剪框的虚线(九宫格)
+        autoCropArea: 0.5,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
+        movable: false, //是否允许移动图片
+        dragCrop: true,  //是否允许移除当前的剪裁框，并通过拖动来新建一个剪裁框区域
+        movable: true,  //是否允许移动剪裁框
+        resizable: true,  //是否允许改变裁剪框的大小
+        zoomable: false,  //是否允许缩放图片大小
+        mouseWheelZoom: false,  //是否允许通过鼠标滚轮来缩放图片
+        touchDragZoom: true,  //是否允许通过触摸移动来缩放图片
+        rotatable: true,  //是否允许旋转图片
+        crop: function(e) {
+            // 输出结果数据裁剪图像。
+        }
+    });
+    //旋转
+    $(".cropper-rotate-btn").on("click",function () {
+        $('#tailoringImg').cropper("rotate", 45);
+    });
+    //复位
+    $(".cropper-reset-btn").on("click",function () {
+        $('#tailoringImg').cropper("reset");
+    });
+    //换向
+    var flagX = true;
+    $(".cropper-scaleX-btn").on("click",function () {
+        if(flagX){
+            $('#tailoringImg').cropper("scaleX", -1);
+            flagX = false;
+        }else{
+            $('#tailoringImg').cropper("scaleX", 1);
+            flagX = true;
+        }
+        flagX != flagX;
+    });
+
+
+    //裁剪后的处理
+    $("#sureCut").on("click",function () {
+        if ($("#tailoringImg").attr("src") == null ){
+            return false;
+        }else{
+            var cas = $('#tailoringImg').cropper('getCroppedCanvas');//获取被裁剪后的canvas
+            var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
+            $("#finalImg").prop("src",base64url);//显示为图片的形式
+
+            //关闭裁剪框
+            closeTailor();
+        }
+    });
+    //关闭裁剪框
+    function closeTailor() {
+        $(".tailoring-container").toggle();
+    }
+
+</script>
+<script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}"
+        src="../../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+</body>
+</html>

@@ -25,32 +25,32 @@ public class CourseServiceImpl implements CourseService {
     public Map<Object, Object> create( String series, String major, String grade, String course1,String cid) {
         Map<Object, Object> map = new HashMap<>();
         map.put("ok",false);
-        Course course = new Course();
-        course.setCid(Long.parseLong(cid));
-        course.setMajor(major);
-        course.setGrade(grade);
-        course.setCname(course1);
-        course.setSeries(series);
-        Course byGrade = findByGrade(course);
-        if(byGrade==null){
-            try {
-                courseMapper.create(course);
-                map.put("ok",true);
-            }catch (Exception e){
-            }
-        }else {
-            try {
-                if(!course.getCid().equals("0")||course.getCid()!=0){
-                    int rom = update(course);
-                    map.put("row",rom);
-                }else {
-                    int row = delete(course);
-                    map.put("row",row);
+            Course course = new Course();
+            course.setCid(Long.parseLong(cid));
+            course.setMajor(major);
+            course.setGrade(grade);
+            course.setCname(course1);
+            course.setSeries(series);
+            Course byGrade = findByGrade(course);
+            if (byGrade == null) {
+                try {
+                    courseMapper.create(course);
+                    map.put("ok", true);
+                } catch (Exception e) {
                 }
-            }catch (Exception e){
-                map.put("row","0");
+            } else {
+                try {
+                    if (!course.getCid().equals("0") || course.getCid() != 0) {
+                        int rom = update(course);
+                        map.put("row", rom);
+                    } else {
+                        int row = delete(course);
+                        map.put("row", row);
+                    }
+                } catch (Exception e) {
+                    map.put("row", "0");
+                }
             }
-        }
         return map;
     }
 

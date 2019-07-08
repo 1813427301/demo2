@@ -30,6 +30,7 @@ public interface StudentMapper {
             @Result(property = "sdate_time", column = "sdate_time"),
             @Result(property = "status", column = "status"),
             @Result(property = "xueNumberId", column = "xue_number_id"),
+            @Result(property = "results", column = "results_id",one = @One(select = "com.example.demo2.mapper.ResultsMapper.findById")),
     })
     Student findById(Student student);
 
@@ -42,6 +43,10 @@ public interface StudentMapper {
 
     @Update("UPDATE t_stu_cour t, t_student tt SET tt.saddr=#{saddr},tt.sage=#{sage},tt.sgender=#{sgender},tt.sid_card=#{sidCard},tt.sname=#{sname},t.course_id=#{course_id} WHERE tt.sid=#{sid} and t.student_id=#{sid};")
     int update(Student student);
+
+    @Update("UPDATE t_student SET results_id=#{results.rid} WHERE sid=#{sid};")
+    int updateResults(Student student);
+
 
     @Delete("DELETE t_student,t_stu_cour FROM t_student LEFT JOIN t_stu_cour ON t_student.sid=t_stu_cour.student_id WHERE t_student.sid=#{sid};")
     int delete(Student student);

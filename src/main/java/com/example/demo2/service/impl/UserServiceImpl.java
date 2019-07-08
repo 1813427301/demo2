@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> login(String username, String password) {
-        System.out.println(username + ":" + password);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ok", false);
         //使用shiro的认证

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -45,13 +46,20 @@ public class UserController {
         return "login";
     }
     @PostMapping("login")
-    public String login(String username , String password , Model model, HttpServletResponse response) throws IOException {
+    public String login(String username , String password , Model model, HttpSession session) throws IOException {
+
+
         Map<String, Object> map = userService.login(username, password);
         if((boolean)map.get("ok")){
-            response.getWriter().write("首页");
+            User user =(User) map.get("user");
+            session.setAttribute("user",map.get("user"));
+            if (user.getType()==0){
+                return "studentHTML/index";
+            }
         }else {
             model.addAttribute("error1",map.get("error"));
         }
         return "login";
     }
+
 }

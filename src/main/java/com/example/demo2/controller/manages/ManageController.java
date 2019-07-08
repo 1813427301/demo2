@@ -4,6 +4,7 @@ import com.example.demo2.dao.TestRegex;
 import com.example.demo2.dao.UserRepository;
 import com.example.demo2.domian.*;
 import com.example.demo2.service.CourseService;
+import com.example.demo2.service.serviceDao.ResultsService2;
 import com.example.demo2.service.serviceDao.StudentService2;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.TeacherService;
@@ -20,12 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/manage")
 public class ManageController {
+
     @Autowired
     private UserService userService;
 
@@ -43,6 +46,9 @@ public class ManageController {
 
     @Autowired
     private TeacherService2 teacherService2;
+
+    @Autowired
+    private ResultsService2 resultsService2;
 
     @GetMapping("login")
     public String managelogin(Model model) {
@@ -247,8 +253,25 @@ public class ManageController {
     }
 
     @RequestMapping("student_results_add")
-    public String student_results_add(String results,Model model){
-
+    public String student_results_add(String sid,String results,Model model,HttpServletResponse response)throws IOException{
+        Map<String, Object> map = resultsService2.create(sid, results);
+        List<Stu_cour> courList = new ArrayList<>();
+        model.addAttribute("error",map.get("error"));
+        if((boolean)map.get("ok")){
+            List<Results> resultsList = resultsService2.findAll();
+            for (Results results1:resultsList){
+                Stu_cour byId2 = studentService.findById2(results1.getRid());
+                courList.add(byId2);
+            }
+            model.addAttribute("resultsList",resultsList);
+            model.addAttribute("courList",courList);
+            PrintWriter out = response.getWriter();
+            out.print("<script>window.parent.location.href='/afterss/student_results';</script>");
+            out.flush();
+            out.close();
+            return "afters/student_results";
+        }
         return "afters/student_results_add";
     }
+
 }

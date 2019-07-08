@@ -19,6 +19,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/afterss")
 public class UrlController {
+
     @Autowired
     private UserService userService;
 
@@ -227,18 +228,6 @@ public class UrlController {
         model.addAttribute("student", S);
         return "afters/updatestudent";
     }
-
-
-    /**
-     * 进入添加学生信息页面
-     *
-     * @return
-     */
-    @RequestMapping("write_student")
-    public String write_student() {
-        return "afters/write_student";
-    }
-
     /**
      * 进入学生查看课程页面
      *
@@ -267,18 +256,16 @@ public class UrlController {
      */
     @RequestMapping("student_results")
     public String student_results(Model model) {
-        Student student = new Student();
-        List<Stu_cour> stu_courList = studentService.findAll();
-        student.setStartPageSize(0);
-        student.setEndPageSize(5);
-        int count = (stu_courList.size() % 5) == 0 ? (stu_courList.size() / 5) : (stu_courList.size() / 5) + 1;
-        List<Stu_cour> studentList = studentService.paging(student);
-        List<Integer> counts = new ArrayList<Integer>();
-        for (int i = 0; i < count; i++) {
-            counts.add(i + 1);
+        List<Teacher> teacherList = teacherService.findAll();
+        List<Results> resultsList = resultsService2.findAll();
+        List<Stu_cour> courList = new ArrayList<>();
+        for (Results results1:resultsList){
+            Stu_cour byId2 = studentService.findById2(results1.getRid());
+            courList.add(byId2);
         }
-        model.addAttribute("counts", counts);
-        model.addAttribute("studentList", studentList);
+        model.addAttribute("teacherList", teacherList);
+        model.addAttribute("resultsList",resultsList);
+        model.addAttribute("courList",courList);
         return "afters/student_results";
     }
 
@@ -289,31 +276,28 @@ public class UrlController {
     public String student_results_add(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
         List<Stu_cour> stu_courList = studentService.findAll();
+        Map<String,Stu_cour> map =new HashMap<>();
+        List<Stu_cour> lists = new ArrayList<>();
         List<Results> resultsList = resultsService2.findAll();
-        List<Stu_cour> stuCourList = new ArrayList<>();
-        for (Stu_cour stu_cour : stu_courList) {
-            if (resultsList.size() == 0) {
-                stuCourList.add(stu_cour);
+        for (Stu_cour stu_cour:stu_courList){
+            if(stu_cour.getStudent_id().getResults()==null){
+                map.put("stu_cour"+stu_cour.getStudent_id().getSid(),stu_cour);
+                continue;
             }
-            for (Results result : resultsList) {
-                if (!result.getRid().equals(stu_cour.getStudent_id().getResults())) {
-                    if (stuCourList.size() == 0) {
-                        stuCourList.add(stu_cour);
-                        break;
-                    }
-                    for (Stu_cour stu_cour2 : stuCourList) {
-                        if (stu_cour2.getStudent_id().getResults().equals(result.getRid())) {
-                            stuCourList.remove(stu_cour2);
-                            break;
-                        }
-                    }
-                    stuCourList.add(stu_cour);
+            for (Results results:resultsList){
+                if(results.getRid().equals(stu_cour.getStudent_id().getResults().getRid())||results.getRid()==(stu_cour.getStudent_id().getResults().getRid())){
+                    break;
                 }
+
             }
         }
-
+        for (Stu_cour value : map.values())
+        {
+            lists.add(value);
+        }
+        System.out.println(lists.toString());
         model.addAttribute("teacherList", teacherList);
-        model.addAttribute("stu_courList", stuCourList);
+        model.addAttribute("stu_courList", lists);
         return "afters/student_results_add";
     }
 

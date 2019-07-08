@@ -45,7 +45,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         // Manager manager = null;
         //捕获，不输出异常
         try {
-            user = (User) principalCollection.getPrimaryPrincipal();
+           user = (User) principalCollection.getPrimaryPrincipal();
         } catch (Exception e) {
         }
         try {

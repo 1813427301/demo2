@@ -54,13 +54,13 @@
                         </tr>
                         </thead>
                         <tbody id="tds">
-                        <tr th:each="stu_cour:${studentList}">
+                        <tr th:each="stu_cour:${courList}">
                             <td class="t_id" th:text="${stu_cour.student_id?.sid}" >1</td>
                             <td th:text="${stu_cour.student_id?.sname}">王小明</td>
-                            <th>课程</th>
+                            <th th:text="${stu_cour.course_id?.cname}">课程</th>
                             <th>上课老师</th>
-                            <th>成绩</th>
-                            <td th:text="${stu_cour.student_id?.sdate_time}">2016-10-08 13:00</td>
+                            <th th:each="res:${resultsList}" th:if="${stu_cour.student_id?.sid eq res?.rid}" th:text="${res.results}">成绩</th>
+                            <td th:each="res:${resultsList}" th:if="${stu_cour.student_id?.sid eq res?.rid}" th:text="${res?.rdate_time}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
                                    onclick="xadmin.open('修改学生','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)"
@@ -68,13 +68,6 @@
                                     编辑
                                     <input class="inp" type="hidden" th:value="${stu_cour.student_id?.sid}" />
                                 </a>
-                                <a class="lafitewu_auditing" title="查询"
-                                   onclick="xadmin.open('查询','/afterss/student_see?id='+($(this).children('input').attr('value')),600,500)"
-                                   href="javascript:;">
-                                    查询
-                                    <input class="inp" type="hidden" th:value="${stu_cour.student_id?.sid}" />
-                                </a>
-
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
                                    onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/studentDelete')"
                                    href="javascript:;">
@@ -85,33 +78,6 @@
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div style="margin-left: 30%">
-                    <nav aria-label="Page navigation" >
-                        <ul class="pagination" id="uls">
-                            <li>
-                                <a href="#" id="userOnTurning" aria-label="Previous">
-                                    <span aria-hidden="true">上一页</span>
-                                </a>
-                            </li>
-
-                            <li th:each="count,userStat:${counts}"  class="lis" value="1"  th:value="${count}">
-                                <a  href="#"  th:text="${count}" class="lisa">1</a>
-                            </li>
-                            <li>
-                                <a href="#" aria-label="Next" id="userDownTurning">
-                                    <span aria-hidden="true" >下一页</span>
-                                </a>
-                            </li>
-                            <li>
-                                <span aria-hidden="true">总页数: <span th:text="${counts.size()}"></span></span>
-                            </li>
-                            <li class="current">
-                                <span>当前第: <span class="masum" id="1">1</span> 页</span>
-                            </li>
-                        </ul>
-
-                    </nav>
                 </div>
             </div>
         </div>
@@ -223,85 +189,6 @@
                             $(this).children('a').css('background','red');
                         }else {
 
-                            $(this).children('a').css('background','');
-                        }
-                    })
-                });
-        });
-
-        $('.lis').click(function () {
-            $.post('/Json/studentPaging', {curPage: $(this).val()},
-                function (data) {
-                    $('#tds').empty();
-                    $.each(data, function (index,va) {
-
-                        if(va.student_id.endPageSize>0){
-                            $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" + va.student_id.endPageSize + " </span>页</span>");
-                        }else {
-                            app(va);
-                        }
-                    });
-                    $("#uls li").each(function(){
-                        var t2=$(this).val();
-                        var t=$('.masum').attr('id');
-                        if(t==t2){
-                            $(this).children('a').css('background','red');
-                        }else {
-
-                            $(this).children('a').css('background','');
-                        }
-                    })
-                });
-        });
-
-        $('#userOnTurning').click(function () {
-            $.post('/Json/studentOnTurning', {onTurning: $('.masum').attr('id')},
-                function (data) {
-                    $('#tds').empty();
-                    $.each(data, function (index,va) {
-                        if(va.student_id.endPageSize>0){
-                            $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" +va.student_id.endPageSize + "</span> 页</span>");
-
-                        }else {
-                            app(va);
-                        }
-                    });
-                    $("#uls li").each(function(){
-                        var t2=$(this).val();
-                        var t=$('.masum').attr('id');
-                        if(t==t2){
-                            $(this).children('a').css('background','red');
-                        }else {
-
-                            $(this).children('a').css('background','');
-                        }
-                    })
-                });
-        });
-
-        $('#userDownTurning').click(function () {
-            $.post('/Json/studentDownTurning', {downTurning: $('.masum').attr('id')},
-                function (data) {
-                    $('#tds').empty();
-                    $.each(data, function (index,va) {
-
-                        if(va.student_id.endPageSize>0){
-                            $(".current").empty();
-                            $(".current").append("<span>当前第：<span class='masum' id='"+va.student_id.endPageSize+"'>" + va.student_id.endPageSize + "</span> 页</span>");
-
-
-                        }else {
-                            app(va);
-                        }
-                    });
-                    $("#uls li").each(function(){
-                        var t2=$(this).val();
-                        var t=$('.masum').attr('id');
-                        if(t==t2){
-                            $(this).children('a').css('background','red');
-                        }else {
                             $(this).children('a').css('background','');
                         }
                     })
