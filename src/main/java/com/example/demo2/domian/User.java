@@ -77,7 +77,6 @@ public class User {
                 ", status=" + status +
                 ", salt='" + salt + '\'' +
                 ", email='" + email + '\'' +
-                ", userDetails=" + userDetails +
                 ", keyname='" + keyname + '\'' +
                 ", startPageSize=" + startPageSize +
                 ", endPageSize=" + endPageSize +

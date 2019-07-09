@@ -45,7 +45,7 @@ public class Student {
 
     @OneToOne(cascade = CascadeType.MERGE)//People是关系的维护端，当删除 people，会级联删除 address
     @JoinColumn(name = "results_id", referencedColumnName = "rid")//people中的address_id字段参考address表中的id字段
-    private Results results;
+    private Resultss results;
 
     @Transient
     private Long course_id;

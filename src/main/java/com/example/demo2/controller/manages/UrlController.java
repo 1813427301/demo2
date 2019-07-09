@@ -257,14 +257,14 @@ public class UrlController {
     @RequestMapping("student_results")
     public String student_results(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
-        List<Results> resultsList = resultsService2.findAll();
+        List<Resultss> resultssList = resultsService2.findAll();
         List<Stu_cour> courList = new ArrayList<>();
-        for (Results results1:resultsList){
-            Stu_cour byId2 = studentService.findById2(results1.getRid());
+        for (Resultss resultss1 : resultssList){
+            Stu_cour byId2 = studentService.findById2(resultss1.getRid());
             courList.add(byId2);
         }
         model.addAttribute("teacherList", teacherList);
-        model.addAttribute("resultsList",resultsList);
+        model.addAttribute("resultsList", resultssList);
         model.addAttribute("courList",courList);
         return "afters/student_results";
     }
@@ -278,14 +278,14 @@ public class UrlController {
         List<Stu_cour> stu_courList = studentService.findAll();
         Map<String,Stu_cour> map =new HashMap<>();
         List<Stu_cour> lists = new ArrayList<>();
-        List<Results> resultsList = resultsService2.findAll();
+        List<Resultss> resultssList = resultsService2.findAll();
         for (Stu_cour stu_cour:stu_courList){
             if(stu_cour.getStudent_id().getResults()==null){
                 map.put("stu_cour"+stu_cour.getStudent_id().getSid(),stu_cour);
                 continue;
             }
-            for (Results results:resultsList){
-                if(results.getRid().equals(stu_cour.getStudent_id().getResults().getRid())||results.getRid()==(stu_cour.getStudent_id().getResults().getRid())){
+            for (Resultss resultss : resultssList){
+                if(resultss.getRid().equals(stu_cour.getStudent_id().getResults().getRid())|| resultss.getRid()==(stu_cour.getStudent_id().getResults().getRid())){
                     break;
                 }
 

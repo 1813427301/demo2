@@ -2,6 +2,7 @@ package com.example.demo2.domian;
 
 import lombok.Data;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -11,7 +12,7 @@ import java.util.Map;
 @Table(name = "t_results")
 @Data
 @Repository
-public class Results {
+public class Resultss {
 
     @Id //主键注解
     private Long rid;

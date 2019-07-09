@@ -36,7 +36,9 @@ public interface UserMapper{
             @Result(property = "urlHead", column = "url_head"),
             @Result(property = "type", column = "type"),
             @Result(property = "status", column = "status"),
-            @Result(property = "salt", column = "salt")
+            @Result(property = "salt", column = "salt"),
+            @Result(property = "ustudent", column = "ustudent_id",javaType = Student.class,one = @One(select = "com.example.demo2.mapper.StudentMapper.findById")),
+            @Result(property = "uteacher", column = "uteacher_id",javaType = Teacher.class,one = @One(select = "com.example.demo2.mapper.TeacherMapper.findById"))
     })
     User findByName(String username);
 
@@ -59,7 +61,9 @@ public interface UserMapper{
             @Result(property = "urlHead", column = "url_head"),
             @Result(property = "type", column = "type"),
             @Result(property = "status", column = "status"),
-            @Result(property = "salt", column = "salt")
+            @Result(property = "salt", column = "salt"),
+            @Result(property = "ustudent", column = "ustudent_id",javaType = Student.class,one = @One(select = "com.example.demo2.mapper.StudentMapper.findById")),
+            @Result(property = "uteacher", column = "uteacher_id",javaType = Teacher.class,one = @One(select = "com.example.demo2.mapper.TeacherMapper.findById"))
     })
     User findById(long id);
 

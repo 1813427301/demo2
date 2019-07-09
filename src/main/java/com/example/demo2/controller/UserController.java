@@ -2,13 +2,11 @@ package com.example.demo2.controller;
 
 import com.example.demo2.domian.User;
 import com.example.demo2.service.UserService;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
@@ -48,13 +46,14 @@ public class UserController {
     @PostMapping("login")
     public String login(String username , String password , Model model, HttpSession session) throws IOException {
 
-
         Map<String, Object> map = userService.login(username, password);
         if((boolean)map.get("ok")){
             User user =(User) map.get("user");
             session.setAttribute("user",map.get("user"));
             if (user.getType()==0){
                 return "studentHTML/index";
+            }else  if(user.getType()==1){
+                return "teacher/index";
             }
         }else {
             model.addAttribute("error1",map.get("error"));

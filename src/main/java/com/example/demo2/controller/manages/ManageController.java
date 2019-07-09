@@ -1,7 +1,6 @@
 package com.example.demo2.controller.manages;
 
 import com.example.demo2.dao.TestRegex;
-import com.example.demo2.dao.UserRepository;
 import com.example.demo2.domian.*;
 import com.example.demo2.service.CourseService;
 import com.example.demo2.service.serviceDao.ResultsService2;
@@ -258,12 +257,12 @@ public class ManageController {
         List<Stu_cour> courList = new ArrayList<>();
         model.addAttribute("error",map.get("error"));
         if((boolean)map.get("ok")){
-            List<Results> resultsList = resultsService2.findAll();
-            for (Results results1:resultsList){
-                Stu_cour byId2 = studentService.findById2(results1.getRid());
+            List<Resultss> resultssList = resultsService2.findAll();
+            for (Resultss resultss1 : resultssList){
+                Stu_cour byId2 = studentService.findById2(resultss1.getRid());
                 courList.add(byId2);
             }
-            model.addAttribute("resultsList",resultsList);
+            model.addAttribute("resultsList", resultssList);
             model.addAttribute("courList",courList);
             PrintWriter out = response.getWriter();
             out.print("<script>window.parent.location.href='/afterss/student_results';</script>");

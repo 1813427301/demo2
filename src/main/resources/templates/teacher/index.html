@@ -59,26 +59,26 @@
         <ul id="nav">
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="学生信息">&#xe6fc;</i>
-                    <cite>学生信息</cite>
+                    <i class="iconfont left-nav-li" lay-tips="班级学生">&#xe6fc;</i>
+                    <cite>班级学生</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
 
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('查看成绩','/student/league_table')" class="lian" name="iframe4">
-                            <cite>查看成绩</cite></a>
+                        <a onclick="xadmin.add_tab('查看学生','/student/league_table')" class="lian" name="iframe4">
+                            <cite>查看学生</cite></a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="学生管理">&#xe702;</i>
-                    <cite>学生管理</cite>
+                    <i class="iconfont left-nav-li" lay-tips="老师管理">&#xe702;</i>
+                    <cite>老师管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('密码修改','/student/student_password?id='+($(this).children('input').attr('value')))">
+                        <a onclick="xadmin.add_tab('密码修改','/teacher/student_password?id='+($(this).children('input').attr('value')))">
                             <input  type="hidden" th:value="${session.user.id}"/>
                             <cite>密码修改</cite></a>
                     </li>
@@ -142,15 +142,5 @@
                 console.log($(this));
             });
         });
-
-
-   /* $(function () {
-        $("a").click(function () {
-            var url=$(this).attr("href");
-            $("#mainiframe").attr("src",url);
-        });
-
-    })*/
-
 </script>
 </html>

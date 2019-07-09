@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
             user.setUrlHead("img/3.png");
             user.setSex("保密");
             user.setStatus(1);
-            user.setType(Integer.parseInt(city) == 0 ? 0 : 1);
+            user.setType(Integer.parseInt(city));
             user.setCreateTime(Timestamp.valueOf(date));
             if (user1 == null) {
                 int row = userMapper.create(user);
