@@ -9,6 +9,7 @@ import com.example.demo2.service.CourseService;
 import com.example.demo2.service.serviceDao.TeacherService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional
 public class TeahcerServiceImpl2 implements TeacherService2 {
 
     @Autowired

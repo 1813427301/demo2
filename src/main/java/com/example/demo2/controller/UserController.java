@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
@@ -17,13 +18,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-
-    @GetMapping("regist")
-    public String regist(Model model){
-        model.addAttribute("status","regist");
-        return "login";
-    }
 
     @GetMapping("login")
     public String login(){
@@ -58,6 +52,12 @@ public class UserController {
         }else {
             model.addAttribute("error1",map.get("error"));
         }
+        return "login";
+    }
+
+    @GetMapping("exit")
+    public String exit(HttpServletRequest request){
+        request.getSession().removeAttribute("user");
         return "login";
     }
 

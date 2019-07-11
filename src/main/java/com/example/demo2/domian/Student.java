@@ -2,6 +2,7 @@ package com.example.demo2.domian;
 
 import lombok.Data;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -36,9 +37,6 @@ public class Student {
     private List<Course> courseList;
 
 
-    @ManyToMany(mappedBy = "TstudentList")
-    private List<Teacher> SteacherList;
-
     @OneToOne(mappedBy = "ustudent", cascade = {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Suser;
@@ -61,6 +59,7 @@ public class Student {
 
     @Transient
     private int endPageSize;
+
 
     @Override
     public String toString() {

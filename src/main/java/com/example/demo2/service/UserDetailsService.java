@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public interface UserDetailsService {
-     Map<Object,Object> insert(String uid, String dateBirth, String phone, String address, String synopsis);
+     Map<Object,Object> insert(String uid, String dateBirth, String phone, String address, String synopsis, String email);
      int delete(UserDetails userDetails);
      UserDetails findById(UserDetails userDetails);
 }

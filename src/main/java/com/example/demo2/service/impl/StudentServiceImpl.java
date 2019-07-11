@@ -1,11 +1,17 @@
 package com.example.demo2.service.impl;
 
+import com.example.demo2.dao.Tea_stuRepository;
 import com.example.demo2.domian.Stu_cour;
 import com.example.demo2.domian.Student;
+import com.example.demo2.domian.Teacher;
+import com.example.demo2.domian.User;
 import com.example.demo2.mapper.StudentMapper;
+import com.example.demo2.mapper.TeacherMapper;
+import com.example.demo2.mapper.UserMapper;
 import com.example.demo2.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,9 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Map<Object, Object> create(String sid,String sname,String sage,String sgender,String sid_card,String saddr ) {
@@ -77,6 +87,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public int delete(Student student) {
+        User user = new User();
+        user.setUstudent(student);
+        userMapper.updateStudent(user);
         return studentMapper.delete(student);
     }
 

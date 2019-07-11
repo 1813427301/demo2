@@ -3,6 +3,7 @@ package com.example.demo2.controller;
 import com.example.demo2.domian.*;
 import com.example.demo2.service.*;
 import com.example.demo2.service.StudentService;
+import com.example.demo2.service.serviceDao.ResultsService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,23 +33,8 @@ public class JsonController {
     @Autowired
     private TeacherService teacherService;
 
-    @RequestMapping("regist")
-    public Map<String, Object> jsonRegist(String username, String password, String password2, String email) {
-        Map<String, Object> map = new HashMap<>();
-        if (username == null || username.equals("")) {
-            map.put("nameError", "用户名不能留空");
-        }
-        if (password == null || password.equals("")) {
-            map.put("padError", "密码不能留空");
-        }
-        if (password2 == null || password2.equals("")) {
-            map.put("pad2Error", "第二次密码不能留空");
-        }
-        if (email == null || email.equals("")) {
-            map.put("emailError", "邮箱不能留空");
-        }
-        return map;
-    }
+    @Autowired
+    private ResultsService2 resultsService2;
 
     @RequestMapping("login")
     public Map<String, Object> jsonLogin(String username, String password) {
@@ -149,13 +135,13 @@ public class JsonController {
     @PostMapping("user_center/add")
     public Map<Object, Object> user_center(String uid, String dateBirth, String phone, String email, String address, String synopsis) {
         Map<Object, Object> map = new HashMap<>();
-        System.out.println(uid + "生日:" + dateBirth + "电话:" + phone + "邮箱:" + email + "地址:" + address + "内容:" + synopsis);
-        map = userDetailsService.insert(uid, dateBirth, phone, address, synopsis);
+        map = userDetailsService.insert(uid, dateBirth, phone, address, synopsis , email);
         if ((boolean) map.get("ok")) {
             map.put("userDetails", map.get("userDetails"));
-            System.out.println(map.get("userDetails"));
+            map.put("ok", true);
             return map;
-        }
+        }map.put("ok", false);
+
         return map;
     }
 
@@ -265,6 +251,21 @@ public class JsonController {
         student.setSid(Long.parseLong(id));
         student.setStatus(0);
         int row = studentService.delete(student);
+        if (row > 0) {
+            map.put("ok", true);
+        } else {
+            map.put("ok", false);
+        }
+        return map;
+    }
+
+    //学生成绩删除
+    @RequestMapping("resultsDelete")
+    public Map<Object, Object> resultsDelete(String id){
+        Map<Object, Object> map = new HashMap<>();
+        Resultss resultss = new Resultss();
+        resultss.setRid(Long.parseLong(id));
+        int row = resultsService2.delete(resultss);
         if (row > 0) {
             map.put("ok", true);
         } else {

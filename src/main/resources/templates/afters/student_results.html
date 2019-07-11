@@ -63,13 +63,13 @@
                             <td th:each="res:${resultsList}" th:if="${stu_cour.student_id?.sid eq res?.rid}" th:text="${res?.rdate_time}">2016-10-08 13:00</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
-                                   onclick="xadmin.open('修改学生','/afterss/updatestudent?id='+($(this).children('input').attr('value')),600,500)"
+                                   onclick="xadmin.open('修改学生','/afterss/student_results_update?id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
                                     <input class="inp" type="hidden" th:value="${stu_cour.student_id?.sid}" />
                                 </a>
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
-                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/studentDelete')"
+                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/resultsDelete')"
                                    href="javascript:;">
                                     删除
                                     <input class="dele" type="hidden" th:value="${stu_cour.student_id?.sid}" />

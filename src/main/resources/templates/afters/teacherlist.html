@@ -59,6 +59,7 @@
                             <td th:text="${teacher.teducation}">本科</td>
                             <td th:unless="${teacher.jiao_course}"></td>
                             <td th:if="${teacher.course}" th:text="${teacher.course.cname}"></td>
+                            <td th:unless="${teacher.course}"></td>
                             <td th:if="${teacher.course}" th:text="${teacher.course.grade}"></td>
                             <td th:unless="${teacher.course}"></td>
                             <td class="td-manage">
@@ -198,6 +199,7 @@
                 function (data) {
                     $('#tds').empty();
                     $.each(data, function (index) {
+                        console.log(data[index].teducation)
                         app(data[index]);
 
                     });

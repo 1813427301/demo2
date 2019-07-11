@@ -2,12 +2,15 @@ package com.example.demo2.service.impl;
 
 import com.example.demo2.domian.Course;
 import com.example.demo2.domian.Teacher;
+import com.example.demo2.domian.User;
 import com.example.demo2.mapper.CourseMapper;
 import com.example.demo2.mapper.TeacherMapper;
+import com.example.demo2.mapper.UserMapper;
 import com.example.demo2.service.CourseService;
 import com.example.demo2.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -16,10 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<Teacher> findAll() {
@@ -53,6 +60,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public Teacher findByCourse(Teacher teacher) {
+        return teacherMapper.findByCourse(teacher);
+    }
+
+    @Override
     public int update(Teacher teacher) {
         int row = teacherMapper.update(teacher);
         return row;
@@ -60,6 +72,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public int updateDelete(Teacher teacher) {
+        User user =new User();
+        user.setUteacher(teacher);
+        userMapper.updateTeacher(user);
         return teacherMapper.updateDelete(teacher);
     }
 

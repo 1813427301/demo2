@@ -10,4 +10,5 @@ public interface ResultsService2 {
     List<Resultss> findAll();
     Map<String, Object> create(String sid, String results);
     Resultss findByKey(String key);
+    int delete(Resultss resultss);
 }

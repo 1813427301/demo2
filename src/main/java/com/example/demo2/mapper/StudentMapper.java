@@ -2,6 +2,7 @@ package com.example.demo2.mapper;
 
 import com.example.demo2.domian.Stu_cour;
 import com.example.demo2.domian.Student;
+import com.example.demo2.domian.Tea_stu;
 import com.example.demo2.domian.Teacher;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -48,8 +49,9 @@ public interface StudentMapper {
     int updateResults(Student student);
 
 
-    @Delete("DELETE t_student,t_stu_cour FROM t_student LEFT JOIN t_stu_cour ON t_student.sid=t_stu_cour.student_id WHERE t_student.sid=#{sid};")
+    @Delete("DELETE t_student,t_stu_cour,t_tea_stu FROM t_student LEFT OUTER JOIN t_stu_cour ON t_student.sid = t_stu_cour.student_id LEFT OUTER JOIN t_tea_stu ON t_student.sid = t_tea_stu.student_id WHERE t_student.sid=#{sid};")
     int delete(Student student);
+
 
     @Select("SELECT * FROM t_stu_cour where student_id like '%${_parameter}%' ORDER BY student_id DESC")
     @Results({

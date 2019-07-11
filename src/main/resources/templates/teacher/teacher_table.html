@@ -19,7 +19,7 @@
     <script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}"
             src="../../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
     <style>
-        th{
+        th {
             width: 100px;
         }
     </style>
@@ -31,49 +31,52 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <!--<input type="text"  id="keynames" placeholder="学生编号" autocomplete="off" class="layui-input">-->
-                        <select style="width: 200px;height: 30px">
-                            <option>请选者</option>
-                            <option  th:value="${users.ustudent.results.rid}"
-                                    th:text="${#dates.format(users.ustudent.results.rdate_time,'yyyy年mm月')}"></option>
-                        </select>
-                    </div>
-                    <div class="layui-input-inline lafite_search layui-show-xs-block">
-                        <button id="dim" class="layui-btn" lay-submit="" lay-filter="sreach">
-                            查询
-                        </button>
+                        <input type="text"  id="keynames" placeholder="学生列表详情" disabled autocomplete="off" class="layui-input">
+
                     </div>
                 </div>
+                <div>
 
+                    <table class="table">
+                        <thead style="background: #9D9D9D"><th>系：</th><th th:text="${course?.course_id?.series}"></th><th>班级：</th><th th:text="${course?.course_id?.grade}"></th><th>课程：</th><th th:text="${course?.course_id?.cname}"></th></thead>
+                        <tr style="font-size: 18px;">
+                            <th>学生</th>
+                            <th>年龄</th>
+                            <th>性别</th>
+                            <th>身份证</th>
+                            <th>地址</th>
+                            <th>成绩</th>
+                            <th>学生系统账号</th>
+                        </tr>
+                        <tr th:each="stu:${studentlist}">
+                            <th th:text="${stu.student_id.sname}"></th>
+                            <th th:text="${stu.student_id.sage}"></th>
+                            <th th:text="${stu.student_id.sgender}"></th>
+                            <th th:text="${#strings.abbreviate(stu.student_id.sidCard,17)}"></th>
+                            <th th:text="${stu.student_id.saddr}"></th>
+                            <th th:text="${stu.student_id.results.results}"></th>
+                            <th th:text="${stu.student_id.xueNumberId}"></th>
+                        </tr>
+                    </table>
+                </div>
 
             </div>
         </div>
         <table class="table" style="width: 600px; display: none;">
-            <tr><th>姓名:</th><th id="name"></th><th>课程:</th><th id="course"></th><th>成绩:</th><th id="cj"></th></tr>
+            <tr>
+                <th>姓名:</th>
+                <th id="name"></th>
+                <th>课程:</th>
+                <th id="course"></th>
+                <th>成绩:</th>
+                <th id="cj"></th>
+            </tr>
         </table>
     </div>
 </div>
 
 </body>
 <script>
-
-    $("#dim").click(function () {
-        $("#cj").empty();
-        $("#name").empty();
-        $("#course").empty();
-        if ($("select").val() == '请选者') {
-            return;
-        }
-        $.post("/studentJson/studentKey", {Key: $("select").val()}, function (data) {
-            if(data==null || data==undefined|| data==""){
-                return
-            }
-            $(".table").css("display","block")
-            $("#cj").append(""+data.byKey.results);
-            $("#name").append(""+data.byId2.student_id.sname);
-            $("#course").append(""+data.byId2.course_id.cname);
-        })
-    })
 
 </script>
 

@@ -210,7 +210,27 @@ public class UrlController {
     @RequestMapping("student_add")
     public String student_add(Model model) {
         List<Course> courseList = courseService.findAll();//专业与班级
-        model.addAttribute("courseList", courseList);
+        List<Teacher> teacherList = teacherService.findAll();
+        Map<String,Course> map =new HashMap<>();
+        List<Course> lists = new ArrayList<>();
+        for (Teacher teacher:teacherList){
+            if(teacher.getCourse()==null || teacher.getCourse().equals("")){
+                continue;
+            }
+            for (Course course : courseList){
+                if(course.getCid().equals(teacher.getCourse().getCid())|| course.getCid()==(teacher.getCourse().getCid())){
+                    map.put(""+course.getCid(),course);
+                    break;
+                }
+                System.out.println(course.toString());
+
+            }
+        }
+        for (Course value : map.values())
+        {
+            lists.add(value);
+        }
+        model.addAttribute("courseList", lists);
         return "afters/student_add";
     }
 
@@ -356,4 +376,33 @@ public class UrlController {
         model.addAttribute("teacher", teacher1);
         return "afters/updateteacher";
     }
+
+    /**
+     * 学生成绩修改页面
+     */
+
+    @RequestMapping("student_results_update")
+    public String student_results_update(String id, Model model) {
+        Student student = new Student();
+        student.setSid(Long.parseLong(id));
+        Student student1 = studentService.findById(student);
+        Stu_cour byId2 = studentService.findById2(student1.getSid());
+        Teacher teacher = new Teacher();
+        teacher.setCourse(byId2.getCourse_id());
+        List<Teacher> teacherList = teacherService.findAll();
+        for(Teacher teacher1 : teacherList){
+            if(teacher1.getCourse()==null){
+                continue;
+            }
+            if(byId2.getCourse_id().getCid().equals(teacher1.getCourse().getCid())){
+                model.addAttribute("teacher", teacher1);
+                break;
+            }
+        }
+        model.addAttribute("student", student1);
+        model.addAttribute("courList", byId2);
+
+        return "afters/student_results_update";
+    }
+
 }

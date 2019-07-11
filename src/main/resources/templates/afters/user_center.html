@@ -175,7 +175,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 function (data) {
                     console.log(data.Object.email);
                     $.each(data, function (index) {
-
+                        if(data[index]==true){
+                            $("#spn").append("数据修改成功！");
+                        }else {
+                            $("#spn").append("数据修改失败！");
+                        }
                         $(".address").empty();
                         $(".address").append("<li>\n" +
                             "                        <ul class=\"address-text\">\n" +
@@ -199,7 +203,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             "                        <ul class=\"address-text\">\n" +
                             "                            <li style=\"color: #0C0C0C\"><b>个人邮箱 </b></li>\n" +
                             "                            <li><a style=\"color: #0C0C0C\" contenteditable=\"true\" target=\"_blank\" id=\"email\" >\n" +
-                            "                                "+data[index]+"</a></li>\n" +
+                            "                                "+data[index].user.email+"</a></li>\n" +
                             "                        </ul>\n" +
                             "                    </li>\n" +
                             "                    <li>\n" +

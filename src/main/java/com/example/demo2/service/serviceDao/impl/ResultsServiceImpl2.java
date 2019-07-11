@@ -8,6 +8,7 @@ import com.example.demo2.mapper.StudentMapper;
 import com.example.demo2.service.serviceDao.ResultsService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Transactional
 public class ResultsServiceImpl2 implements ResultsService2 {
 
     @Autowired
@@ -62,5 +64,16 @@ public class ResultsServiceImpl2 implements ResultsService2 {
     @Override
     public Resultss findByKey(String key) {
         return resultsMapper.findByKey(Long.parseLong(key));
+    }
+
+    @Override
+    public int delete(Resultss resultss) {
+        int row =1;
+        try {
+            resultsRepository.delete(resultss);
+        }catch (Exception e){
+            row=0;
+        }
+        return row;
     }
 }

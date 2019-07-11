@@ -42,6 +42,20 @@ public interface TeacherMapper {
     })
     Teacher findById(Teacher teacher);
 
+    @Select("SELECT * FROM t_teacher WHERE tcourse_id=#{course.cid}")
+    @Results({
+            @Result(property = "tid",  column = "tid"),
+            @Result(property = "Tname",  column = "tname"),
+            @Result(property = "jiao_course", column = "jiao_course"),
+            @Result(property = "teducation", column = "teducation"),
+            @Result(property = "tdate_time", column = "tdate_time"),
+            @Result(property = "status", column = "status"),
+            @Result(property = "xueNumberId", column = "xue_number_id"),
+            @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
+                    select="com.example.demo2.mapper.CourseMapper.findById"))
+    })
+    Teacher findByCourse(Teacher teacher);
+
     @Update("UPDATE t_teacher SET tname=#{tname}, tcourse_id=#{course.Cid}, jiao_course=#{jiao_course}, teducation=#{teducation} WHERE tid=#{tid};")
     int update(Teacher teacher);
     @Update("UPDATE t_teacher SET  status=#{status} WHERE tid=#{tid};")

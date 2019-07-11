@@ -57,10 +57,9 @@
                         <div class="layui-input-block lafite_width_60">
                             <select id="L_city" name="city" lay-verify="required">
                                 <option value=""></option>
-                                <option value="0" selected th:text="${user_up.type==0?'普通用户':'管理员'}">普通用户</option>
-                                <option value="1">管理员</option>
-
-                            </select>    
+                                <option value="0" selected th:if="${user_up.type<2}" th:text="${user_up.type==0?'学生':'老师'}">学生</option>
+                                <option value="0" selected th:if="${user_up.type==2}" th:text="${user_up.type==2?'管理员':''}">学生</option>
+                            </select>
                         </div>
                     </div>
 

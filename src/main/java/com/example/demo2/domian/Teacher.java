@@ -26,11 +26,6 @@ public class Teacher {
     private Timestamp Tdate_time;//创建时间
     private int status;//状态
 
-    @ManyToMany(cascade= CascadeType.PERSIST)
-    @JoinTable(name = "t_tea_stu",
-            joinColumns = {@JoinColumn(name = "teacher_Id",referencedColumnName="tid")},
-            inverseJoinColumns=@JoinColumn(name="student_Id", referencedColumnName="Sid"))
-    private List<Student> TstudentList;
 
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
     @JoinColumn(name="Tcourse_id", referencedColumnName = "Cid")
@@ -48,4 +43,20 @@ public class Teacher {
 
     @Transient
     private int endPageSize;
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "tid=" + tid +
+                ", Tname='" + Tname + '\'' +
+                ", xueNumberId='" + xueNumberId + '\'' +
+                ", jiao_course='" + jiao_course + '\'' +
+                ", Teducation='" + Teducation + '\'' +
+                ", Tdate_time=" + Tdate_time +
+                ", status=" + status +
+                ", keyname='" + keyname + '\'' +
+                ", startPageSize=" + startPageSize +
+                ", endPageSize=" + endPageSize +
+                '}';
+    }
 }

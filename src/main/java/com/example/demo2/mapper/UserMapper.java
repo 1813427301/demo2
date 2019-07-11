@@ -73,6 +73,15 @@ public interface UserMapper{
     @Update("UPDATE t_user SET  status=#{status},ustudent_id=null,uteacher_id=null WHERE (id=#{id})")
     int update2(User user);
 
+    @Update("UPDATE t_user SET  ustudent_id=null,type=4 WHERE (ustudent_id=#{ustudent.sid})")
+    int updateStudent(User user);
+
+    @Update("UPDATE t_user SET  uteacher_id=null,type=4 WHERE (uteacher_id=#{uteacher.tid})")
+    int updateTeacher(User user);
+
+    @Update("UPDATE t_user SET  email=#{email} WHERE (id=#{id})")
+    int updateEmail(User user);
+
     @Update("UPDATE t_user SET url_head=#{urlHead} WHERE (id=#{id})")
     int updateImg(User user);
 

@@ -1,9 +1,14 @@
 package com.example.demo2.service.serviceDao.impl;
 
 import com.example.demo2.dao.StudentRepository;
+import com.example.demo2.dao.Tea_stuRepository;
 import com.example.demo2.domian.Course;
 import com.example.demo2.domian.Student;
+import com.example.demo2.domian.Tea_stu;
+import com.example.demo2.domian.Teacher;
 import com.example.demo2.mapper.CourseMapper;
+import com.example.demo2.mapper.StudentMapper;
+import com.example.demo2.mapper.TeacherMapper;
 import com.example.demo2.service.serviceDao.StudentService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,6 +27,15 @@ public class StudentServiceImpl2 implements StudentService2 {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private TeacherMapper teacherMapper;
+
+    @Autowired
+    private Tea_stuRepository tea_stuRepository;
+
+    @Autowired
+    private StudentMapper studentMapper;
+
     @Override
     public Map<Object, Object> create(String sid, String sname, String sage, String sgender, String sid_card, String saddr) {
         Map<Object, Object> map = new HashMap<>();
@@ -29,43 +43,56 @@ public class StudentServiceImpl2 implements StudentService2 {
         if ((sid == null || sid.equals("")) || (sname == null || sname.equals("")) || (sage == null || sage.equals("")) || (sgender == null || sgender.equals("")) || (saddr == null || saddr.equals("")) || (sid_card == null || sid_card.equals(""))) {
             return map;
         } else {
-            Course course = new Course();
-            course.setCid(Long.parseLong(sid));
-            Course course1 = courseMapper.findById(course);
-            List<Course> list = new ArrayList<>();
-            list.add(course1);
-            Student student = new Student();
-            student.setCourseList(list);
-            student.setSname(sname);
-            student.setSage(Integer.parseInt(sage));
-            student.setSaddr(saddr);
-            student.setSgender(sgender);
-            student.setSidCard(sid_card);
-            student.setSdate_time(new Timestamp(new Date().getTime()));
-            student.setStatus(1);
-            Student save = studentRepository.save(student);
-            if (save != null) {
-                Calendar calendar = Calendar.getInstance();//日历对象
-                calendar.setTime(new Date());
-                String yearStr = calendar.get(Calendar.YEAR)+"";//获取年份
-                int month = calendar.get(Calendar.MONTH) + 1;//获取月份
-                String monthStr = month < 10 ? "0" + month : month + "";
-                int day = calendar.get(Calendar.DATE);//获取日
-                String dayStr = day < 10 ? "0" + day : day + "";
-                String xueNumberId=yearStr+monthStr+dayStr+save.getSid();
-                student.setSid(save.getSid());
-                student.setXueNumberId(xueNumberId);
-                studentRepository.save(student);
-                map.put("ok", true);
+            Student save=null;
+            try {
+                Course course = new Course();
+                course.setCid(Long.parseLong(sid));
+                Course course1 = courseMapper.findById(course);
+                List<Course> list = new ArrayList<>();
+                list.add(course1);
+                Student student = new Student();
+                student.setCourseList(list);
+                student.setSname(sname);
+                student.setSage(Integer.parseInt(sage));
+                student.setSaddr(saddr);
+                student.setSgender(sgender);
+                student.setSidCard(sid_card);
+                student.setSdate_time(new Timestamp(new Date().getTime()));
+                student.setStatus(1);
+                 save = studentRepository.save(student);
+                if (save != null) {
+                    Calendar calendar = Calendar.getInstance();//日历对象
+                    calendar.setTime(new Date());
+                    String yearStr = calendar.get(Calendar.YEAR) + "";//获取年份
+                    int month = calendar.get(Calendar.MONTH) + 1;//获取月份
+                    String monthStr = month < 10 ? "0" + month : month + "";
+                    int day = calendar.get(Calendar.DATE);//获取日
+                    String dayStr = day < 10 ? "0" + day : day + "";
+                    String xueNumberId = yearStr + monthStr + dayStr + save.getSid();
+                    student.setSid(save.getSid());
+                    student.setXueNumberId(xueNumberId);
+                    studentRepository.save(student);
+                    Teacher teacher = new Teacher();
+                    teacher.setCourse(course);
+                    Teacher teacher1 = teacherMapper.findByCourse(teacher);
+                    Tea_stu tea_stu = new Tea_stu();
+                    tea_stu.setStudent_id(student.getSid());
+                    tea_stu.setTeacher_id(teacher1.getTid());
+                    Tea_stu save1 = tea_stuRepository.save(tea_stu);
+                    if (save1 != null) {
+                        map.put("ok", true);
+                    }
+                }
+            }catch (Exception e){
+                studentMapper.delete(save);
             }
-
         }
         return map;
     }
 
     @Override
     public List<Student> findAll() {
-        List<Student> studentList = (List<Student>)studentRepository.findAll();
+        List<Student> studentList = (List<Student>) studentRepository.findAll();
         return studentList;
     }
 
