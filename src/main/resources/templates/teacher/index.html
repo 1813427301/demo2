@@ -22,6 +22,7 @@
         // 是否开启刷新记忆tab功能
         // var is_remember = false;
     </script>
+
 </head>
 <body class="index">
 <!-- 顶部开始 -->
@@ -35,9 +36,16 @@
         <li class="layui-nav-item">
             <a>
                 <div class="lafitewu_circle">
+
                     <i class="iconfont" style="margin-left: -5px">
-                        <img th:if="${session.user.urlHead eq 'img/3.png'}" th:src="@{'../'+${session.user.urlHead}}" style="width:30px; border-radius:30px; ">
-                        <img th:if="${session.user.urlHead ne 'img/3.png'}" th:src="${session.user.urlHead}" style="width: 30px; border-radius:30px;">
+                        <img th:if="${session.user?.urlHead!=null && image==null && session.user?.urlHead ne 'img/3.png'}" th:src="@{'../handimg/'+${session.user?.urlHead}}" style="width:30px; border-radius:30px; ">
+                        <img th:if="${session.user?.urlHead eq 'img/3.png' && image==null}" th:src="@{'../'+${session.user?.urlHead}}" style="width:30px; border-radius:30px; ">
+                        <img th:if="${image!=null}" th:src="${image}" src="#" style="width: 30px; border-radius:30px;" />
+                        <form action="/../upload" method="post" enctype="multipart/form-data">
+                            <input id="file1" style="display: none" type="file" name="file" />
+                            <input   type="hidden" name="id" th:value="${session.user.id}" />
+                            <button id="bud" style="display: none">提交</button>
+                        </form>
                     </i>
 
                 </div>
@@ -142,5 +150,17 @@
                 console.log($(this));
             });
         });
+    $(".iconfont>img").click(function () {
+        $("#file1").click();
+
+        $("#file1").change(function () {
+            var invalue=$("#file1").val();
+            if(invalue!=null && invalue!=undefined && invalue!=""){
+                $("#bud").click();
+                $("#file1").val("");
+            }
+        })
+    })
 </script>
+
 </html>

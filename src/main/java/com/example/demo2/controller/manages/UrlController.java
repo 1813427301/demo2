@@ -49,6 +49,12 @@ public class UrlController {
     public String index() {
         return "afters/index";
     }
+    //进入欢迎页面
+    @GetMapping("calendar")
+    public String calendar() {
+        return "afters/conn/calendar";
+    }
+
 
 
     @GetMapping("add_role")

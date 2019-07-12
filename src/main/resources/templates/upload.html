@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>上传图片</title>
+</head>
+<body>
+    <p style="color: red;" th:if="${error != null}" th:text="${error}"></p>
+    <p style="color: green;" th:if="${message != null}" th:text="${message}"></p>
+    <form action="upload" method="post" enctype="multipart/form-data">
+        选择文件：<input type="file" name="file" /><br/>
+        <button>提交</button>
+    </form>
+    <hr/>
+    <img th:if="${image!=null}" th:src="${image}" src="#" />
+</body>
+</html>
