@@ -60,7 +60,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher findByCourse(Teacher teacher) {
+    public List<Teacher> findByCourse(Teacher teacher) {
         return teacherMapper.findByCourse(teacher);
     }
 

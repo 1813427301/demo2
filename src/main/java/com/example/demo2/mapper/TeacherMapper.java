@@ -54,12 +54,19 @@ public interface TeacherMapper {
             @Result(property = "course", column = "tcourse_id",javaType = Course.class,many = @Many(
                     select="com.example.demo2.mapper.CourseMapper.findById"))
     })
-    Teacher findByCourse(Teacher teacher);
+    List<Teacher> findByCourse(Teacher teacher);
 
     @Update("UPDATE t_teacher SET tname=#{tname}, tcourse_id=#{course.Cid}, jiao_course=#{jiao_course}, teducation=#{teducation} WHERE tid=#{tid};")
     int update(Teacher teacher);
+
     @Update("UPDATE t_teacher SET  status=#{status} WHERE tid=#{tid};")
     int updateDelete(Teacher teacher);
+
+    @Update("UPDATE t_teacher SET  tcourse_id=0 WHERE tcourse_id=#{course.cid};")
+    int updatet_course(Teacher teacher);
+
+    @Update("UPDATE t_teacher SET  jiao_course='无' WHERE tcourse_id=#{course.cid};")
+    int updatet_course2(Teacher teacher);
 
     @Select("SELECT * FROM t_teacher where tname like '%${keyname}%' and status=1;")
     @Results({

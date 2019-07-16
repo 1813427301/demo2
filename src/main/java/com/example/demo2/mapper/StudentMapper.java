@@ -31,7 +31,7 @@ public interface StudentMapper {
             @Result(property = "sdate_time", column = "sdate_time"),
             @Result(property = "status", column = "status"),
             @Result(property = "xueNumberId", column = "xue_number_id"),
-            @Result(property = "results", column = "results_id",one = @One(select = "com.example.demo2.mapper.ResultsMapper.findById")),
+            @Result(property = "results", column = "results_id",many = @Many(select = "com.example.demo2.mapper.ResultsMapper.findById")),
     })
     Student findById(Student student);
 

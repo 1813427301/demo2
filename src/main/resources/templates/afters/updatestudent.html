@@ -144,8 +144,8 @@
                     <span class="x-red">*</span> 学生名字
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <input type="hidden" name="id" th:value="${student.student_id.sid}"/>
-                    <input type="text" id="L_username" name="sname" th:value="${student.student_id.sname}" required=""
+                    <input type="hidden" name="id" th:value="${student?.student_id?.sid}"/>
+                    <input type="text" id="L_username" name="sname" th:value="${student?.student_id.sname}" required=""
                            lay-verify="nikename" autocomplete="off"
                            class="layui-input"></div>
             </div>
@@ -154,18 +154,18 @@
                     <span class="x-red">*</span> 年龄
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <input type="text" onkeyup="isNum('L_email0')" id="L_email0" name="sage" th:value="${student.student_id.sage}"
+                    <input type="text" onkeyup="isNum('L_email0')" id="L_email0" name="sage" th:value="${student?.student_id.sage}"
                            autocomplete="off" class="layui-input"></div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span> 性别
                 </label>
-                <div class="layui-input-block lafite_width_60" th:switch="${student.student_id.sgender}">
-                    <input   type="radio" name="sgender" th:case="'男'"  checked th:value="${student.student_id.sgender}" th:text="${student.student_id.sgender}"/>
-                    <input   type="radio" name="sgender" th:if="${student.student_id.sgender} ne '男' " th:value="男"/><span th:if="${student.student_id.sgender} ne '男'">男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="layui-input-block lafite_width_60" th:switch="${student?.student_id.sgender}">
+                    <input   type="radio" name="sgender" th:case="'男'"  checked th:value="${student?.student_id.sgender}" th:text="${student.student_id.sgender}"/>
+                    <input   type="radio" name="sgender" th:if="${student?.student_id.sgender} ne '男' " th:value="男"/><span th:if="${student.student_id.sgender} ne '男'">男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <input   type="radio" name="sgender" th:case="'女'" checked th:value="${student.student_id.sgender}" th:text="${student.student_id.sgender}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input   type="radio" name="sgender" th:if="${student.student_id.sgender} ne '女'" th:value="女"/><span th:if="${student.student_id.sgender} ne '女'">女</span>
+                    <input   type="radio" name="sgender" th:if="${student?.student_id.sgender} ne '女'" th:value="女"/><span th:if="${student.student_id.sgender} ne '女'">女</span>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -173,7 +173,7 @@
                     <span class="x-red">*</span> 身份证
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <input type="text" id="L_email1" onkeyup="isNum('L_email1')" name="sid_card" th:value="${student.student_id.sidCard}" autocomplete="off"
+                    <input type="text" id="L_email1" onkeyup="isNum('L_email1')" name="sid_card" th:value="${student?.student_id.sidCard}" autocomplete="off"
                            class="layui-input"></div>
             </div>
             <div class="layui-form-item">
@@ -183,7 +183,7 @@
                 <div class="layui-input-block lafite_width_60">
                     <div class="wrap">
                         <input class="input" name="saddr" id="city" type="text" placeholder="请选择" autocomplete="off"
-                               readonly="true" style="width: 345px" th:value="${student.student_id.saddr}"/><s></s></div>
+                               readonly="true" style="width: 345px" th:value="${student?.student_id.saddr}"/><s></s></div>
 
                     <script type="text/javascript">
                         $("#city").click(function (e) {

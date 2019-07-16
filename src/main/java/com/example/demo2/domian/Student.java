@@ -41,10 +41,6 @@ public class Student {
             CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private User Suser;
 
-    @OneToOne(cascade = CascadeType.MERGE)//People是关系的维护端，当删除 people，会级联删除 address
-    @JoinColumn(name = "results_id", referencedColumnName = "rid")//people中的address_id字段参考address表中的id字段
-    private Resultss results;
-
     @Transient
     private Long course_id;
 
@@ -74,6 +70,7 @@ public class Student {
                 ", status=" + status +
                 ", course_id=" + course_id +
                 ", student_id=" + student_id +
+                ", xueNumberId=" + xueNumberId +
                 ", studentDimCheck='" + studentDimCheck + '\'' +
                 ", startPageSize=" + startPageSize +
                 ", endPageSize=" + endPageSize +

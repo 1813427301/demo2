@@ -18,4 +18,9 @@ public class Tea_stuServiceImpl implements Tea_stuService {
     public List<Tea_stu> findAll(Long teacher_id) {
         return tea_stuMapper.findAll(teacher_id);
     }
+
+    @Override
+    public List<Tea_stu> findStudentAll(Long student_id) {
+        return tea_stuMapper.findStudentAll(student_id);
+    }
 }

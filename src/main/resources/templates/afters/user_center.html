@@ -97,33 +97,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <li>
                         <ul class="address-text">
                             <li style="color: #0C0C0C"><b>出生日期</b></li>
-                            <li style="color: #0C0C0C" contenteditable="true" id="dateBirth" th:text="${userDetails.dateBirth}">09-16-1981</li>
+                            <li><a style="color: #0C0C0C; border: #9D9D9D 1px solid;" contenteditable="true" id="dateBirth"  th:text="${userDetails?.dateBirth}"></a>09-16-1981</li>
                         </ul>
                     </li>
                     <li>
                         <ul class="address-text">
                             <li style="color: #0C0C0C"><b>联系电话 </b></li>
-                            <li style="color: #0C0C0C" contenteditable="true" id="phone" th:text="${userDetails.phone}">1500008888</li>
+                            <li><a style="color: #0C0C0C; border: #9D9D9D 1px solid;" contenteditable="true" id="phone"  th:text="${userDetails?.phone}"></a>1500008888</li>
                         </ul>
                     </li>
                     <li>
                         <ul class="address-text">
                             <li style="color: #0C0C0C"><b>居住地址 </b></li>
-                            <li style="color: #0C0C0C" contenteditable="true" id="address" th:text="${userDetails.address}">北京朝阳区赵九路风景线</li>
+                            <li><a style="color: #0C0C0C; border: #9D9D9D 1px solid;" contenteditable="true" id="address"  th:text="${userDetails?.address}"></a>北京朝阳区赵九路风景线</li>
                         </ul>
                     </li>
                     <li>
                         <ul class="address-text">
                             <li style="color: #0C0C0C"><b>个人邮箱 </b></li>
-                            <li><a style="color: #0C0C0C" contenteditable="true" target="_blank" id="email" th:text="${session.user.email}">
+                            <li><a style="color: #0C0C0C; border: #9D9D9D 1px solid;" contenteditable="true" target="_blank" id="email" th:text="${session.user.email}">
                                 1139050729@qq.com</a></li>
                         </ul>
                     </li>
                     <li>
                         <ul class="address-text">
                             <li style="color: #0C0C0C"><b>名下企业 </b></li>
-                            <li><a style="color: #0C0C0C" contenteditable="true" id="synopsis"
-                                   target="_blank" th:text="${userDetails.synopsis}">冰冰影视传媒工作室</a></li>
+                            <li><a style="color: #0C0C0C; border: #9D9D9D 1px solid;" contenteditable="true" id="synopsis"
+                                   target="_blank" th:text="${userDetails?.synopsis}">冰冰影视传媒工作室</a></li>
                         </ul>
                     </li>
 

@@ -1,13 +1,8 @@
 package com.example.demo2.service.impl;
 
 import com.example.demo2.dao.Tea_stuRepository;
-import com.example.demo2.domian.Stu_cour;
-import com.example.demo2.domian.Student;
-import com.example.demo2.domian.Teacher;
-import com.example.demo2.domian.User;
-import com.example.demo2.mapper.StudentMapper;
-import com.example.demo2.mapper.TeacherMapper;
-import com.example.demo2.mapper.UserMapper;
+import com.example.demo2.domian.*;
+import com.example.demo2.mapper.*;
 import com.example.demo2.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +23,31 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private Tea_stuMapper tea_stuMapper;
+
+    @Autowired
+    private TeacherMapper teacherMapper;
+
+    @Autowired
+    private Cour_Cour2Mapper cour_cour2Mapper;
+
+    @Autowired
+    private Course2Mapper course2Mapper;
+
+    @Autowired
+    private Stu_ResulMapper stu_resulMapper;
+
+    @Autowired
+    private ResultsMapper resultsMapper;
+
     @Override
-    public Map<Object, Object> create(String sid,String sname,String sage,String sgender,String sid_card,String saddr ) {
+    public Map<Object, Object> create(String sid, String sname, String sage, String sgender, String sid_card, String saddr) {
         Map<Object, Object> map = new HashMap<>();
-        map.put("ok",false);
-        if((sid == null || sid.equals("")) ||(sname == null || sname.equals("")) || (sage == null || sage.equals("")) || (sgender == null || sgender.equals("")) || (saddr == null || saddr.equals("")) || (sid_card ==null || sid_card.equals(""))){
+        map.put("ok", false);
+        if ((sid == null || sid.equals("")) || (sname == null || sname.equals("")) || (sage == null || sage.equals("")) || (sgender == null || sgender.equals("")) || (saddr == null || saddr.equals("")) || (sid_card == null || sid_card.equals(""))) {
             return map;
-        }else {
+        } else {
             Student student = new Student();
             student.setSname(sname);
             student.setSage(Integer.parseInt(sage));
@@ -44,8 +57,8 @@ public class StudentServiceImpl implements StudentService {
             student.setSdate_time(new Timestamp(new Date().getTime()));
             student.setStatus(1);
             int row = studentMapper.create(student);
-            if (row>0){
-                map.put("ok",true);
+            if (row > 0) {
+                map.put("ok", true);
             }
         }
         return map;
@@ -57,7 +70,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student findById(Student student){
+    public Student findById(Student student) {
         return studentMapper.findById(student);
     }
 
@@ -67,21 +80,38 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public int update(String id,String sid,String sname,String sage,String sgender,String sid_card,String saddr) {
+    public int update(String id, String sid, String sname, String sage, String sgender, String sid_card, String saddr) {
         int row = 0;
-        if((sid == null || sid.equals("")) ||(sname == null || sname.equals("")) || (sage == null || sage.equals("")) || (sgender == null || sgender.equals("")) || (saddr == null || saddr.equals(""))  || (sid_card ==null || sid_card.equals(""))){
-            return row;
-        }else {
-            Student student = new Student();
-            student.setCourse_id(Long.parseLong(sid));
-            student.setSid(Long.parseLong(id));
-            student.setSgender(sgender);
-            student.setSname(sname);
-            student.setSaddr(saddr);
-            student.setSage(Integer.parseInt(sage));
-            student.setSidCard(sid_card);
-            row=studentMapper.update(student);
-        }
+
+            if ((sid == null || sid.equals("")) || (sname == null || sname.equals("")) || (sage == null || sage.equals("")) || (sgender == null || sgender.equals("")) || (saddr == null || saddr.equals("")) || (sid_card == null || sid_card.equals(""))) {
+                return row;
+            } else {
+                Student student = new Student();
+                student.setCourse_id(Long.parseLong(sid));
+                student.setSid(Long.parseLong(id));
+                student.setSgender(sgender);
+                student.setSname(sname);
+                student.setSaddr(saddr);
+                student.setSage(Integer.parseInt(sage));
+                student.setSidCard(sid_card);
+                row = studentMapper.update(student);
+                Tea_stu tea_stu = new Tea_stu();
+                tea_stu.setStudent_id(student.getSid());
+                if (row > 0) {
+                    tea_stuMapper.delete(tea_stu);
+                    Course course = new Course();
+                    course.setCid(Long.parseLong(sid));
+                    Teacher teacher = new Teacher();
+                    teacher.setCourse(course);
+                    List<Teacher> teacherList = teacherMapper.findByCourse(teacher);
+                    for (Teacher t : teacherList) {
+                        tea_stu.setTeacher_id(t.getTid());
+                        row = tea_stuMapper.add(tea_stu);
+
+                    }
+                    stu_resulMapper.delete(Long.parseLong(id));
+                }
+            }
         return row;
     }
 

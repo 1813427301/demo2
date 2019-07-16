@@ -19,7 +19,7 @@
     <script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}"
             src="../../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
     <style>
-        th{
+        th {
             width: 100px;
         }
     </style>
@@ -34,8 +34,8 @@
                         <!--<input type="text"  id="keynames" placeholder="学生编号" autocomplete="off" class="layui-input">-->
                         <select style="width: 200px;height: 30px">
                             <option>请选者</option>
-                            <option  th:value="${users.ustudent.results.rid}"
-                                    th:text="${#dates.format(users.ustudent.results.rdate_time,'yyyy年mm月')}"></option>
+                            <option th:each="results:${list}" th:value="${results.rid}"
+                                    th:text="${#dates.format(results.rdate_time,'yyyy年mm月')}"></option>
                         </select>
                     </div>
                     <div class="layui-input-inline lafite_search layui-show-xs-block">
@@ -48,8 +48,21 @@
 
             </div>
         </div>
-        <table class="table" style="width: 600px; display: none;">
-            <tr><th>姓名:</th><th id="name"></th><th>课程:</th><th id="course"></th><th>成绩:</th><th id="cj"></th></tr>
+        <table class="table" style="width: 900px; display: none;">
+            <tr>
+                <th>姓名:</th>
+                <th id="name"></th>
+                <th>系:</th>
+                <th id="department"></th>
+                <th>专业:</th>
+                <th id="major"></th>
+                <th>班级:</th>
+                <th id="grade"></th>
+                <th>课程:</th>
+                <th id="course"></th>
+                <th>成绩:</th>
+                <th id="cj"></th>
+            </tr>
         </table>
     </div>
 </div>
@@ -65,13 +78,21 @@
             return;
         }
         $.post("/studentJson/studentKey", {Key: $("select").val()}, function (data) {
-            if(data==null || data==undefined|| data==""){
+            if (data == null || data == undefined || data == "") {
                 return
             }
-            $(".table").css("display","block")
-            $("#cj").append(""+data.byKey.results);
-            $("#name").append(""+data.byId2.student_id.sname);
-            $("#course").append(""+data.byId2.course_id.cname);
+            $(".table").css("display", "block")
+
+            $("#cj").append("" + data.key.results);
+            $("#course").append("" + data.key.rname);
+            $("#course").append("" + data.key.rname);
+            $.each(data.list, function (v) {
+                $("#name").append("" + data.list[v].student_id.sname);
+                $("#grade").append("" + data.list[v].course_id.grade);
+                $("#major").append("" + data.list[v].course_id.major);
+                $("#department").append("" + data.list[v].course_id.series);
+            })
+
         })
     })
 

@@ -10,7 +10,7 @@ import java.util.Map;
 public interface TeacherService {
     List<Teacher> findAll();
     Teacher findById(Teacher teacher);
-    Teacher findByCourse(Teacher teacher);
+    List<Teacher> findByCourse(Teacher teacher);
     int update(Teacher teacher);
     int updateDelete(Teacher teacher);
     List<Teacher> dim(Teacher keyname);

@@ -47,20 +47,23 @@
                     <div class="layui-input-block lafite_width_60">
                         <input type="text" id="L_email" name="Teducation" autocomplete="off" class="layui-input"></div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">
-                        <span class="x-red">*</span> 授课</label>
-                    <div class="layui-input-block lafite_width_60">
-                        <input type="text" id="L_city"  disabled autocomplete="off" placeholder="不用填..." class="layui-input L_city">
-                        <input type="hidden"  name="jiao_course"  class="L_city" >
-                    </div>
-                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span> 所教的班级</label>
                 <div class="layui-input-block lafite_width_60">
                     <div id="area"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span> 授课</label>
+                <div class="layui-input-block lafite_width_60 " >
+                    <select id="select11" name="jiao_course"
+                            style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
+                        <option disabled selected>请选择</option>
+                    </select>
+
                 </div>
             </div>
             <div class="layui-form-item">
@@ -72,7 +75,7 @@
                 </div>
             </div>
             <div style="align-content: center">
-                <span id="span" style="color: #0eb662;font-size: 30px" th:text="${error}"></span>
+                <span id="span" style="color: #0eb662;font-size: 30px" th:text="${error}" ></span>
             </div>
 
         </form>
@@ -84,6 +87,7 @@
 <script th:inline="javascript">
 
     var ss = [[${courseList}]];
+    var ss2 = [[${course2List}]];
     var json = [];
     var bin;
     var bin2 = {};
@@ -115,9 +119,7 @@
                         jv.push(json[j].city[j2]);
                     }
                     json[j].city = jv;
-                    console.log(JSON.stringify(jv).toString() + "1")
-                    console.log(json[j].city.length + "1")
-                    console.log(JSON.stringify(json[j].city[j2]).toString())
+
                     break
                 }
             }
@@ -213,11 +215,18 @@
                 $('#span').empty();
             }, 5000)
         }
+        $('#se3').change(function () {
+            for(var j=0; j<ss2.length; j++){
+                if($('#se1').val()==ss2[j].series2){
+                    $('#select11').append("<option>"+ss2[j].c2name+"</option>");
+                }
+            }
+        });
         $('.lafite-layui-btn2').click(function () {
             for (var i = 0; i < ss.length; i++) {
                 if($('#se1').val()==ss[i].series  && $('#se2').val()==ss[i].major &&$('#se3').val()==ss[i].grade){
                     $('#tcid').attr('value',ss[i].cid);
-                    $('.L_city').attr("value",ss[i].cname);
+
                 }
             }
 

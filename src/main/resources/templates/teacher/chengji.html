@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}"
+          href="../../static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/after/css/font.css}" href="../../static/after/css/font.css">
+    <link rel="stylesheet" th:href="@{/after/css/xadmin.css}" href="../../static/after/css/xadmin.css">
+    <script th:src="@{/after/lib/layui/layui.js}" src="../../static/after/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/after/js/xadmin.js}" src="../../static/after/js/xadmin.js"></script>
+    <script th:src="@{/js/jquery-1.11.0.js}" src="../../static/js/jquery-1.11.0.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}"
+            src="../../static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <style>
+        th {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<table class="table">
+    <thead style="background: #9D9D9D;font-size: 20px">
+    <th>查看学生成绩</th><th>学生名字：</th><th th:text="${stuCour.student_id.sname}"></th>
+    </thead>
+    <tr style="font-size: 18px;">
+        <th>课程</th>
+        <th>成绩</th>
+    </tr>
+    <tr th:each="results:${list}">
+        <th th:text="${results.rname}"></th>
+        <th th:text="${results.results}"></th>
+    </tr>
+</table>
+
+
+</body>
+<script>
+
+</script>
+
+</html>

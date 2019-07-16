@@ -5,6 +5,7 @@ import com.example.demo2.service.*;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.serviceDao.ResultsService2;
 import com.example.demo2.service.serviceDao.StudentService2;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,17 +45,26 @@ public class UrlController {
     @Autowired
     private User user;
 
+    @Autowired
+    private Course2Service course2Service;
+
+    @Autowired
+    private Tea_stuService tea_stuService;
+
+    @Autowired
+    private Stu_ResulService stu_resulService;
+
     //进入后台首页
     @GetMapping("index")
     public String index() {
         return "afters/index";
     }
+
     //进入欢迎页面
     @GetMapping("calendar")
     public String calendar() {
         return "afters/conn/calendar";
     }
-
 
 
     @GetMapping("add_role")
@@ -112,27 +122,26 @@ public class UrlController {
     @RequestMapping("adduser")
     public String adduser(Model model) {
         List<Student> studentList = studentService2.findAll();
-        Map<String,Student> map =new HashMap<>();
+        Map<String, Student> map = new HashMap<>();
         List<Student> lists = new ArrayList<>();
         List<User> users = userService.findAll();
-        for (Student student:studentList){
-            int a=0;
-            for (User user:users){
-                if(user.getUstudent()==null){
+        for (Student student : studentList) {
+            int a = 0;
+            for (User user : users) {
+                if (user.getUstudent() == null) {
                     continue;
                 }
-                if(student.getSid().equals(user.getUstudent().getSid())||student.getSid()==(user.getUstudent().getSid())){
-                    a=1;
+                if (student.getSid().equals(user.getUstudent().getSid()) || student.getSid() == (user.getUstudent().getSid())) {
+                    a = 1;
                     break;
                 }
 
             }
-            if(a==0){
-                map.put("student"+student.getSid(),student);
+            if (a == 0) {
+                map.put("student" + student.getSid(), student);
             }
         }
-        for (Student value : map.values())
-        {
+        for (Student value : map.values()) {
             lists.add(value);
         }
         model.addAttribute("studentList", lists);
@@ -148,27 +157,26 @@ public class UrlController {
     @RequestMapping("teacheruser")
     public String teacheruser(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
-        Map<String,Teacher> map =new HashMap<>();
+        Map<String, Teacher> map = new HashMap<>();
         List<Teacher> lists = new ArrayList<>();
         List<User> users = userService.findAll();
-        for (Teacher teacher:teacherList){
-            int a=0;
-            for (User user:users){
-                if(user.getUteacher()==null){
+        for (Teacher teacher : teacherList) {
+            int a = 0;
+            for (User user : users) {
+                if (user.getUteacher() == null) {
                     continue;
                 }
-                if(teacher.getTid().equals(user.getUteacher().getTid())||teacher.getTid()==(user.getUteacher().getTid())){
-                    a=1;
+                if (teacher.getTid().equals(user.getUteacher().getTid()) || teacher.getTid() == (user.getUteacher().getTid())) {
+                    a = 1;
                     break;
                 }
 
             }
-            if(a==0){
-                map.put("teacher"+teacher.getTid(),teacher);
+            if (a == 0) {
+                map.put("teacher" + teacher.getTid(), teacher);
             }
         }
-        for (Teacher value : map.values())
-        {
+        for (Teacher value : map.values()) {
             lists.add(value);
         }
         model.addAttribute("teacherList", lists);
@@ -217,23 +225,22 @@ public class UrlController {
     public String student_add(Model model) {
         List<Course> courseList = courseService.findAll();//专业与班级
         List<Teacher> teacherList = teacherService.findAll();
-        Map<String,Course> map =new HashMap<>();
+        Map<String, Course> map = new HashMap<>();
         List<Course> lists = new ArrayList<>();
-        for (Teacher teacher:teacherList){
-            if(teacher.getCourse()==null || teacher.getCourse().equals("")){
+        for (Teacher teacher : teacherList) {
+            if (teacher.getCourse() == null || teacher.getCourse().equals("")) {
                 continue;
             }
-            for (Course course : courseList){
-                if(course.getCid().equals(teacher.getCourse().getCid())|| course.getCid()==(teacher.getCourse().getCid())){
-                    map.put(""+course.getCid(),course);
+            for (Course course : courseList) {
+                if (course.getCid().equals(teacher.getCourse().getCid()) || course.getCid() == (teacher.getCourse().getCid())) {
+                    map.put("" + course.getCid(), course);
                     break;
                 }
                 System.out.println(course.toString());
 
             }
         }
-        for (Course value : map.values())
-        {
+        for (Course value : map.values()) {
             lists.add(value);
         }
         model.addAttribute("courseList", lists);
@@ -254,6 +261,7 @@ public class UrlController {
         model.addAttribute("student", S);
         return "afters/updatestudent";
     }
+
     /**
      * 进入学生查看课程页面
      *
@@ -263,16 +271,17 @@ public class UrlController {
     public String student_see(String id, Model model) {
         Stu_cour stu_cour = studentService.findById2(Long.parseLong(id));
         List<Teacher> teacherList = teacherService.findAll();
+        List<Teacher> list = new ArrayList<>();
         for (Teacher teacher : teacherList) {
 
             if ((teacher.getCourse().getSeries().equals(stu_cour.getCourse_id().getSeries()))
                     && (teacher.getCourse().getMajor().equals(stu_cour.getCourse_id().getMajor())) &&
                     (teacher.getCourse().getGrade().equals(stu_cour.getCourse_id().getGrade()))) {
-
-                model.addAttribute("teacher", teacher);
-                break;
+                list.add(teacher);
+                continue;
             }
         }
+        model.addAttribute("teacherList", list);
         model.addAttribute("student", stu_cour);
         return "afters/student_see";
     }
@@ -283,15 +292,26 @@ public class UrlController {
     @RequestMapping("student_results")
     public String student_results(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
-        List<Resultss> resultssList = resultsService2.findAll();
-        List<Stu_cour> courList = new ArrayList<>();
-        for (Resultss resultss1 : resultssList){
-            Stu_cour byId2 = studentService.findById2(resultss1.getRid());
-            courList.add(byId2);
+        List<Map<Stu_cour, Map<Resultss, Teacher>>> ss = new ArrayList<>();
+        List<Stu_Resul> stu_resulList = stu_resulService.findALL();
+        for (Stu_Resul stu_resul : stu_resulList) {
+            Resultss byId = resultsService2.findById(stu_resul.getResultss_id());
+            Stu_cour byId2 = studentService.findById2(stu_resul.getStudent_id());
+            Map<Stu_cour, Map<Resultss, Teacher>> map = new HashMap<>();
+            Map<Resultss, Teacher> map2 = new HashMap<>();
+            for (Teacher teacher : teacherList) {
+                if (byId2.getCourse_id().getCid().equals(teacher.getCourse().getCid()) && byId.getRname().equals(teacher.getJiao_course())) {
+                    map2.put(byId, teacher);
+                    map.put(byId2, map2);
+                    ss.add(map);
+                    break;
+                }
+            }
+
         }
+        System.out.println(ss.toString());
         model.addAttribute("teacherList", teacherList);
-        model.addAttribute("resultsList", resultssList);
-        model.addAttribute("courList",courList);
+        model.addAttribute("studentresulList", ss);
         return "afters/student_results";
     }
 
@@ -302,28 +322,43 @@ public class UrlController {
     public String student_results_add(Model model) {
         List<Teacher> teacherList = teacherService.findAll();
         List<Stu_cour> stu_courList = studentService.findAll();
-        Map<String,Stu_cour> map =new HashMap<>();
-        List<Stu_cour> lists = new ArrayList<>();
-        List<Resultss> resultssList = resultsService2.findAll();
-        for (Stu_cour stu_cour:stu_courList){
-            if(stu_cour.getStudent_id().getResults()==null){
-                map.put("stu_cour"+stu_cour.getStudent_id().getSid(),stu_cour);
-                continue;
-            }
-            for (Resultss resultss : resultssList){
-                if(resultss.getRid().equals(stu_cour.getStudent_id().getResults().getRid())|| resultss.getRid()==(stu_cour.getStudent_id().getResults().getRid())){
-                    break;
-                }
+        Map<Object, Map<Stu_cour, List<Teacher>>> map = new HashMap<>();
+        Map<Stu_cour, List<Teacher>> map_stu_cour = new HashMap<>();
+        List<Teacher> lists = new ArrayList<>();
 
+        List<Stu_Resul> stu_resulServiceALL = stu_resulService.findALL();
+        int a=0;
+        for (Stu_cour stu_cours : stu_courList) {
+            if(stu_resulServiceALL.toString().equals("[]")){
+                List<Tea_stu> tea_stuList = tea_stuService.findStudentAll(stu_cours.getStudent_id().getSid());
+                for (Tea_stu tea_stu : tea_stuList) {
+                    Teacher teacher = new Teacher();
+                    teacher.setTid(tea_stu.getTeacher_id());
+                    Teacher teacher1 = teacherService.findById(teacher);
+                    lists.add(teacher1);
+                }
+                map_stu_cour.put(stu_cours, lists);
+                map.put("stu" +a, map_stu_cour);
+                a++;
+            }else {
+                List<Stu_Resul> byStudent_id = stu_resulService.findByStudent_id(stu_cours.getStudent_id().getSid());
+                if(byStudent_id.toString().equals("[]")){
+                    List<Tea_stu> tea_stuList = tea_stuService.findStudentAll(stu_cours.getStudent_id().getSid());
+                    for(Tea_stu tea_stu:tea_stuList){
+                        Teacher teacher = new Teacher();
+                        teacher.setTid(tea_stu.getTeacher_id());
+                        Teacher teacher1 = teacherService.findById(teacher);
+                        lists.add(teacher1);
+                    }
+                    map_stu_cour.put(stu_cours, lists);
+                    map.put("stu" +a, map_stu_cour);
+                    a++;
+                }
             }
+
         }
-        for (Stu_cour value : map.values())
-        {
-            lists.add(value);
-        }
-        System.out.println(lists.toString());
-        model.addAttribute("teacherList", teacherList);
-        model.addAttribute("stu_courList", lists);
+        System.out.println(map.toString());
+        model.addAttribute("map", map);
         return "afters/student_results_add";
     }
 
@@ -365,7 +400,9 @@ public class UrlController {
     @RequestMapping("teacher_add")
     public String teacher_add(Model model) {
         List<Course> courseList = courseService.findAll();
+        List<Course2> course2List = course2Service.findAll();
         model.addAttribute("courseList", courseList);
+        model.addAttribute("course2List", course2List);
         return "afters/teacher_add";
     }
 
@@ -378,6 +415,8 @@ public class UrlController {
         teacher.setTid(Long.parseLong(id));
         Teacher teacher1 = teacherService.findById(teacher);
         List<Course> courseList = courseService.findAll();
+        List<Course2> course2List = course2Service.findAll();
+        model.addAttribute("course2List", course2List);
         model.addAttribute("courseList", courseList);
         model.addAttribute("teacher", teacher1);
         return "afters/updateteacher";
@@ -388,27 +427,59 @@ public class UrlController {
      */
 
     @RequestMapping("student_results_update")
-    public String student_results_update(String id, Model model) {
-        Student student = new Student();
-        student.setSid(Long.parseLong(id));
-        Student student1 = studentService.findById(student);
-        Stu_cour byId2 = studentService.findById2(student1.getSid());
-        Teacher teacher = new Teacher();
-        teacher.setCourse(byId2.getCourse_id());
-        List<Teacher> teacherList = teacherService.findAll();
-        for(Teacher teacher1 : teacherList){
-            if(teacher1.getCourse()==null){
-                continue;
-            }
-            if(byId2.getCourse_id().getCid().equals(teacher1.getCourse().getCid())){
+    public String student_results_update(String id,String rid,String rname,Model model) {
+        List<Tea_stu> studentAll = tea_stuService.findStudentAll(Long.parseLong(id));
+        for(Tea_stu tea_stu:studentAll){
+            Teacher teacher = new Teacher();
+            teacher.setTid(tea_stu.getTeacher_id());
+            Teacher teacher1 = teacherService.findById(teacher);
+            if(teacher1.getJiao_course().equals(rname)){
                 model.addAttribute("teacher", teacher1);
                 break;
             }
         }
-        model.addAttribute("student", student1);
-        model.addAttribute("courList", byId2);
-
+        Resultss service2ById = resultsService2.findById(Long.parseLong(rid));
+        Stu_cour stu_cour = studentService.findById2(Long.parseLong(id));
+        model.addAttribute("student", stu_cour);
+        model.addAttribute("service2ById", service2ById);
         return "afters/student_results_update";
     }
 
+
+    //课程添加页
+    @RequestMapping("couser_ad")
+    public String couser_ad(Model model) {
+        List<Course> courseList = courseService.findAll();
+        Map<Object, Object> map = new HashMap<>();
+        for (Course course : courseList) {
+            map.put(course.getSeries(), course);
+        }
+        model.addAttribute("courseList", map);
+        return "afters/couser_ad";
+    }
+
+    //课程页面
+    @RequestMapping("couserlist")
+    public String couserlist(Model model) {
+        List<Course2> course2List = course2Service.findAll();
+        model.addAttribute("course2List", course2List);
+        return "afters/couserlist";
+    }
+
+    //课程修改页面
+    @RequestMapping("couser_update")
+    public String couser_update(String c2id, Model model) {
+        Course2 course2 = new Course2();
+        course2.setC2id(Long.parseLong(c2id));
+        Course2 byId = course2Service.findById(course2);
+
+        List<Course> courseList = courseService.findAll();
+        Map<Object, Object> map = new HashMap<>();
+        for (Course course : courseList) {
+            map.put(course.getSeries(), course.getSeries());
+        }
+        model.addAttribute("course2", byId);
+        model.addAttribute("courseList", map);
+        return "afters/couser_update";
+    }
 }

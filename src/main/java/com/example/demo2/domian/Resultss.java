@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -15,12 +16,12 @@ import java.util.Map;
 public class Resultss {
 
     @Id //主键注解
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long rid;
 
-    @OneToOne(mappedBy = "results", cascade = CascadeType.MERGE)
-    private Student student;
-
     private Double Results;
+
+    private String rname;//课程名
 
     private Timestamp rdate_time;
 

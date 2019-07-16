@@ -138,8 +138,9 @@
 <body>
 <div class="layui-fluid lafite_add_alert">
     <div class="layui-row">
-        <form method="post" action="/manage/student_results_add">
-            <input type="hidden" name="sid" id="sid" th:value="${student.sid}">
+        <form method="post" action="/manage/student_results_update">
+            <input type="hidden" name="id" id="id" th:value="${student.student_id.sid}">
+            <input type="hidden" name="sid" id="sid" th:value="${service2ById.rid}">
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span> 学生名字
@@ -147,7 +148,7 @@
                 <div class="layui-input-block lafite_width_60">
                     <select id="select10"
                             style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
-                        <option  selected th:text="${student.sname}" th:value="${student.sname}"></option>
+                        <option  selected th:text="${student.student_id.sname}" th:value="${student.student_id.sname}"></option>
                     </select>
                 </div>
             </div>
@@ -156,8 +157,9 @@
                     <span class="x-red">*</span> 课程
                 </label>
                 <div class="layui-input-block lafite_width_60">
+                    <input type="hidden" name="rname" th:value="${teacher.jiao_course}">
                     <input type="text" id="L_email0" disabled name="sage" autocomplete="off"
-                           class="layui-input" th:value="${courList.course_id.cname}"></div>
+                           class="layui-input" th:value="${teacher.jiao_course}" ></div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
@@ -174,7 +176,7 @@
                     </label>
                     <div class="layui-input-block lafite_width_60">
                         <input type="text" id="L_username3" name="results" required="" lay-verify="nikename"
-                               autocomplete="off" class="layui-input" th:value="${student.results.results}">
+                               autocomplete="off" class="layui-input" th:value="${service2ById.results}">
                     </div>
                     <br/>
                     <div class="layui-form-item">

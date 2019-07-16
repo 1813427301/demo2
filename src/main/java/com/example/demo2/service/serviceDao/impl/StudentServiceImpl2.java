@@ -8,6 +8,7 @@ import com.example.demo2.domian.Tea_stu;
 import com.example.demo2.domian.Teacher;
 import com.example.demo2.mapper.CourseMapper;
 import com.example.demo2.mapper.StudentMapper;
+import com.example.demo2.mapper.Tea_stuMapper;
 import com.example.demo2.mapper.TeacherMapper;
 import com.example.demo2.service.serviceDao.StudentService2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class StudentServiceImpl2 implements StudentService2 {
 
     @Autowired
     private Tea_stuRepository tea_stuRepository;
+
+    @Autowired
+    private Tea_stuMapper tea_stuMapper;
 
     @Autowired
     private StudentMapper studentMapper;
@@ -74,16 +78,19 @@ public class StudentServiceImpl2 implements StudentService2 {
                     studentRepository.save(student);
                     Teacher teacher = new Teacher();
                     teacher.setCourse(course);
-                    Teacher teacher1 = teacherMapper.findByCourse(teacher);
+                    List<Teacher> teacherList = teacherMapper.findByCourse(teacher);
                     Tea_stu tea_stu = new Tea_stu();
                     tea_stu.setStudent_id(student.getSid());
-                    tea_stu.setTeacher_id(teacher1.getTid());
-                    Tea_stu save1 = tea_stuRepository.save(tea_stu);
-                    if (save1 != null) {
-                        map.put("ok", true);
+                    for(Teacher t:teacherList){
+                        tea_stu.setTeacher_id(t.getTid());
+                        int add = tea_stuMapper.add(tea_stu);
+                        if (add > 0) {
+                            map.put("ok", true);
+                        }
                     }
                 }
             }catch (Exception e){
+                System.out.println(e);
                 studentMapper.delete(save);
             }
         }

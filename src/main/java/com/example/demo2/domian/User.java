@@ -48,11 +48,11 @@ public class User {
     private UserDetails userDetails;
 
     @OneToOne(cascade ={ CascadeType.MERGE ,CascadeType.REFRESH},optional=false)
-    @JoinColumn(name = "ustudent_id", referencedColumnName = "Sid",unique = true)
+    @JoinColumn(name = "ustudent_id", referencedColumnName = "Sid",unique = true,nullable = false)
     private Student ustudent;
 
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional=false)//People是关系的维护端，当删除 people，会级联删除 address
-    @JoinColumn(name = "uteacher_id", referencedColumnName = "tid",unique = true)
+    @JoinColumn(name = "uteacher_id", referencedColumnName = "tid",unique = true,nullable = false)
     private Teacher uteacher;
 
     @Transient

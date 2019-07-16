@@ -1,8 +1,10 @@
 package com.example.demo2.controller.student;
 
 import com.example.demo2.domian.Resultss;
+import com.example.demo2.domian.Stu_Resul;
 import com.example.demo2.domian.Stu_cour;
 import com.example.demo2.domian.User;
+import com.example.demo2.service.Stu_ResulService;
 import com.example.demo2.service.StudentService;
 import com.example.demo2.service.UserService;
 import com.example.demo2.service.serviceDao.ResultsService2;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,6 +33,9 @@ public class StudentJsonController {
 
     @Autowired
     private ResultsService2 resultsService2;
+
+    @Autowired
+    private Stu_ResulService stu_resulService;
 
     @RequestMapping("updatePssword")
     public Map<Object,Object> updatePssword(String psword,String id){
@@ -50,10 +57,18 @@ public class StudentJsonController {
     @RequestMapping("studentKey")
     public Map<String,Object> studentKey(String Key){
         Resultss byKey = resultsService2.findByKey(Key);
-        Stu_cour byId2 = studentService.findById2(Long.parseLong(Key));
+        List<Stu_Resul> stu_resuls = stu_resulService.findBy(Long.parseLong(Key));
+
         Map<String,Object> map= new HashMap<>();
-        map.put("byKey",byKey);
-        map.put("byId2",byId2);
+        List<Stu_cour> list = new ArrayList<>();
+
+        for(Stu_Resul stu_resul:stu_resuls){
+            Stu_cour byId21 = studentService.findById2(stu_resul.getStudent_id());
+            list.add(byId21);
+
+        }
+        map.put("key",byKey);
+        map.put("list",list);
         return map;
     }
 

@@ -26,7 +26,7 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <div class="layui-input-inline layui-show-xs-block">
-                        <input type="text"  id="keynames" placeholder="学生编号" autocomplete="off" class="layui-input">
+                        <input type="text"  id="keynames" placeholder="用户名" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline lafite_search layui-show-xs-block">
                         <button id="dim" class="layui-btn" lay-submit="" lay-filter="sreach">
@@ -36,43 +36,37 @@
                 </div>
 
                 <div class="layui-card-header">
-                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增学生','/afterss/student_results_add',600,500)"><i
-                            class="layui-icon" ></i>新增学生</a>
+                    <a class="layui-btn lafite_main_color" onclick="xadmin.open('新增课程','/afterss/couser_ad',600,500)"><i
+                            class="layui-icon" ></i>新增课程</a>
                 </div>
 
                 <div class="layui-card-body">
                     <table class="layui-table layui-form">
                         <thead>
                         <tr style="background: #F8E5E5;">
-                            <th>学生编号</th>
-                            <th>学生名字</th>
+                            <th>课程编号</th>
                             <th>课程</th>
-                            <th>上课老师</th>
-                            <th>成绩</th>
-                            <th>创建时间</th>
+                            <th>系</th>
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody id="tds" th:each="student:${studentresulList}">
-                        <tr th:each="stu:${student}">
-                            <td class="t_id"  th:text="${stu.key.student_id.sid}" >1</td>
-                            <td  th:text="${stu.key.student_id.sname}"  >王小明</td>
-                            <th th:each="teacher:${stu.value}" th:text="${teacher.value.jiao_course}">课程</th>
-                            <th th:each="teacher:${stu.value}" th:text="${teacher.value.tname}">上课老师</th>
-                            <th th:each="results:${stu.value}" th:text="${results.key.results}">成绩</th>
-                            <td th:each="results:${stu.value}" th:text="${results.key.rdate_time}">2016-10-08 13:00</td>
+                        <tbody id="tds">
+                        <tr th:each="course2:${course2List}">
+                            <td th:text="${course2.c2id}">1</td>
+                            <td th:text="${course2.c2name}">1</td>
+                            <td th:text="${course2.series2}">1</td>
                             <td class="td-manage">
                                 <a class="lafitewu_auditing" title="编辑"
-                                   onclick="xadmin.open('修改学生','/afterss/student_results_update?id='+($(this).children('input').attr('value'))+'&rid='+($(this).children('input').attr('name'))+'&rname='+($(this).children('input').attr('class')),600,500)"
+                                   onclick="xadmin.open('修改课程','/afterss/couser_update?c2id='+($(this).children('input').attr('value')),600,500)"
                                    href="javascript:;">
                                     编辑
-                                    <input  type="hidden" th:value="${stu.key.student_id.sid}" th:each="results:${stu.value}"  th:name="${results.key.rid}" th:class="${results.key.rname}"/>
+                                    <input class="inp" type="hidden" th:value="${course2.c2id}" />
                                 </a>
                                 <a class="lafitewu_del lafitewu_margin_left_10" title="删除"
-                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/resultsDelete')"
+                                   onclick="member_del(this,'要删除的id',($(this).children('input').attr('value')),'/Json/couser2_Delete')"
                                    href="javascript:;">
                                     删除
-                                    <input class="dele" type="hidden"  th:each="results:${stu.value}"  th:value="${results.key.rid}"/>
+                                    <input class="dele" type="hidden"  th:value="${course2.c2id}" />
                                 </a>
                             </td>
                         </tr>
@@ -86,35 +80,6 @@
 </body>
 <script>
 
-    function app(va){
-        $("#tds").append("<tr>\n" +
-            "                        <td class=\"t_id\" >"+va.student_id.sid+"</td>\n" +
-            "                            <td >"+va.student_id.sname+"</td>\n" +
-            "                            <td >课程</td>\n" +
-            "                            <td >上课老师</td>\n" +
-            "                            <td >成绩</td>\n" +
-            "                            <td >"+va.student_id.sdate_time+"</td>\n" +
-            "                        <td class=\"td-manage\">\n" +
-            "                            <a class=\"lafitewu_auditing\" th:value='"+va.student_id.sid+"' title=\"编辑\"\n" +
-            "                        onclick=\"xadmin.open('修改学生','/afterss/updatestudent?id='+($(this).attr('th:value')),600,500)\"\n" +
-            "                        href=\"javascript:;\">\n" +
-            "                            编辑\n" +
-            "                            </a>\n" +
-            "                            <a class=\"lafitewu_auditing\" th:value='"+va.student_id.sid+"' title=\"查询\"\n" +
-            "                        onclick=\"xadmin.open('查询','/afterss/student_see?id='+($(this).attr('th:value')),600,500)\"\n" +
-            "                        href=\"javascript:;\">\n" +
-            "                            查询\n" +
-            "                            </a>\n" +
-            "\n" +
-            "                            <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+va.student_id.sid+"'  title=\"删除\"\n" +
-            "                        onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/studentDelete')\"\n" +
-            "                        href=\"javascript:;\">\n" +
-            "                            删除\n" +
-            "                            </a>\n" +
-            "                            </td>\n" +
-            "                            </tr>"
-        );
-    }
     layui.use(['laypage', 'laydate', 'form'],
         function () {
             var laydate = layui.laydate;
@@ -153,14 +118,14 @@
             });
         });
 
-    /*学生-删除*/
+    /*用户-删除*/
     function member_del(obj, id, u_id, url) {
         layer.confirm('是否确认删除当前项目？',
             {title: "项目删除"},
             function (index) {
                 //发异步删除数据
                 $(obj).parents("tr").remove();
-                $.post(url, {id: u_id},
+                $.post(url, {c2id: u_id},
                     function (data) {
                     });
 
@@ -171,30 +136,6 @@
             });
     }
 
-    //分页处理
-    $(function () {
-//关键字查询
-        $('#dim').click(function () {
-            $.post('/Json/studentDimCheck', {keyname: $('#keynames').val()},
-                function (data) {
-                    $('#tds').empty();
-                    $.each(data, function (index,va) {
-                        app(va);
-
-                    });
-                    $("#uls li").each(function(){
-                        var t2=$(this).val();
-                        var t=$('.masum').attr('id');
-                        if(t==t2){
-                            $(this).children('a').css('background','red');
-                        }else {
-
-                            $(this).children('a').css('background','');
-                        }
-                    })
-                });
-        });
-    })
 
     /*用户-撤销*/
     function member_revoke(obj, id) {
@@ -210,6 +151,43 @@
             });
     }
 
+
+    $('#dim').click(function () {
+        $.post('/Json/couser2_fallkey', {keyname: $('#keynames').val()},
+            function (data) {
+                $('#tds').empty();
+                $.each(data, function (index) {
+                    console.log(data[index].c2id);
+                    $("#tds").append("<tr>\n" +
+                        "                        <td>"+data[index].c2id+"</td>\n" +
+                        "                        <td>"+data[index].c2name+"</td>\n" +
+                        "                        <td>"+data[index].series2+"</td>\n" +
+                        "                        <td class=\"td-manage\">\n" +
+                        "                        <a class=\"lafitewu_auditing\" th:value='"+data[index].c2id+"' title=\"编辑\"\n" +
+                        "                    onclick=\"xadmin.open('修改课程','/afterss/couser_update?c2id='+($(this).attr('th:value')),600,500)\"\n" +
+                        "                    href=\"javascript:;\">\n" +
+                        "                        编辑\n" +
+                        "                        </a>\n" +
+                        "                        <a class=\"lafitewu_del lafitewu_margin_left_10\" th:value='"+data[index].c2id+"' title=\"删除\"\n" +
+                        "                    onclick=\"member_del(this,'要删除的id',($(this).attr('th:value')),'/Json/couser2_Delete')\"\n" +
+                        "                    href=\"javascript:;\">\n" +
+                        "                        删除\n" +
+                        "                        </a>\n" +
+                        "                        </td>\n" +
+                        "                        </tr>");
+                });
+                $("#uls li").each(function(){
+                    var t2=$(this).val();
+                    var t=$('.masum').attr('id');
+                    if(t==t2){
+                        $(this).children('a').css('background','red');
+                    }else {
+
+                        $(this).children('a').css('background','');
+                    }
+                })
+            });
+    });
 </script>
 
 </html>

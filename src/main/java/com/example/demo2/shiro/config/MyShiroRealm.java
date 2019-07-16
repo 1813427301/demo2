@@ -6,14 +6,13 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class MyShiroRealm extends AuthorizingRealm {
+public class MyShiroRealm extends  AuthorizingRealm{
     @Autowired
     private UserMapper userMapper;
 
@@ -26,10 +25,11 @@ public class MyShiroRealm extends AuthorizingRealm {
         // 从数据库获取对应用户名密码的用户
         User user = userMapper.findByName(token.getUsername());
         if (user != null ) {
+
             String salt = user.getSalt();
             ByteSource saltBytes = ByteSource.Util.bytes(salt);
             //创建简单的认证信息对象
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user != null ? user : null, user != null ? user.getPassword() : null, saltBytes, getName());
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user , user.getPassword(), saltBytes, getName());
             return simpleAuthenticationInfo;
         }
         return null;
@@ -40,26 +40,18 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("Shiro授权··············");
         //简单授权
+        User user = (User) principalCollection.getPrimaryPrincipal();
+        System.out.println(user.toString());
+        //组装返回数据
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        User user = null;
-        // Manager manager = null;
-        //捕获，不输出异常
-        try {
-           user = (User) principalCollection.getPrimaryPrincipal();
-        } catch (Exception e) {
+        if (user.getType()==2){
+            //组装返回数据
+            simpleAuthorizationInfo.addRole(user.getType()+"");
+        }else  if (user.getType()==1){
+            simpleAuthorizationInfo.addRole(user.getType()+"");
+        }else if(user.getType()==0){
+            simpleAuthorizationInfo.addRole(user.getType()+"");
         }
-        try {
-            //manager = (Manager) principalCollection.getPrimaryPrincipal();
-        } catch (Exception e) {
-        }
-        //构造权限
-        List<String> list = new ArrayList<>();
-        if (user != null) {//普通用户
-            list.add("/user/**");
-            simpleAuthorizationInfo.addRole("user");
-            System.out.println("普通用户认证");
-        }
-        simpleAuthorizationInfo.addStringPermissions(list);
         return simpleAuthorizationInfo;
     }
 

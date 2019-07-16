@@ -30,7 +30,7 @@
         <form method="post" action="/manage/update_teacher">
             <input type="hidden" name="Cid" id="tcid">
             <input type="hidden" name="tid" th:value="${teacher.tid}">
-            <div class="layui-form">
+            <div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">
                         <span class="x-red">*</span> 老师名称
@@ -48,20 +48,7 @@
                     <div class="layui-input-block lafite_width_60">
                         <input type="text" id="L_email" name="Teducation" autocomplete="off" class="layui-input" th:value="${teacher.teducation}"></div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">
-                        <span class="x-red">*</span> 授课</label>
-                    <div class="layui-input-block lafite_width_60">
 
-                        <select id="L_city" name="jiao_course" lay-verify="required">
-                            <option value=""></option>
-                            <option selected th:if="${teacher.jiao_course}" th:value="${teacher.jiao_course}" th:text="${teacher.jiao_course}"></option>
-                            <option  th:each="course:${courseList}" th:value="${course.cname}"
-                                    th:text="${course.cname}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
@@ -70,6 +57,17 @@
                     <div id="area"></div>
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span> 授课</label>
+                <div class="layui-input-block lafite_width_60">
+
+                    <select id="L_city" name="jiao_course" lay-verify="required" style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
+                        <option selected th:if="${teacher?.jiao_course}" th:value="${teacher?.jiao_course}" th:text="${teacher?.jiao_course}"></option>
+                    </select>
+                </div>
+            </div>
+
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <div class="lafite-layui-btn lafite_float_left lafite_height_35px" onclick="xadmin.close()">取消</div>
@@ -90,6 +88,21 @@
 <script th:inline="javascript">
 
     var ss = [[${courseList}]];
+    var ss2 = [[${course2List}]];
+    for(var i =0 ;i<ss2.length; i++){
+        if(ss2[i].c2name==[[${teacher.jiao_course}]]){
+            var series2=ss2[i].series2;
+
+            for(var j =0 ;j<ss2.length; j++){
+                if(series2==ss2[j].series2){
+                    if(ss2[j].c2name!=[[${teacher.jiao_course}]]){
+                        $('#L_city').append("<option>"+ss2[j].c2name+"</option>")
+                    }
+                }
+            }
+            break;
+        }
+    }
     var json = [];
     var bin;
     var bin2 = {};
@@ -218,7 +231,18 @@
             setTimeout(function () {
                 $('#span').empty();
             }, 5000)
-        }
+        };
+
+        $('#se3').change(function () {
+            $('#L_city').empty();
+           /* $('#L_city').append("<option selected>"+[[${teacher.jiao_course}]]+"</option>");*/
+            for(var j=0; j<ss2.length; j++){
+                if($('#se1').val()==ss2[j].series2){
+                    $('#L_city').append("<option>"+ss2[j].c2name+"</option>");
+                }
+            }
+        });
+
         $('.lafite-layui-btn2').click(function () {
             for (var i = 0; i < ss.length; i++) {
                 if($('#se1').val()==ss[i].series  && $('#se2').val()==ss[i].major &&$('#se3').val()==ss[i].grade){

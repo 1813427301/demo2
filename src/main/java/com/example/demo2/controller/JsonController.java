@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,12 @@ public class JsonController {
 
     @Autowired
     private ResultsService2 resultsService2;
+
+    @Autowired
+    private Course2Service course2Service;
+
+    @Autowired
+    private Tea_stuService tea_stuService;
 
     @RequestMapping("login")
     public Map<String, Object> jsonLogin(String username, String password) {
@@ -120,8 +128,14 @@ public class JsonController {
     @RequestMapping("userDownTurning")
     public List<User> userDownTurning(String downTurning) {
         List<User> counts = userService.findAll();
-        int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
-        System.out.println(cunSize);
+        String value=(BigDecimal.valueOf(counts.size()).divide( BigDecimal.valueOf(Integer.valueOf(5)))).toString();
+        int cunSize =0;
+        if(value.contains(".")){
+            String[] splits = value.split("\\.");
+            cunSize = (Integer.valueOf(splits[0])+1);
+        }else {
+            cunSize = (Integer.valueOf(value));
+        }
         user.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
         user.setEndPageSize(5);
         List<User> users = userService.paging(user);
@@ -154,8 +168,8 @@ public class JsonController {
 
     //课程添加
     @RequestMapping("course_add/add")
-    public Map<Object, Object> course_Add(String series, String major, String grade, String course, String cid) {
-        Map<Object, Object> map = courseService.create( series, major, grade, course, cid);
+    public Map<Object, Object> course_Add(String series, String major, String grade, String cid) {
+        Map<Object, Object> map = courseService.create( series, major, grade, cid);
         return map;
     }
 
@@ -233,8 +247,14 @@ public class JsonController {
     public List<Teacher> teacherDownTurning(String downTurning) {
         Teacher teacher = new Teacher();
         List<Teacher> counts = teacherService.findAll();
-        int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
-        System.out.println(cunSize);
+        String value=(BigDecimal.valueOf(counts.size()).divide( BigDecimal.valueOf(Integer.valueOf(5)))).toString();
+        int cunSize =0;
+        if(value.contains(".")){
+            String[] splits = value.split("\\.");
+            cunSize = (Integer.valueOf(splits[0])+1);
+        }else {
+            cunSize = (Integer.valueOf(value));
+        }
         teacher.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
         teacher.setEndPageSize(5);
         List<Teacher> teachers = teacherService.paging(teacher);
@@ -308,8 +328,14 @@ public class JsonController {
         Stu_cour stu_cour = new Stu_cour();
         Student student = new Student();
         List<Stu_cour> counts = studentService.findAll();
-        int cunSize = ((counts.size() / 5 == 0 ? (counts.size() / 5) : ((counts.size() / 5) + 1)));
-        System.out.println(cunSize);
+        String value=(BigDecimal.valueOf(counts.size()).divide( BigDecimal.valueOf(Integer.valueOf(5)))).toString();
+        int cunSize =0;
+        if(value.contains(".")){
+            String[] splits = value.split("\\.");
+            cunSize = (Integer.valueOf(splits[0])+1);
+        }else {
+            cunSize = (Integer.valueOf(value));
+        }
         student.setStartPageSize(Integer.parseInt(downTurning) == cunSize ? (Integer.parseInt(downTurning) - 1) * 5 : (Integer.parseInt(downTurning) * 5));
         student.setEndPageSize(5);
         List<Stu_cour> stu_cours = studentService.paging(student);
@@ -317,5 +343,45 @@ public class JsonController {
         stu_cour.setStudent_id(student);
         stu_cours.add(stu_cour);
         return stu_cours;
+    }
+
+    //课程删除
+    @RequestMapping("couser2_Delete")
+    public Map<String,Object> couser2_Delete(String c2id){
+        Map<String,Object> map = new HashMap<>();
+        map.put("ok",false);
+        Course2 course2 = new Course2();
+        course2.setC2id(Long.parseLong(c2id));
+        int delete = course2Service.delete(course2);
+        if(delete>0){
+            map.put("ok",true);
+        }
+        return map;
+    }
+
+    //课程模糊查询
+    @RequestMapping("couser2_fallkey")
+    public List<Course2> couser2_fallkey(String keyname){
+        if(keyname==null ||keyname.equals("")){
+            return null;
+        }
+        Course2 course2 = new Course2();
+        course2.setKeyname(keyname);
+        List<Course2> dim = course2Service.dim(course2);
+        return dim;
+    }
+
+    //学生老师课程查询
+    @RequestMapping("student_teacher_course")
+    public List<Teacher> student_teacher_course(String student_id){
+        List<Teacher> list = new ArrayList<>();
+        List<Tea_stu> studentAll = tea_stuService.findStudentAll(Long.parseLong(student_id));
+        for(Tea_stu tea_stu : studentAll){
+            Teacher teacher = new Teacher();
+            teacher.setTid(tea_stu.getTeacher_id());
+            Teacher byId = teacherService.findById(teacher);
+            list.add(byId);
+        }
+        return list;
     }
 }

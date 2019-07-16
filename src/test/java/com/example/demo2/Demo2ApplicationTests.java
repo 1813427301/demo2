@@ -4,6 +4,8 @@ import com.example.demo2.dao.Stu_courRepository;
 import com.example.demo2.dao.StudentRepository;
 import com.example.demo2.dao.TeacherRepository;
 import com.example.demo2.domian.*;
+import com.example.demo2.mapper.Stu_ResulMapper;
+import com.example.demo2.mapper.TeacherMapper;
 import com.example.demo2.mapper.UserMapper;
 import com.example.demo2.shiro.md5.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
@@ -30,6 +32,12 @@ public class Demo2ApplicationTests {
     private UserMapper userMapper;
 
     @Autowired
+    private TeacherMapper teacherMapper;
+
+    @Autowired
+    private Stu_ResulMapper stu_resulMapper;
+
+    @Autowired
     private User user;
     @Autowired
     private StudentRepository studentRepository;
@@ -40,16 +48,13 @@ public class Demo2ApplicationTests {
 
     @Test
     public void testUser(){
-
     }
 
 
 }
 class Example{
     public static void main(String args[]){
-        int var=10;
-        int var2=20;
-        System.out.println(var+var2+++""+var2);
+
     }
 }
 

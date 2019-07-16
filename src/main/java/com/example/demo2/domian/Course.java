@@ -15,7 +15,6 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键生成策略
     private Long Cid;
 
-    private String Cname;
     private String series;
 
     private String major;

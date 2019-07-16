@@ -145,12 +145,12 @@
                     <span class="x-red">*</span> 学生名字
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <select id="select10"
-                            style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
-                        <option disabled selected>请选择</option>
-                        <option th:each="stu_cour:${stu_courList}"
-                                th:value="${stu_cour?.student_id.sname}+'&'+${stu_cour?.course_id.cid}"
-                                th:text="${stu_cour?.student_id.sname}"></option>
+                    <select id="select10" th:each="stu_cours : ${map}"
+                            style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid" >
+                        <option disabled selected  >请选择</option>
+                        <option th:each="stu_cour : ${stu_cours.value}"
+                                th:value="${stu_cour.key.student_id.sname}+'&'+${stu_cour.key.student_id.sid}"
+                                th:text="${stu_cour.key.student_id.sname}"></option>
                     </select>
                 </div>
             </div>
@@ -159,8 +159,11 @@
                     <span class="x-red">*</span> 课程
                 </label>
                 <div class="layui-input-block lafite_width_60">
-                    <input type="text" id="L_email0" disabled name="sage" autocomplete="off"
-                           class="layui-input"></div>
+
+                    <select id="select12" name="rname"
+                            style="width: 340px;height: 30px;font-size: 20px; border: #9D9D9D 0.5px solid">
+                    </select>
+                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
@@ -200,11 +203,12 @@
     </div>
 </div>
 <script th:inline="javascript">
-
+    var s;
     $("#select10").change(function () {
         var data = $(this).val();
         var str = data.split('&');
-        var stu_cours = [[${stu_courList}]];
+        s=str[1];
+        var stu_cours = [[${map}]];
         for (var i = 0; i < stu_cours.length; i++) {
             if (stu_cours[i].student_id.sname == str[0] && stu_cours[i].course_id.cid == str[1]) {
                 $('#L_email0').attr("value", stu_cours[i].course_id.cname);
@@ -217,7 +221,33 @@
                 }
             }
         }
+        $.post("/Json/student_teacher_course",{student_id:str[1]},function (data) {
+            $('#select12').empty();
+            $('#L_username2').val("");
+
+            $.each(data,function (v) {
+                $('#select12').append("<option>"+ data[v].jiao_course+"</option>");
+                    if($("#select12").val()==data[v].jiao_course){
+                        $('#L_username2').val(data[v].tname);
+                        $('#sid').attr("value", str[1]);
+                    }
+            });
+
+        });
+
     });
+
+    $('#select12').change(function ()
+    {
+        $.post("/Json/student_teacher_course",{student_id:s},function (data) {
+            $.each(data,function (va) {
+                if($("#select12").val()==data[va].jiao_course)
+                    $('#L_username2').val(data[va].tname)
+                    $('#sid').attr("value", s);
+            })
+        })
+
+    })
 
     layui.use(['form', 'layer', 'jquery'],
         function () {
