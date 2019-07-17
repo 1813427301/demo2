@@ -67,8 +67,14 @@ public class ManageController {
     public String login(String username, String password, Model model, HttpSession session) throws IOException {
         Map<String, Object> map = userService.login(username, password);
         if ((boolean) map.get("ok")) {
-            session.setAttribute("user", map.get("user"));
-            return "afters/index";
+            User user =(User) map.get("user");
+            if(user.getType()==2){
+                session.setAttribute("user", map.get("user"));
+                return "afters/index";
+            }else {
+                return "login";
+
+            }
         } else {
             model.addAttribute("error2", map.get("error"));
         }

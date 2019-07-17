@@ -10,6 +10,11 @@
     <link rel="stylesheet" th:href="@{/css/normalize.css}" href="../static/css/normalize.css">
     <link rel="stylesheet" th:href="@{/css/style1.css}" href="../static/css/style1.css">
 
+    <style>
+        body{
+            background-image: url("../img/douye.jpg");
+        }
+    </style>
 </head>
 
 <body>
@@ -55,13 +60,13 @@
                     </div>
                 </div>
                     <div class="gongneng_right1">
-                        <b style="font-size: 50px">错误信息</b>
+                        <b style="font-size: 50px" th:if="${error1 != null}">错误信息</b>
                         <em class="em1" th:text="${error1}" style="color: red"></em>
                 </div>
             </div>
             <div class="gongneng_tabcon" id="mang" style="padding-left: 90px;">
                 <div class="gongneng_right2">
-                    <div class="login" style="width: 300px;background: whitesmoke" >
+                    <div class="login" style="width: 300px;background: #9A856C" >
                         <form action="/manage/login" method="post">
                             <div class="title" style="color: #0f0f0f">管理登录</div>
                             <div class="line">
@@ -78,7 +83,7 @@
                     </div>
                 </div>
                 <div class="gongneng_right1">
-                    <b style="font-size: 50px">错误信息</b><p></p>
+                    <b style="font-size: 50px" th:if="${error2 != null}">错误信息</b><p></p>
                     <em class="em2" th:text="${error2}" style="color: red"></em>
                 </div>
             </div>

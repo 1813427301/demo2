@@ -327,7 +327,6 @@ public class UrlController {
         List<Teacher> lists = new ArrayList<>();
 
         List<Stu_Resul> stu_resulServiceALL = stu_resulService.findALL();
-        int a=0;
         for (Stu_cour stu_cours : stu_courList) {
             if(stu_resulServiceALL.toString().equals("[]")){
                 List<Tea_stu> tea_stuList = tea_stuService.findStudentAll(stu_cours.getStudent_id().getSid());
@@ -338,8 +337,8 @@ public class UrlController {
                     lists.add(teacher1);
                 }
                 map_stu_cour.put(stu_cours, lists);
-                map.put("stu" +a, map_stu_cour);
-                a++;
+                map.put("stu", map_stu_cour);
+
             }else {
                 List<Stu_Resul> byStudent_id = stu_resulService.findByStudent_id(stu_cours.getStudent_id().getSid());
                 if(byStudent_id.toString().equals("[]")){
@@ -351,8 +350,7 @@ public class UrlController {
                         lists.add(teacher1);
                     }
                     map_stu_cour.put(stu_cours, lists);
-                    map.put("stu" +a, map_stu_cour);
-                    a++;
+                    map.put("stu", map_stu_cour);
                 }
             }
 
